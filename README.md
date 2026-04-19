@@ -26,6 +26,22 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 
 ---
 
+## Table of Contents
+
+* **[Building](#building)**
+* **[Running](#running)**
+* **[Consuming](#consuming)**
+
+## Building
+
+**TBD** :cd:
+
+## Running
+
+**TBD** :cd:
+
+## Consuming
+
 **TBD** :cd:
 
 ---
