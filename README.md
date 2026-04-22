@@ -34,9 +34,32 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 
 ## Building
 
+The microservice might be built and run successfully under **Arch Linux** (proven). &mdash; First install the necessary dependencies (`base-devel`, `vala`, `docker`):
+
+```
+$ sudo pacman -Syu base-devel vala docker
+...
+```
+
+**Build** the microservice:
+
+```
+$ BIN_DIR=bin; SRC_DIR=src; \
+  valac --pkg=posix -d ${BIN_DIR} -o api-lited ${SRC_DIR}/* && \
+  rm -vRf ${BIN_DIR}/${SRC_DIR}/
+...
+```
+
 **TBD** :cd:
 
 ## Running
+
+**Run** the microservice:
+
+```
+$ ./bin/api-lited; echo $?
+0
+```
 
 **TBD** :cd:
 
