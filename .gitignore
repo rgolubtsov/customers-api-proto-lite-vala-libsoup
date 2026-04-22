@@ -11,6 +11,9 @@
 # i.e. objects that should not be put into the repository.
 #
 
+# === Executables =============================================================
+bin/
+
 # === Log files ===============================================================
 log/
 
