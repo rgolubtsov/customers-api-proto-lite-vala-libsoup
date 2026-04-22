@@ -10,10 +10,17 @@
  * (See the LICENSE file at the top of the source tree.)
  */
 
-// The main namespace of the daemon -------------------------------------------
+/*
+ * Build it as: $ BIN_DIR=bin;SRC_DIR=src;\
+                  valac --pkg=posix -d ${BIN_DIR} -o api-lited ${SRC_DIR}/* &&\
+                  rm -vRf ${BIN_DIR}/${SRC_DIR}/
+ *
+ * Run it as: $ ./bin/api-lited; echo $?
+ */
 
-// Build it as: $ valac --pkg=posix src/api-lite-core.vala
+using Posix;
 
+/** The main namespace of the daemon. */
 namespace core {
     // TODO: Implement getting the daemon settings and all the rest.
 }
@@ -26,7 +33,7 @@ namespace core {
  * @returns The exit code of the overall termination of the daemon.
  */
 int main(string[] args) {
-    return Posix.EXIT_SUCCESS;
+    return EXIT_SUCCESS;
 }
 
 // vim:set nu et ts=4 sw=4:
