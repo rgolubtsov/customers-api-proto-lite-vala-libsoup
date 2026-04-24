@@ -58,7 +58,12 @@ $ BIN_DIR="bin"; \
 
 Or **build** the microservice using **GNU Make** (optional, but for convenience &mdash; it covers the same **Vala compiler** build workflow under the hood):
 
-**TBD** :cd:
+```
+$ make clean
+...
+$ make all  # <== Building the daemon.
+...
+```
 
 ## Running
 
