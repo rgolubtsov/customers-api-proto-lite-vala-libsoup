@@ -41,14 +41,22 @@ $ sudo pacman -Syu base-devel vala docker
 ...
 ```
 
-**Build** the microservice:
+**Build** the microservice using the **Vala compiler**:
 
 ```
-$ BIN_DIR=bin; SRC_DIR=src; \
+$ BIN_DIR="bin"; \
+  SRC_DIR="src"; \
   valac --pkg=posix -d ${BIN_DIR} -o api-lited ${SRC_DIR}/* && \
-  rm -vRf ${BIN_DIR}/${SRC_DIR}/
+  rm -vRf ${BIN_DIR}/${SRC_DIR}/ && \
+  DB_PATH="data/db"; \
+  DB_FILE="customers-api-lite.db.xz"; \
+  if [ -f ${DB_PATH}/${DB_FILE} ]; then \
+     unxz ${DB_PATH}/${DB_FILE}; \
+  fi
 ...
 ```
+
+Or **build** the microservice using **GNU Make** (optional, but for convenience &mdash; it covers the same **Vala compiler** build workflow under the hood):
 
 **TBD** :cd:
 
