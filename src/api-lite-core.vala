@@ -18,7 +18,6 @@ using Posix;
  * @since 0.0.1
  */
 namespace core {
-    // TODO: Implement getting the daemon settings and all the rest.
     /**
      * This method is in fact the microservice entry point.
      * It gets called just in the {{{main()}}} method but wrapped
@@ -32,7 +31,8 @@ namespace core {
         // Getting the daemon settings.
         var settings = helper._get_settings();
 
-        print(settings);
+        // TODO: Implement making use of daemon settings.
+        print(settings.to_data()); // <== In such a way..
 
         return EXIT_SUCCESS;
     }

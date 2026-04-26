@@ -22,8 +22,12 @@ namespace helper {
     const string NEW_LINE  = "\n";
 
     // Helper method. Used to get the daemon settings.
-    string _get_settings() {
-        return (O_BRACKET + C_BRACKET + NEW_LINE);
+    KeyFile _get_settings() {
+        var settings = new KeyFile();
+
+        // TODO: Implement getting the daemon settings.
+
+        return settings;
     }
 }
 
