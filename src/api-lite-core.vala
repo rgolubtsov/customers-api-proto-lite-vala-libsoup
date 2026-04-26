@@ -23,6 +23,33 @@ using Posix;
 /** The main namespace of the daemon. */
 namespace core {
     // TODO: Implement getting the daemon settings and all the rest.
+    // Helper constants.
+    const string O_BRACKET =  "[";
+    const string C_BRACKET =  "]";
+    const string NEW_LINE  = "\n";
+
+    /**
+     * This method is in fact the microservice entry point.
+     * It gets called just in the {{{main()}}} method but wrapped
+     * into the {{{core}}} namespace for better conformity.
+     *
+     * @param args An array of command-line arguments.
+     *
+     * @returns The exit code of the overall termination of the daemon.
+     */
+    int startup(string[] args) {
+        // Getting the daemon settings.
+        var settings = _get_settings();
+
+        print(settings);
+
+        return EXIT_SUCCESS;
+    }
+
+    // Helper method. Used to get the daemon settings.
+    string _get_settings() {
+        return (O_BRACKET + C_BRACKET + NEW_LINE);
+    }
 }
 
 /**
@@ -33,7 +60,7 @@ namespace core {
  * @returns The exit code of the overall termination of the daemon.
  */
 int main(string[] args) {
-    return EXIT_SUCCESS;
+    return core.startup(args);
 }
 
 // vim:set nu et ts=4 sw=4:
