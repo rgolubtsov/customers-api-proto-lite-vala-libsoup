@@ -10,17 +10,13 @@
  * (See the LICENSE file at the top of the source tree.)
  */
 
-/*
- * Build it as: $ BIN_DIR=bin;SRC_DIR=src;\
-                  valac --pkg=posix -d ${BIN_DIR} -o api-lited ${SRC_DIR}/* &&\
-                  rm -vRf ${BIN_DIR}/${SRC_DIR}/
- *
- * Run it as: $ ./bin/api-lited; echo $?
- */
-
 using Posix;
 
-/** The main namespace of the daemon. */
+/**
+ * The main namespace of the daemon.
+ *
+ * @since 0.0.1
+ */
 namespace core {
     // TODO: Implement getting the daemon settings and all the rest.
     // Helper constants.
@@ -35,7 +31,7 @@ namespace core {
      *
      * @param args An array of command-line arguments.
      *
-     * @returns The exit code of the overall termination of the daemon.
+     * @return The exit code of the overall termination of the daemon.
      */
     int startup(string[] args) {
         // Getting the daemon settings.
@@ -57,7 +53,7 @@ namespace core {
  *
  * @param args An array of command-line arguments.
  *
- * @returns The exit code of the overall termination of the daemon.
+ * @return The exit code of the overall termination of the daemon.
  */
 int main(string[] args) {
     return core.startup(args);
