@@ -10,6 +10,8 @@
  * (See the LICENSE file at the top of the source tree.)
  */
 
+using Posix;
+
 /**
  * The helper namespace for the daemon.
  *
@@ -21,13 +23,50 @@ namespace helper {
     const string C_BRACKET =  "]";
     const string NEW_LINE  = "\n";
 
+    // Common error messages.
+    const string ERR_SETTINGS_NOT_FOUND
+        = "FATAL: Unable to get daemon settings: %s.";
+
+    /**
+     * The filename of the daemon settings (as a series
+     * of {{{GLib.KeyFile}}} key-value pairs).
+     */
+    const string SETTINGS = "./etc/settings.conf";
+
+    // Daemon settings keys for the debug logging enabler.
+    const string LOGGER_GROUP = "logger";
+    const string DBG_ENABLED  = "debug.enabled";
+
     // Helper method. Used to get the daemon settings.
     KeyFile _get_settings() {
-        var settings = new KeyFile();
+        var  settings  = new KeyFile();
+        bool is_loaded = false;
 
-        // TODO: Implement getting the daemon settings.
+        try {
+            is_loaded = settings.load_from_file(SETTINGS, KeyFileFlags.NONE);
+        } catch (Error e) {
+            if (e is FileError.NOENT) {
+                warning(ERR_SETTINGS_NOT_FOUND, e.message);
+            }
+        }
+
+        if (!is_loaded) exit(EXIT_FAILURE);
 
         return settings;
+    }
+
+    // Helper method. Identifies whether debug logging is enabled by retrieving
+    //                the corresponding setting from daemon settings.
+    bool _is_debug_log_enabled(KeyFile settings) {
+        var dbg = true;
+
+        try {
+            dbg = settings.get_boolean(LOGGER_GROUP, DBG_ENABLED);
+        } catch (KeyFileError e) {
+            if (e is KeyFileError.KEY_NOT_FOUND) dbg = false;
+        }
+
+        return dbg;
     }
 }
 
