@@ -19,9 +19,10 @@ using Posix;
  */
 namespace helper {
     // Helper constants.
-    const string O_BRACKET =  "[";
-    const string C_BRACKET =  "]";
-    const string NEW_LINE  = "\n";
+    const string EMPTY_STRING =   "";
+    const string O_BRACKET    =  "[";
+    const string C_BRACKET    =  "]";
+    const string NEW_LINE     = "\n";
 
     // Common error messages.
     const string ERR_SETTINGS_NOT_FOUND
@@ -36,6 +37,14 @@ namespace helper {
     // Daemon settings keys for the debug logging enabler.
     const string LOGGER_GROUP = "logger";
     const string DBG_ENABLED  = "debug.enabled";
+
+    // Daemon settings keys for the microservice daemon name.
+    const string DAEMON_GROUP = "daemon";
+    const string DAEMON_NAME  = "name";
+
+    // Daemon settings keys for the SQLite database path.
+    const string SQLITE_GROUP = "sqlite";
+    const string DB_PATH      = "database.path";
 
     // Helper method. Used to get the daemon settings.
     KeyFile _get_settings() {

@@ -40,6 +40,17 @@ namespace core {
         var dbg = _is_debug_log_enabled(settings);
         print(O_BRACKET + dbg.to_string() + C_BRACKET + NEW_LINE);
 
+        var daemon_name = EMPTY_STRING;
+        try { daemon_name = settings.get_string(DAEMON_GROUP, DAEMON_NAME); }
+        catch (KeyFileError e) {}
+        print(O_BRACKET + daemon_name + C_BRACKET + NEW_LINE);
+
+        // Getting the SQLite database path.
+        var database_path = EMPTY_STRING;
+        try { database_path = settings.get_string(SQLITE_GROUP, DB_PATH); }
+        catch (KeyFileError e) {}
+        print(O_BRACKET + database_path + C_BRACKET + NEW_LINE);
+
         return EXIT_SUCCESS;
     }
 }
