@@ -12,6 +12,8 @@
 
 using Posix;
 
+using helper;
+
 /**
  * The main namespace of the daemon.
  *
@@ -29,10 +31,14 @@ namespace core {
      */
     int startup(string[] args) {
         // Getting the daemon settings.
-        var settings = helper._get_settings();
+        var settings = _get_settings();
 
         // TODO: Implement making use of daemon settings.
-        print(settings.to_data()); // <== In such a way..
+        print(settings.to_data());
+
+        // Identifying whether debug logging is enabled.
+        var dbg = _is_debug_log_enabled(settings);
+        print(O_BRACKET + dbg.to_string() + C_BRACKET + NEW_LINE);
 
         return EXIT_SUCCESS;
     }
