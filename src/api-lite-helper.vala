@@ -63,10 +63,48 @@ namespace helper {
     const string SERVER_GROUP = "server";
     const string PORT_NUMBER  = "port";
 
+    // Logging-related constants.
     const string LOG_KEY_MESSAGE = "MESSAGE";
     const string LOG_LEVEL_WARN  = "WARN";
     const string LOG_LEVEL_DEBUG = "DEBUG";
     const string LOG_LEVEL_INFO  = "INFO";
+
+    /**
+     * The log writer callback. Gets called on every message logging attempt.
+     *
+     * @param log_level The log level of the message.
+     * @param fields    An array of fields forming the message.
+     *
+     * @return {{{LogWriterOutput.HANDLED}}} if the log entry was handled
+     *         successfully, {{{LogWriterOutput.UNHANDLED}}} otherwise.
+     */
+    LogWriterOutput log_writer(LogLevelFlags log_level, LogField[] fields) {
+        foreach (LogField field in fields) {
+            if (field.key == LOG_KEY_MESSAGE) {
+                unowned var stream = GLib.stdout;
+                        var llevel = EMPTY_STRING;
+
+                if (log_level == LEVEL_WARNING) {
+                    stream = GLib.stderr;
+                    llevel = LOG_LEVEL_WARN;
+                }
+
+                if (log_level == LEVEL_DEBUG) {
+                    llevel = LOG_LEVEL_DEBUG;
+                }
+
+                if (log_level == LEVEL_INFO) {
+                    llevel = LOG_LEVEL_INFO;
+                }
+
+                // Writing the log message to an output stream.
+                stream.puts(O_BRACKET + llevel + C_BRACKET
+                + SPACE + (string) field.value + NEW_LINE);
+            }
+        }
+
+        return HANDLED;
+    }
 
     // Helper method. Used to get the daemon settings.
     KeyFile _get_settings() {
@@ -125,43 +163,6 @@ namespace helper {
         if (dbg) {
             debug(message);
         }
-    }
-
-    /**
-     * The log writer callback. Gets called on every message logging attempt.
-     *
-     * @param log_level The log level of the message.
-     * @param fields    An array of fields forming the message.
-     *
-     * @return {{{LogWriterOutput.HANDLED}}} if the log entry was handled
-     *         successfully, {{{LogWriterOutput.UNHANDLED}}} otherwise.
-     */
-    LogWriterOutput log_writer(LogLevelFlags log_level, LogField[] fields) {
-        foreach (LogField field in fields) {
-            if (field.key == LOG_KEY_MESSAGE) {
-                unowned var stream = GLib.stdout;
-                        var llevel = EMPTY_STRING;
-
-                if (log_level == LEVEL_WARNING) {
-                    stream = GLib.stderr;
-                    llevel = LOG_LEVEL_WARN;
-                }
-
-                if (log_level == LEVEL_DEBUG) {
-                    llevel = LOG_LEVEL_DEBUG;
-                }
-
-                if (log_level == LEVEL_INFO) {
-                    llevel = LOG_LEVEL_INFO;
-                }
-
-                // Writing the log message to an output stream.
-                stream.puts(O_BRACKET + llevel + C_BRACKET
-                + SPACE + (string) field.value + NEW_LINE);
-            }
-        }
-
-        return HANDLED;
     }
 }
 
