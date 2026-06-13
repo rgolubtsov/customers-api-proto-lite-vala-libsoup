@@ -11,6 +11,7 @@
  */
 
 using Posix;
+using Log;
 
 using helper;
 
@@ -36,6 +37,9 @@ namespace core {
         // Identifying whether debug logging is enabled.
         var dbg = _is_debug_log_enabled(settings);
         print(O_BRACKET + dbg.to_string() + C_BRACKET + NEW_LINE);
+
+        // Registering the log writer callback.
+        set_writer_func(log_writer);
 
         var daemon_name = EMPTY_STRING;
         try { daemon_name = settings.get_string(DAEMON_GROUP, DAEMON_NAME); }
