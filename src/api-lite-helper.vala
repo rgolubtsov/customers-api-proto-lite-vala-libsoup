@@ -120,6 +120,13 @@ namespace helper {
         }
     }
 
+    // Helper method. Used to log messages for debugging aims in a free form.
+    void _dbg(bool dbg, string message) {
+        if (dbg) {
+            debug(message);
+        }
+    }
+
     /**
      * The log writer callback. Gets called on every message logging attempt.
      *
