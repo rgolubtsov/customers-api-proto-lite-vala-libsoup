@@ -36,7 +36,6 @@ namespace core {
 
         // Identifying whether debug logging is enabled.
         var dbg = _is_debug_log_enabled(settings);
-        print(O_BRACKET + dbg.to_string() + C_BRACKET + NEW_LINE);
 
         // Registering the log writer callback.
         set_writer_func(log_writer);
@@ -44,17 +43,17 @@ namespace core {
         var daemon_name = EMPTY_STRING;
         try { daemon_name = settings.get_string(DAEMON_GROUP, DAEMON_NAME); }
         catch (KeyFileError e) {}
-        print(O_BRACKET + daemon_name + C_BRACKET + NEW_LINE);
+        _dbg(dbg, O_BRACKET + daemon_name + C_BRACKET);
 
         // Getting the SQLite database path.
         var database_path = EMPTY_STRING;
         try { database_path = settings.get_string(SQLITE_GROUP, DB_PATH); }
         catch (KeyFileError e) {}
-        print(O_BRACKET + database_path + C_BRACKET + NEW_LINE);
+        _dbg(dbg, O_BRACKET + database_path + C_BRACKET);
 
         // Getting the port number used to run the Soup web server.
         var server_port = _get_server_port(settings);
-        print(O_BRACKET + server_port.to_string() + C_BRACKET + NEW_LINE);
+        _dbg(dbg, O_BRACKET + server_port.to_string() + C_BRACKET);
 
         return EXIT_SUCCESS;
     }
