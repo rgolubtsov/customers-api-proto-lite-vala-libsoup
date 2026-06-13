@@ -108,8 +108,8 @@ namespace helper {
 
     // Helper method. Used to get the daemon settings.
     KeyFile _get_settings() {
-        var  settings  = new KeyFile();
-        bool is_loaded = false;
+        var settings  = new KeyFile();
+        var is_loaded = false;
 
         try {
             is_loaded = settings.load_from_file(SETTINGS, KeyFileFlags.NONE);
