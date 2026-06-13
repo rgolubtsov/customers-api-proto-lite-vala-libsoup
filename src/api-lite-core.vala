@@ -31,14 +31,14 @@ namespace core {
      * @return The exit code of the overall termination of the daemon.
      */
     int startup(string[] args) {
+        // Registering the log writer callback.
+        set_writer_func(log_writer);
+
         // Getting the daemon settings.
         var settings = _get_settings();
 
         // Identifying whether debug logging is enabled.
         var dbg = _is_debug_log_enabled(settings);
-
-        // Registering the log writer callback.
-        set_writer_func(log_writer);
 
         var daemon_name = EMPTY_STRING;
         try { daemon_name = settings.get_string(DAEMON_GROUP, DAEMON_NAME); }
