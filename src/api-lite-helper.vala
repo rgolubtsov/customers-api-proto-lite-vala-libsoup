@@ -114,7 +114,7 @@ namespace helper {
 
                 try { var regex = new GLib.Regex(LOG_ELIM_REGEX);
                     msg = regex.replace(msg, msg.length, 0, EMPTY_STRING);
-                } catch (GLib.RegexError e) {}
+                } catch (GLib.RegexError e) { return UNHANDLED; }
 
         var log_entry
             = O_BRACKET + year + DASH  + month  + DASH  + day    + C_BRACKET
