@@ -21,6 +21,8 @@ namespace helper {
     // Helper constants.
     const string EMPTY_STRING =   "";
     const string SPACE        =  " ";
+    const string DASH         =  "-";
+    const string COLON        =  ":";
     const string O_BRACKET    =  "[";
     const string C_BRACKET    =  "]";
     const string NEW_LINE     = "\n";
@@ -68,6 +70,8 @@ namespace helper {
     const string LOG_LEVEL_WARN  = "WARN";
     const string LOG_LEVEL_DEBUG = "DEBUG";
     const string LOG_LEVEL_INFO  = "INFO";
+    const string DT_FORMAT       = "%02u";
+    const string LOG_ELIM_REGEX  = ".+: ";
 
     /**
      * The log writer callback. Gets called on every message logging attempt.
@@ -97,9 +101,29 @@ namespace helper {
                     llevel = LOG_LEVEL_INFO;
                 }
 
+                var date_time = new DateTime.now_local();
+
+                var year   = date_time.get_year()        .to_string();
+                var month  = date_time.get_month()       .to_string(DT_FORMAT);
+                var day    = date_time.get_day_of_month().to_string(DT_FORMAT);
+                var hour   = date_time.get_hour()        .to_string(DT_FORMAT);
+                var minute = date_time.get_minute()      .to_string(DT_FORMAT);
+                var second = date_time.get_second()      .to_string(DT_FORMAT);
+
+                var msg = (string) field.value;
+
+                try { var regex = new GLib.Regex(LOG_ELIM_REGEX);
+                    msg = regex.replace(msg, msg.length, 0, EMPTY_STRING);
+                } catch (GLib.RegexError e) {}
+
+        var log_entry
+            = O_BRACKET + year + DASH  + month  + DASH  + day    + C_BRACKET
+            + O_BRACKET + hour + COLON + minute + COLON + second + C_BRACKET
+            + O_BRACKET + llevel + ((log_level != LEVEL_DEBUG)
+            ? SPACE : EMPTY_STRING) + C_BRACKET + SPACE + msg;
+
                 // Writing the log message to an output stream.
-                stream.puts(O_BRACKET + llevel + C_BRACKET
-                + SPACE + (string) field.value + NEW_LINE);
+                stream.puts(log_entry + NEW_LINE);
             }
         }
 
