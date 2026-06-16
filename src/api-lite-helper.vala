@@ -121,7 +121,7 @@ namespace helper {
         var log_entry
             = O_BRACKET + year + DASH  + month  + DASH  + day    + C_BRACKET
             + O_BRACKET + hour + COLON + minute + COLON + second + C_BRACKET
-            + O_BRACKET + llevel + ((log_level != LEVEL_DEBUG)
+            + SPACE + O_BRACKET + llevel + ((log_level != LEVEL_DEBUG)
             ? SPACE : EMPTY_STRING) + C_BRACKET + SPACE + msg + NEW_LINE;
 
                 // Writing the log message to an output stream.
