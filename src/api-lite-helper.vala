@@ -66,6 +66,8 @@ namespace helper {
     const string PORT_NUMBER  = "port";
 
     // Logging-related constants.
+    const string LOG_DIR         = "./log/";
+    const string LOGFILE         = "customers-api-lite.log";
     const string LOG_KEY_MESSAGE = "MESSAGE";
     const string LOG_LEVEL_WARN  = "WARN";
     const string LOG_LEVEL_DEBUG = "DEBUG";
@@ -120,10 +122,13 @@ namespace helper {
             = O_BRACKET + year + DASH  + month  + DASH  + day    + C_BRACKET
             + O_BRACKET + hour + COLON + minute + COLON + second + C_BRACKET
             + O_BRACKET + llevel + ((log_level != LEVEL_DEBUG)
-            ? SPACE : EMPTY_STRING) + C_BRACKET + SPACE + msg;
+            ? SPACE : EMPTY_STRING) + C_BRACKET + SPACE + msg + NEW_LINE;
 
                 // Writing the log message to an output stream.
-                stream.puts(log_entry + NEW_LINE);
+                stream.puts(log_entry);
+
+                // Writing the log message to a logfile.
+                core.logfile.write(log_entry.data);
             }
         }
 
