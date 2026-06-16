@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.3
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.4
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -20,6 +20,9 @@ using Posix;
 namespace helper {
     // Helper constants.
     const string EMPTY_STRING =   "";
+    const string SPACE        =  " ";
+    const string DASH         =  "-";
+    const string COLON        =  ":";
     const string O_BRACKET    =  "[";
     const string C_BRACKET    =  "]";
     const string NEW_LINE     = "\n";
@@ -62,10 +65,81 @@ namespace helper {
     const string SERVER_GROUP = "server";
     const string PORT_NUMBER  = "port";
 
+    // Logging-related constants.
+    const string LOG_DIR         = "./log/";
+    const string LOGFILE         = "customers-api-lite.log";
+    const string LOG_KEY_MESSAGE = "MESSAGE";
+    const string LOG_LEVEL_WARN  = "WARN";
+    const string LOG_LEVEL_DEBUG = "DEBUG";
+    const string LOG_LEVEL_INFO  = "INFO";
+    const string DT_FORMAT       = "%02u";
+    const string LOG_ELIM_REGEX  = ".+: ";
+
+    /**
+     * The log writer callback. Gets called on every message logging attempt.
+     *
+     * @param log_level The log level of the message.
+     * @param fields    An array of fields forming the message.
+     *
+     * @return {{{LogWriterOutput.HANDLED}}} if the log entry was handled
+     *         successfully, {{{LogWriterOutput.UNHANDLED}}} otherwise.
+     */
+    LogWriterOutput log_writer(LogLevelFlags log_level, LogField[] fields) {
+        foreach (LogField field in fields) {
+            if (field.key == LOG_KEY_MESSAGE) {
+                unowned var stream = GLib.stdout;
+                        var llevel = EMPTY_STRING;
+
+                if (log_level == LEVEL_WARNING) {
+                    stream = GLib.stderr;
+                    llevel = LOG_LEVEL_WARN;
+                }
+
+                if (log_level == LEVEL_DEBUG) {
+                    llevel = LOG_LEVEL_DEBUG;
+                }
+
+                if (log_level == LEVEL_INFO) {
+                    llevel = LOG_LEVEL_INFO;
+                }
+
+                var date_time = new DateTime.now_local();
+
+                var year   = date_time.get_year()        .to_string();
+                var month  = date_time.get_month()       .to_string(DT_FORMAT);
+                var day    = date_time.get_day_of_month().to_string(DT_FORMAT);
+                var hour   = date_time.get_hour()        .to_string(DT_FORMAT);
+                var minute = date_time.get_minute()      .to_string(DT_FORMAT);
+                var second = date_time.get_second()      .to_string(DT_FORMAT);
+
+                var msg = (string) field.value;
+
+                try { var regex = new GLib.Regex(LOG_ELIM_REGEX);
+                    msg = regex.replace(msg, msg.length, 0, EMPTY_STRING);
+                } catch (GLib.RegexError e) { return UNHANDLED; }
+
+        var log_entry
+            = O_BRACKET + year + DASH  + month  + DASH  + day    + C_BRACKET
+            + O_BRACKET + hour + COLON + minute + COLON + second + C_BRACKET
+            + SPACE + O_BRACKET + llevel + ((log_level != LEVEL_DEBUG)
+            ? SPACE : EMPTY_STRING) + C_BRACKET + SPACE + msg + NEW_LINE;
+
+                // Writing the log message to an output stream.
+                stream.puts(log_entry);
+
+                // Writing the log message to a logfile.
+                try { core.logfile.write(log_entry.data);
+                } catch (IOError e) { return UNHANDLED; }
+            }
+        }
+
+        return HANDLED;
+    }
+
     // Helper method. Used to get the daemon settings.
     KeyFile _get_settings() {
-        var  settings  = new KeyFile();
-        bool is_loaded = false;
+        var settings  = new KeyFile();
+        var is_loaded = false;
 
         try {
             is_loaded = settings.load_from_file(SETTINGS, KeyFileFlags.NONE);
@@ -111,6 +185,13 @@ namespace helper {
             }
         } else {
             warning(ERR_PORT_VALID_MUST_BE_POSITIVE_INT); return DEF_PORT;
+        }
+    }
+
+    // Helper method. Used to log messages for debugging aims in a free form.
+    void _dbg(bool dbg, string message) {
+        if (dbg) {
+            debug(message);
         }
     }
 }

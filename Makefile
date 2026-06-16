@@ -1,7 +1,7 @@
 #
 # Makefile
 # =============================================================================
-# Customers API Lite microservice prototype (Vala port). Version 0.0.3
+# Customers API Lite microservice prototype (Vala port). Version 0.0.4
 # =============================================================================
 # A daemon written in Vala, designed and intended to be run as a microservice,
 # implementing a special Customers API prototype with a smart yet simplified
@@ -22,7 +22,7 @@ DB_FILE = customers-api-lite.db.xz
 
 # Specify flags and other vars here.
 VALAC  = valac
-VFLAGS = --pkg=posix -d $(BIN_DIR) -o $(DMON)
+VFLAGS = --pkg=posix --pkg=gio-2.0 -d $(BIN_DIR) -o $(DMON)
 
 RMFLAGS = -vR
 UNXZ    = unxz
