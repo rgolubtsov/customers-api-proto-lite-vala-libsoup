@@ -128,7 +128,8 @@ namespace helper {
                 stream.puts(log_entry);
 
                 // Writing the log message to a logfile.
-                core.logfile.write(log_entry.data);
+                try { core.logfile.write(log_entry.data);
+                } catch (IOError e) { return UNHANDLED; }
             }
         }
 
