@@ -21,6 +21,9 @@ using helper;
  * @since 0.0.1
  */
 namespace core {
+    /** The logfile used to store log messages. */
+    FileOutputStream logfile;
+
     /**
      * This method is in fact the microservice entry point.
      * It gets called just in the {{{main()}}} method but wrapped
@@ -31,6 +34,10 @@ namespace core {
      * @return The exit code of the overall termination of the daemon.
      */
     int startup(string[] args) {
+        var logdir = File.new_for_path(LOG_DIR); if (!logdir.query_exists())
+            logdir.make_directory();
+        logfile = File.new_for_path(LOG_DIR + LOGFILE).append_to(NONE);
+
         // Registering the log writer callback.
         set_writer_func(log_writer);
 
