@@ -21,9 +21,6 @@ using helper;
  * @since 0.0.1
  */
 namespace core {
-    /** The logfile used to store log messages. */
-    FileOutputStream logfile;
-
     /**
      * This method is in fact the microservice entry point.
      * It gets called just in the {{{main()}}} method but wrapped

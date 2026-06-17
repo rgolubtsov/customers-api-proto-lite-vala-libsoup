@@ -75,6 +75,9 @@ namespace helper {
     const string DT_FORMAT       = "%02u";
     const string LOG_ELIM_REGEX  = ".+: ";
 
+    /** The logfile used to store log messages. */
+    FileOutputStream logfile;
+
     /**
      * The log writer callback. Gets called on every message logging attempt.
      *
@@ -128,7 +131,7 @@ namespace helper {
                 stream.puts(log_entry);
 
                 // Writing the log message to a logfile.
-                try { core.logfile.write(log_entry.data);
+                try { logfile.write(log_entry.data);
                 } catch (IOError e) { return UNHANDLED; }
             }
         }
