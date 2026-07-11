@@ -40,6 +40,10 @@ namespace core {
         // Registering the log writer callback.
         set_writer_func(log_writer);
 
+        // Opening the system logger.
+        // Calling <syslog.h> openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
+        openlog((string) null, LOG_CONS | LOG_PID, LOG_DAEMON);
+
         // Getting the daemon settings.
         var settings = _get_settings();
 

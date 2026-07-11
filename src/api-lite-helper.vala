@@ -195,12 +195,17 @@ namespace helper {
     void _dbg(bool dbg, string message) {
         if (dbg) {
             debug(message);
+            syslog(LOG_DEBUG, message);
         }
     }
 
     // Helper method. Makes final cleanups, closes streams, etc.
     void _cleanup(FileOutputStream logfile) {
         try { logfile.close(); } catch (IOError e) {}
+
+        // Closing the system logger.
+        // Calling <syslog.h> closelog();
+        closelog();
     }
 }
 
