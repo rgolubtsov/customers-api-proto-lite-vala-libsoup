@@ -197,6 +197,11 @@ namespace helper {
             debug(message);
         }
     }
+
+    // Helper method. Makes final cleanups, closes streams, etc.
+    void _cleanup(FileOutputStream logfile) {
+        try { logfile.close(); } catch (IOError e) {}
+    }
 }
 
 // vim:set nu et ts=4 sw=4:
