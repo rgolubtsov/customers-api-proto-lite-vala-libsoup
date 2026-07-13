@@ -22,7 +22,7 @@ DB_FILE = customers-api-lite.db.xz
 
 # Specify flags and other vars here.
 VALAC  = valac
-VFLAGS = --pkg=posix --pkg=gio-2.0 -d $(BIN_DIR) -o $(DMON)
+VFLAGS = --pkg=posix --pkg=gio-2.0 --pkg=sqlite3 -d $(BIN_DIR) -o $(DMON)
 
 RMFLAGS = -vR
 UNXZ    = unxz
