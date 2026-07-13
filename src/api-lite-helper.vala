@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.4
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.5
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -195,12 +195,17 @@ namespace helper {
     void _dbg(bool dbg, string message) {
         if (dbg) {
             debug(message);
+            syslog(LOG_DEBUG, message);
         }
     }
 
     // Helper method. Makes final cleanups, closes streams, etc.
     void _cleanup(FileOutputStream logfile) {
         try { logfile.close(); } catch (IOError e) {}
+
+        // Closing the system logger.
+        // Calling <syslog.h> closelog();
+        closelog();
     }
 }
 

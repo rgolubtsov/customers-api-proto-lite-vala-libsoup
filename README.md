@@ -31,6 +31,7 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 * **[Building](#building)**
 * **[Running](#running)**
 * **[Consuming](#consuming)**
+  * **[Logging](#logging)**
 
 ## Building
 
@@ -93,6 +94,29 @@ No. | Endpoint name                                      | Request method and RE
 * The `{customer_id}` placeholder is a decimal positive integer number, greater than `0`.
 * The `{customer_contact}` placeholder is a string &mdash; it denotes a newly created customer contact (phone or email).
 * The `{contact_type}` placeholder is a string and can take one of two possible values, case-insensitive: `phone` or `email`.
+
+**TBD** :cd:
+
+### Logging
+
+The microservice has the ability to log messages to a logfile and to the Unix syslog facility. To enable debug logging, the `debug.enabled` setting in the microservice main config file `etc/settings.conf` should be set to `true` *before starting up the microservice*. When running under Arch Linux (not in a Docker container), logs can be seen and analyzed in an ordinary fashion, by `tail`ing the `log/customers-api-lite.log` logfile:
+
+```
+$ tail -f log/customers-api-lite.log
+[2026-07-12][10:55:30] [DEBUG] [Customers API Lite]
+[2026-07-12][10:55:30] [DEBUG] [./data/db/customers-api-lite.db]
+[2026-07-12][10:55:30] [DEBUG] [8765]
+```
+
+Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
+
+```
+$ journalctl -f
+...
+Jul 12 10:55:30 <hostname> api-lited[<pid>]: [Customers API Lite]
+Jul 12 10:55:30 <hostname> api-lited[<pid>]: [./data/db/customers-api-lite.db]
+Jul 12 10:55:30 <hostname> api-lited[<pid>]: [8765]
+```
 
 **TBD** :cd:
 

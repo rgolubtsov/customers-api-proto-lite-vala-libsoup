@@ -1,7 +1,7 @@
 /*
  * src/api-lite-core.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.4
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.5
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -39,6 +39,10 @@ namespace core {
 
         // Registering the log writer callback.
         set_writer_func(log_writer);
+
+        // Opening the system logger.
+        // Calling <syslog.h> openlog(NULL, LOG_CONS | LOG_PID, LOG_DAEMON);
+        openlog((string) null, LOG_CONS | LOG_PID, LOG_DAEMON);
 
         // Getting the daemon settings.
         var settings = _get_settings();
