@@ -200,7 +200,7 @@ namespace helper {
     }
 
     // Helper method. Makes final cleanups, closes streams, etc.
-    void _cleanup(FileOutputStream logfile) {
+    void _cleanup() {
         try { logfile.close(); } catch (IOError e) {}
 
         // Closing the system logger.

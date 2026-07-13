@@ -65,7 +65,7 @@ namespace core {
         var server_port = _get_server_port(settings);
         _dbg(dbg, O_BRACKET + server_port.to_string() + C_BRACKET);
 
-        _cleanup(logfile);
+        _cleanup();
 
         return EXIT_SUCCESS;
     }
