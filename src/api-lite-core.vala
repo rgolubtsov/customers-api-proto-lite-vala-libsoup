@@ -64,7 +64,7 @@ namespace core {
         // Connecting to the database.
         var err = Database.open(database_path, out cnx);
         if (err == OK) {
-            _dbg(dbg, O_BRACKET + ((ulong) cnx).to_string("%x") + C_BRACKET);
+            _dbg(dbg, O_BRACKET + ((ulong) cnx).to_string(HEX_F) + C_BRACKET);
         } else { warning(cnx.errmsg()); }
 
         // Getting the port number used to run the Soup web server.

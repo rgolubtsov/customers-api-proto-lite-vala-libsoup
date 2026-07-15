@@ -27,6 +27,7 @@ namespace helper {
     const string O_BRACKET    =  "[";
     const string C_BRACKET    =  "]";
     const string NEW_LINE     = "\n";
+    const string HEX_F        = "%x";
 
     // Common error messages.
     const string ERR_SETTINGS_NOT_FOUND
