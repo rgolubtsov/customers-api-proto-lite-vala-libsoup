@@ -60,12 +60,11 @@ namespace core {
         var database_path = EMPTY_STRING;
         try { database_path = settings.get_string(SQLITE_GROUP, DB_PATH); }
         catch (KeyFileError e) { return EXIT_FAILURE; }
-        _dbg(dbg, O_BRACKET + database_path + C_BRACKET);
 
         // Connecting to the database.
         var err = Database.open(database_path, out cnx);
         if (err == OK) {
-            _dbg(dbg, O_BRACKET + ((ulong) cnx).to_string() + C_BRACKET);
+            _dbg(dbg, O_BRACKET + ((ulong) cnx).to_string("%x") + C_BRACKET);
         } else { warning(cnx.errmsg()); }
 
         // Getting the port number used to run the Soup web server.
