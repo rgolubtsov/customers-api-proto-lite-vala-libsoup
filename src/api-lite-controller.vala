@@ -1,0 +1,118 @@
+/*
+ * src/api-lite-controller.vala
+ * ============================================================================
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.5
+ * ============================================================================
+ * A daemon written in Vala, designed and intended to be run as a microservice,
+ * implementing a special Customers API prototype with a smart yet simplified
+ * data scheme.
+ * ============================================================================
+ * (See the LICENSE file at the top of the source tree.)
+ */
+
+using helper;
+
+/**
+ * The controller namespace of the daemon.
+ *
+ * @since 0.0.5
+ */
+namespace controller {
+    // REST API endpoints -----------------------------------------------------
+
+    /**
+     * The {{{PUT /v1/customers}}} endpoint.
+     *
+     * Creates a new customer (puts customer data to the database).
+     *
+     * The request body is defined exactly in the form
+     * as {{{{\"name\":\"{customer_name}\"}}}}. It should be passed
+     * with the accompanied request header {{{content-type}}}
+     * just like the following:
+     *
+     * {{{
+     * -H 'content-type: application/json' -d '{\"name\":\"{customer_name}\"}'
+     * }}}
+     *
+     * {{{{customer_name}}}} is a name assigned to a newly created customer.
+     */
+    void add_customer(bool dbg) {
+        // TODO: Implement creating a new customer
+        //       (putting customer data to the database).
+        _dbg(dbg, O_BRACKET + "add_customer" + C_BRACKET);
+    }
+
+    /**
+     * The {{{PUT /v1/customers/contacts}}} endpoint.
+     *
+     * Creates a new contact for a given customer (puts a contact
+     * regarding a given customer to the database).
+     *
+     * The request body is defined exactly in the form as
+     * {{{{\"customer_id\":\"{customer_id}\",\"contact\":\"{customer_contact}\"}}}}.
+     * It should be passed with the accompanied request header
+     * {{{content-type}}} just like the following:
+     *
+     * {{{
+     * -H 'content-type: application/json' -d '{\"customer_id\":\"{customer_id}\",\"contact\":\"{customer_contact}\"}'
+     * }}}
+     *
+     * {{{{customer_id}}}} is the customer ID used to associate a newly created
+     * contact with this customer.
+     */
+    void add_contact(bool dbg) {
+        // TODO: Implement creating a new contact for a given customer
+        //       (putting a contact regarding a given customer
+        //       to the database).
+        _dbg(dbg, O_BRACKET + "add_contact" + C_BRACKET);
+    }
+
+    /**
+     * The {{{GET /v1/customers}}} endpoint.
+     *
+     * Retrieves from the database and lists all customer profiles.
+     */
+    void list_customers(bool dbg) {
+        // TODO: Implement retrieving from the database
+        //       and listing all customer profiles.
+        _dbg(dbg, O_BRACKET + "list_customers" + C_BRACKET);
+    }
+
+    /**
+     * The {{{GET /v1/customers/{customer_id}}}} endpoint.
+     *
+     * Retrieves profile details for a given customer from the database.
+     */
+    void get_customer(bool dbg) {
+        // TODO: Implement retrieving profile details for a given customer
+        //       from the database.
+        _dbg(dbg, O_BRACKET + "get_customer" + C_BRACKET);
+    }
+
+    /**
+     * The {{{GET /v1/customers/{customer_id}/contacts}}} endpoint.
+     *
+     * Retrieves from the database and lists all contacts
+     * associated with a given customer.
+     */
+    void list_contacts(bool dbg) {
+        // TODO: Implement retrieving from the database and listing
+        //       all contacts associated with a given customer.
+        _dbg(dbg, O_BRACKET + "list_contacts" + C_BRACKET);
+    }
+
+    /**
+     * The {{{GET /v1/customers/{customer_id}/contacts/{contact_type}}}}
+     * endpoint.
+     *
+     * Retrieves from the database and lists all contacts of a given type
+     * associated with a given customer.
+     */
+    void list_contacts_by_type(bool dbg) {
+        // TODO: Implement retrieving from the database and listing
+        //       all contacts of a given type associated with a given customer.
+        _dbg(dbg, O_BRACKET + "list_contacts_by_type" + C_BRACKET);
+    }
+}
+
+// vim:set nu et ts=4 sw=4:
