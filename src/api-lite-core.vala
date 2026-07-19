@@ -15,6 +15,7 @@ using Log;
 using Sqlite;
 
 using helper;
+using controller;
 
 /**
  * The main namespace of the daemon.
@@ -70,6 +71,15 @@ namespace core {
         // Getting the port number used to run the Soup web server.
         var server_port = _get_server_port(settings);
         _dbg(dbg, O_BRACKET + server_port.to_string() + C_BRACKET);
+
+        // --------------------------------------------------------------------
+         add_customer(dbg);
+         add_contact(dbg);
+        list_customers(dbg);
+         get_customer(dbg);
+        list_contacts(dbg);
+        list_contacts_by_type(dbg);
+        // --------------------------------------------------------------------
 
         _cleanup();
 
