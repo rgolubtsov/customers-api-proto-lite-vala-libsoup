@@ -10,7 +10,10 @@
  * (See the LICENSE file at the top of the source tree.)
  */
 
+using Sqlite;
+
 using helper;
+using model;
 
 /**
  * The controller namespace of the daemon.
@@ -76,6 +79,27 @@ namespace controller {
         // TODO: Implement retrieving from the database
         //       and listing all customer profiles.
         _dbg(dbg, O_BRACKET + "list_customers" + C_BRACKET);
+
+        Statement stmt;
+
+        // Retrieving all customer profiles from the database.
+        var err = cnx.prepare_v2(SQL_GET_ALL_CUSTOMERS,
+                                 SQL_GET_ALL_CUSTOMERS.length, out stmt);
+
+        if (err != OK) { warning(cnx.errmsg()); } else {
+            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+
+            var cols = stmt.column_count();
+            while (stmt.step() == ROW) {
+                var row = EMPTY_STRING;
+                for (var i = 0; i < cols; i++) {
+                    row += stmt.column_name(i) + COLON
+                        +  stmt.column_text(i) + SPACE;
+                }
+
+                _dbg(dbg, O_BRACKET + row + C_BRACKET);
+            }
+        }
     }
 
     /**
