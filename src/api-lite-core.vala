@@ -63,8 +63,8 @@ namespace core {
         catch (KeyFileError e) { return EXIT_FAILURE; }
 
         // Connecting to the database.
-        var err = Database.open(database_path, out cnx);
-        if (err == OK) {
+        var res = Database.open(database_path, out cnx);
+        if (res == OK) {
             _dbg(dbg, O_BRACKET + ((ulong) cnx).to_string(HEX_F) + C_BRACKET);
         } else { warning(cnx.errmsg()); }
 

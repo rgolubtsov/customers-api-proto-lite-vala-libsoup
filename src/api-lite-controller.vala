@@ -42,7 +42,7 @@ namespace controller {
     void add_customer(bool dbg) {
         // TODO: Implement creating a new customer
         //       (putting customer data to the database).
-        _dbg(dbg, O_BRACKET + "add_customer" + C_BRACKET);
+        _dbg(dbg, O_BRACKET + "1. add_customer" + C_BRACKET);
     }
 
     /**
@@ -67,7 +67,7 @@ namespace controller {
         // TODO: Implement creating a new contact for a given customer
         //       (putting a contact regarding a given customer
         //       to the database).
-        _dbg(dbg, O_BRACKET + "add_contact" + C_BRACKET);
+        _dbg(dbg, O_BRACKET + "2. add_contact" + C_BRACKET);
     }
 
     /**
@@ -78,15 +78,15 @@ namespace controller {
     void list_customers(bool dbg) {
         // TODO: Implement retrieving from the database
         //       and listing all customer profiles.
-        _dbg(dbg, O_BRACKET + "list_customers" + C_BRACKET);
+        _dbg(dbg, O_BRACKET + "3. list_customers" + C_BRACKET);
 
         Statement stmt;
 
         // Retrieving all customer profiles from the database.
-        var err = cnx.prepare_v2(SQL_GET_ALL_CUSTOMERS,
+        var res = cnx.prepare_v2(SQL_GET_ALL_CUSTOMERS,
                                  SQL_GET_ALL_CUSTOMERS.length, out stmt);
 
-        if (err != OK) { warning(cnx.errmsg()); } else {
+        if (res != OK) { warning(cnx.errmsg()); } else {
             _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
 
             var cols = stmt.column_count();
@@ -110,7 +110,7 @@ namespace controller {
     void get_customer(bool dbg) {
         // TODO: Implement retrieving profile details for a given customer
         //       from the database.
-        _dbg(dbg, O_BRACKET + "get_customer" + C_BRACKET);
+        _dbg(dbg, O_BRACKET + "4. get_customer" + C_BRACKET);
     }
 
     /**
@@ -122,7 +122,7 @@ namespace controller {
     void list_contacts(bool dbg) {
         // TODO: Implement retrieving from the database and listing
         //       all contacts associated with a given customer.
-        _dbg(dbg, O_BRACKET + "list_contacts" + C_BRACKET);
+        _dbg(dbg, O_BRACKET + "5. list_contacts" + C_BRACKET);
     }
 
     /**
@@ -135,7 +135,7 @@ namespace controller {
     void list_contacts_by_type(bool dbg) {
         // TODO: Implement retrieving from the database and listing
         //       all contacts of a given type associated with a given customer.
-        _dbg(dbg, O_BRACKET + "list_contacts_by_type" + C_BRACKET);
+        _dbg(dbg, O_BRACKET + "6. list_contacts_by_type" + C_BRACKET);
     }
 }
 
