@@ -38,8 +38,11 @@ namespace controller {
      * }}}
      *
      * {{{{customer_name}}}} is a name assigned to a newly created customer.
+     *
+     * @param dbg The debug logging enabler.
+     * @param cnx The database connection.
      */
-    void add_customer(bool dbg) {
+    void add_customer(bool dbg, Database cnx) {
         // TODO: Implement creating a new customer
         //       (putting customer data to the database).
         _dbg(dbg, O_BRACKET + "1. add_customer" + C_BRACKET);
@@ -62,8 +65,11 @@ namespace controller {
      *
      * {{{{customer_id}}}} is the customer ID used to associate a newly created
      * contact with this customer.
+     *
+     * @param dbg The debug logging enabler.
+     * @param cnx The database connection.
      */
-    void add_contact(bool dbg) {
+    void add_contact(bool dbg, Database cnx) {
         // TODO: Implement creating a new contact for a given customer
         //       (putting a contact regarding a given customer
         //       to the database).
@@ -74,8 +80,11 @@ namespace controller {
      * The {{{GET /v1/customers}}} endpoint.
      *
      * Retrieves from the database and lists all customer profiles.
+     *
+     * @param dbg The debug logging enabler.
+     * @param cnx The database connection.
      */
-    void list_customers(bool dbg) {
+    void list_customers(bool dbg, Database cnx) {
         // TODO: Implement retrieving from the database
         //       and listing all customer profiles.
         _dbg(dbg, O_BRACKET + "3. list_customers" + C_BRACKET);
@@ -106,8 +115,11 @@ namespace controller {
      * The {{{GET /v1/customers/{customer_id}}}} endpoint.
      *
      * Retrieves profile details for a given customer from the database.
+     *
+     * @param dbg The debug logging enabler.
+     * @param cnx The database connection.
      */
-    void get_customer(bool dbg) {
+    void get_customer(bool dbg, Database cnx) {
         // TODO: Implement retrieving profile details for a given customer
         //       from the database.
         _dbg(dbg, O_BRACKET + "4. get_customer" + C_BRACKET);
@@ -118,8 +130,11 @@ namespace controller {
      *
      * Retrieves from the database and lists all contacts
      * associated with a given customer.
+     *
+     * @param dbg The debug logging enabler.
+     * @param cnx The database connection.
      */
-    void list_contacts(bool dbg) {
+    void list_contacts(bool dbg, Database cnx) {
         // TODO: Implement retrieving from the database and listing
         //       all contacts associated with a given customer.
         _dbg(dbg, O_BRACKET + "5. list_contacts" + C_BRACKET);
@@ -131,8 +146,11 @@ namespace controller {
      *
      * Retrieves from the database and lists all contacts of a given type
      * associated with a given customer.
+     *
+     * @param dbg The debug logging enabler.
+     * @param cnx The database connection.
      */
-    void list_contacts_by_type(bool dbg) {
+    void list_contacts_by_type(bool dbg, Database cnx) {
         // TODO: Implement retrieving from the database and listing
         //       all contacts of a given type associated with a given customer.
         _dbg(dbg, O_BRACKET + "6. list_contacts_by_type" + C_BRACKET);

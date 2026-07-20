@@ -62,6 +62,8 @@ namespace core {
         try { database_path = settings.get_string(SQLITE_GROUP, DB_PATH); }
         catch (KeyFileError e) { return EXIT_FAILURE; }
 
+        Database cnx;
+
         // Connecting to the database.
         var res = Database.open(database_path, out cnx);
         if (res == OK) {
@@ -73,12 +75,12 @@ namespace core {
         _dbg(dbg, O_BRACKET + server_port.to_string() + C_BRACKET);
 
         // --------------------------------------------------------------------
-         add_customer(dbg);
-         add_contact(dbg);
-        list_customers(dbg);
-         get_customer(dbg);
-        list_contacts(dbg);
-        list_contacts_by_type(dbg);
+         add_customer(dbg,         cnx);
+         add_contact(dbg,          cnx);
+        list_customers(dbg,        cnx);
+         get_customer(dbg,         cnx);
+        list_contacts(dbg,         cnx);
+        list_contacts_by_type(dbg, cnx);
         // --------------------------------------------------------------------
 
         _cleanup();

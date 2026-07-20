@@ -11,7 +11,6 @@
  */
 
 using Posix;
-using Sqlite;
 
 /**
  * The helper namespace for the daemon.
@@ -79,9 +78,6 @@ namespace helper {
 
     /** The logfile used to store log messages. */
     FileOutputStream logfile;
-
-    /** The database connection. */
-    Database cnx;
 
     /**
      * The log writer callback. Gets called on every message logging attempt.
