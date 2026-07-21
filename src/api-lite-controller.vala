@@ -85,8 +85,6 @@ namespace controller {
      * @param cnx The database connection.
      */
     void list_customers(bool dbg, Database cnx) {
-        // TODO: Implement retrieving from the database
-        //       and listing all customer profiles.
         _dbg(dbg, O_BRACKET + "3. list_customers" + C_BRACKET);
 
         Statement stmt;
@@ -120,9 +118,32 @@ namespace controller {
      * @param cnx The database connection.
      */
     void get_customer(bool dbg, Database cnx) {
-        // TODO: Implement retrieving profile details for a given customer
-        //       from the database.
         _dbg(dbg, O_BRACKET + "4. get_customer" + C_BRACKET);
+
+        Statement stmt;
+
+        // Retrieving profile details for a given customer from the database.
+        var res = cnx.prepare_v2(SQL_GET_CUSTOMER_BY_ID,
+                                 SQL_GET_CUSTOMER_BY_ID.length, out stmt);
+
+        if (res != OK) { warning(cnx.errmsg()); } else {
+            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+
+            var cust_id = 2; // <== TODO: Replace with the actual one.
+
+            stmt.bind_int(1, cust_id);
+
+            var cols = stmt.column_count();
+            if (stmt.step() == ROW) {
+                var row = EMPTY_STRING;
+                for (var i = 0; i < cols; i++) {
+                    row += stmt.column_name(i) + COLON
+                        +  stmt.column_text(i) + SPACE;
+                }
+
+                _dbg(dbg, O_BRACKET + row + C_BRACKET);
+            }
+        }
     }
 
     /**

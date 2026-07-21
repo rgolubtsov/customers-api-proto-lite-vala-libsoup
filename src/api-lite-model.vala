@@ -28,6 +28,19 @@ namespace model {
                customers
          order by
                id""";
+
+    /**
+     * The SQL query for retrieving profile details for a given customer.
+     *
+     * Used by the {{{GET /v1/customers/{customer_id}}}} REST endpoint.
+     */
+    const string SQL_GET_CUSTOMER_BY_ID = """
+        select id , -- as 'Customer ID'
+               name -- as 'Customer Name'
+         from
+               customers
+         where
+              (id = ?)""";
 }
 
 // vim:set nu et ts=4 sw=4:
