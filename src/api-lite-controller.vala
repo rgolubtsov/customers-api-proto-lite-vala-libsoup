@@ -156,9 +156,34 @@ namespace controller {
      * @param cnx The database connection.
      */
     void list_contacts(bool dbg, Database cnx) {
-        // TODO: Implement retrieving from the database and listing
-        //       all contacts associated with a given customer.
         _dbg(dbg, O_BRACKET + "5. list_contacts" + C_BRACKET);
+
+        Statement stmt;
+
+        // Retrieving all contacts associated with a given customer
+        // from the database.
+        var res = cnx.prepare_v2(SQL_GET_ALL_CONTACTS,
+                                 SQL_GET_ALL_CONTACTS.length, out stmt);
+
+        if (res != OK) { warning(cnx.errmsg()); } else {
+            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+
+            var cust_id = 2; // <== TODO: Replace with the actual one.
+
+            stmt.bind_int(1, cust_id); // <== For retrieving phones.
+            stmt.bind_int(2, cust_id); // <== For retrieving emails.
+
+            var cols = stmt.column_count();
+            while (stmt.step() == ROW) {
+                var row = EMPTY_STRING;
+                for (var i = 0; i < cols; i++) {
+                    row += stmt.column_name(i) + COLON
+                        +  stmt.column_text(i) + SPACE;
+                }
+
+                _dbg(dbg, O_BRACKET + row + C_BRACKET);
+            }
+        }
     }
 
     /**

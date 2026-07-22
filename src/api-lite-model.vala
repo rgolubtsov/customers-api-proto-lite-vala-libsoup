@@ -41,6 +41,29 @@ namespace model {
                customers
          where
               (id = ?)""";
+
+    /**
+     * The SQL query for retrieving all contacts for a given customer.
+     *
+     * Used by the {{{GET /v1/customers/{customer_id}/contacts}}}
+     * REST endpoint.
+     */
+    const string SQL_GET_ALL_CONTACTS = """
+        select phones.contact -- as 'Phone(s)'
+         from
+               contact_phones phones,
+               customers      cust
+         where
+              (cust.id = phones.customer_id) and
+              (cust.id =                  ?)
+         union
+        select emails.contact -- as 'Email(s)'
+         from
+               contact_emails emails,
+               customers      cust
+         where
+              (cust.id = emails.customer_id) and
+              (cust.id =                  ?)""";
 }
 
 // vim:set nu et ts=4 sw=4:
