@@ -197,9 +197,41 @@ namespace controller {
      * @param cnx The database connection.
      */
     void list_contacts_by_type(bool dbg, Database cnx) {
-        // TODO: Implement retrieving from the database and listing
-        //       all contacts of a given type associated with a given customer.
         _dbg(dbg, O_BRACKET + "6. list_contacts_by_type" + C_BRACKET);
+
+        var cont_type = EMAIL; // <== TODO: Replace with the actual one.
+
+        var sql_query = SQL_GET_CONTACTS_BY_TYPE[1];
+               if (cont_type == PHONE) {
+            sql_query = SQL_GET_CONTACTS_BY_TYPE[0];
+        } else if (cont_type == EMAIL) {
+            sql_query = SQL_GET_CONTACTS_BY_TYPE[1];
+        }
+
+        Statement stmt;
+
+        // Retrieving all contacts of a given type associated
+        // with a given customer from the database.
+        var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
+
+        if (res != OK) { warning(cnx.errmsg()); } else {
+            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+
+            var cust_id = 2; // <== TODO: Replace with the actual one.
+
+            stmt.bind_int(1, cust_id);
+
+            var cols = stmt.column_count();
+            while (stmt.step() == ROW) {
+                var row = EMPTY_STRING;
+                for (var i = 0; i < cols; i++) {
+                    row += stmt.column_name(i) + COLON
+                        +  stmt.column_text(i) + SPACE;
+                }
+
+                _dbg(dbg, O_BRACKET + row + C_BRACKET);
+            }
+        }
     }
 }
 

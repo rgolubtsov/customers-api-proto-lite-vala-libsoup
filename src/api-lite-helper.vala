@@ -76,6 +76,10 @@ namespace helper {
     const string DT_FORMAT       = "%02u";
     const string LOG_ELIM_REGEX  = ".+: ";
 
+    // REST URI path-related constants.
+    const string PHONE = "phone";
+    const string EMAIL = "email";
+
     /** The logfile used to store log messages. */
     FileOutputStream logfile;
 
