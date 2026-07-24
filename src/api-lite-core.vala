@@ -1,7 +1,7 @@
 /*
  * src/api-lite-core.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.5
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.6
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -15,6 +15,7 @@ using Log;
 using Sqlite;
 
 using helper;
+using controller;
 
 /**
  * The main namespace of the daemon.
@@ -61,15 +62,26 @@ namespace core {
         try { database_path = settings.get_string(SQLITE_GROUP, DB_PATH); }
         catch (KeyFileError e) { return EXIT_FAILURE; }
 
+        Database cnx;
+
         // Connecting to the database.
-        var err = Database.open(database_path, out cnx);
-        if (err == OK) {
+        var res = Database.open(database_path, out cnx);
+        if (res == OK) {
             _dbg(dbg, O_BRACKET + ((ulong) cnx).to_string(HEX_F) + C_BRACKET);
         } else { warning(cnx.errmsg()); }
 
         // Getting the port number used to run the Soup web server.
         var server_port = _get_server_port(settings);
         _dbg(dbg, O_BRACKET + server_port.to_string() + C_BRACKET);
+
+        // --------------------------------------------------------------------
+         add_customer(dbg,         cnx);
+         add_contact(dbg,          cnx);
+        list_customers(dbg,        cnx);
+         get_customer(dbg,         cnx);
+        list_contacts(dbg,         cnx);
+        list_contacts_by_type(dbg, cnx);
+        // --------------------------------------------------------------------
 
         _cleanup();
 

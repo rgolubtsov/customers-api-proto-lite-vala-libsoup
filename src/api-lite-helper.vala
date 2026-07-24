@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.5
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.6
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -11,7 +11,6 @@
  */
 
 using Posix;
-using Sqlite;
 
 /**
  * The helper namespace for the daemon.
@@ -77,11 +76,12 @@ namespace helper {
     const string DT_FORMAT       = "%02u";
     const string LOG_ELIM_REGEX  = ".+: ";
 
+    // REST URI path-related constants.
+    const string PHONE = "phone";
+    const string EMAIL = "email";
+
     /** The logfile used to store log messages. */
     FileOutputStream logfile;
-
-    /** The database connection. */
-    Database cnx;
 
     /**
      * The log writer callback. Gets called on every message logging attempt.
