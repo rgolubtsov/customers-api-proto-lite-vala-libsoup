@@ -14,6 +14,7 @@ using Sqlite;
 
 using helper;
 using model;
+using modelx;
 
 /**
  * The controller namespace of the daemon.
@@ -46,6 +47,16 @@ namespace controller {
         // TODO: Implement creating a new customer
         //       (putting customer data to the database).
         _dbg(dbg, O_BRACKET + "1. add_customer" + C_BRACKET);
+
+        Statement stmt;
+
+        // Creating a new customer (putting customer data to the database).
+        var res = cnx.prepare_v2(SQL_PUT_CUSTOMER,
+                                 SQL_PUT_CUSTOMER.length, out stmt);
+
+        if (res != OK) { warning(cnx.errmsg()); } else {
+            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+        }
     }
 
     /**
@@ -74,6 +85,25 @@ namespace controller {
         //       (putting a contact regarding a given customer
         //       to the database).
         _dbg(dbg, O_BRACKET + "2. add_contact" + C_BRACKET);
+
+        var cont_type = EMAIL; // <== TODO: Replace with the actual one.
+
+        var sql_query = SQL_PUT_CONTACT[1];
+               if (cont_type == PHONE) {
+            sql_query = SQL_PUT_CONTACT[0];
+        } else if (cont_type == EMAIL) {
+            sql_query = SQL_PUT_CONTACT[1];
+        }
+
+        Statement stmt;
+
+        // Creating a new contact (putting a contact regarding a given customer
+        // to the database).
+        var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
+
+        if (res != OK) { warning(cnx.errmsg()); } else {
+            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+        }
     }
 
     /**
