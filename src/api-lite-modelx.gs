@@ -40,4 +40,10 @@ namespace modelx
         "insert into contact_phones (contact, customer_id) values (?, ?)",
         "insert into contact_emails (contact, customer_id) values (?, ?)"}
 
+    /**
+     * The terminating part of an SQL query,
+     * used to retrieve the last record created.
+     */
+    const SQL_DESC_LIMIT_1:string = " desc limit 1"
+
 // vim:set nu et ts=4 sw=4:

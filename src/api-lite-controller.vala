@@ -44,8 +44,6 @@ namespace controller {
      * @param cnx The database connection.
      */
     void add_customer(bool dbg, Database cnx) {
-        // TODO: Implement creating a new customer
-        //       (putting customer data to the database).
         _dbg(dbg, O_BRACKET + "1. add_customer" + C_BRACKET);
 
         Statement stmt;
@@ -56,6 +54,35 @@ namespace controller {
 
         if (res != OK) { warning(cnx.errmsg()); } else {
             _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+
+            var customer_name = "JP"; // <== TODO: Replace with the actual one.
+            _dbg(dbg, O_BRACKET + customer_name + C_BRACKET);
+
+            stmt.bind_text(1, customer_name);
+
+            if (stmt.step() == DONE) {
+                stmt.reset();
+
+                var res_ = cnx.prepare_v2(SQL_GET_ALL_CUSTOMERS
+                                        + SQL_DESC_LIMIT_1,
+                                         (SQL_GET_ALL_CUSTOMERS
+                                        + SQL_DESC_LIMIT_1).length, out stmt);
+
+                if (res_ != OK) { warning(cnx.errmsg()); } else {
+                    _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+
+                    var cols = stmt.column_count();
+                    while (stmt.step() == ROW) {
+                        var row = EMPTY_STRING;
+                        for (var i = 0; i < cols; i++) {
+                            row += stmt.column_name(i) + COLON
+                                +  stmt.column_text(i) + SPACE;
+                        }
+
+                        _dbg(dbg, O_BRACKET + row + C_BRACKET);
+                    }
+                }
+            }
         }
     }
 
