@@ -108,9 +108,6 @@ namespace controller {
      * @param cnx The database connection.
      */
     void add_contact(bool dbg, Database cnx) {
-        // TODO: Implement creating a new contact for a given customer
-        //       (putting a contact regarding a given customer
-        //       to the database).
         _dbg(dbg, O_BRACKET + "2. add_contact" + C_BRACKET);
 
         var cont_type = EMAIL; // <== TODO: Replace with the actual one.
@@ -130,6 +127,49 @@ namespace controller {
 
         if (res != OK) { warning(cnx.errmsg()); } else {
             _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+
+            // TODO: Replace with the actual ones. -----------+
+            var contact_cust_id = "2";              // <------|
+            var contact_contact = "jp@example.com"; // <------+
+            _dbg(dbg, REST_CUST_ID + EQUALS + contact_cust_id);
+            _dbg(dbg, O_BRACKET + contact_contact + C_BRACKET);
+
+            stmt.bind_text(1, contact_contact);
+            stmt.bind_text(2, contact_cust_id);
+
+            if (stmt.step() == DONE) {
+                stmt.reset();
+
+                var sql_query_ = SQL_GET_CONTACTS_BY_TYPE[1];
+                       if (cont_type == PHONE) {
+                    sql_query_ = SQL_GET_CONTACTS_BY_TYPE[0]
+                               + SQL_ORDER_CONTACTS_BY_ID[0];
+                } else if (cont_type == EMAIL) {
+                    sql_query_ = SQL_GET_CONTACTS_BY_TYPE[1]
+                               + SQL_ORDER_CONTACTS_BY_ID[1];
+                }
+
+                var res_ = cnx.prepare_v2(sql_query_+ SQL_DESC_LIMIT_1,
+                                         (sql_query_+ SQL_DESC_LIMIT_1).length,
+                                          out stmt);
+
+                if (res_ != OK) { warning(cnx.errmsg()); } else {
+                    _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+
+                    stmt.bind_int(1, contact_cust_id.to_int());
+
+                    var cols = stmt.column_count();
+                    while (stmt.step() == ROW) {
+                        var row = EMPTY_STRING;
+                        for (var i = 0; i < cols; i++) {
+                            row += stmt.column_name(i) + COLON
+                                +  stmt.column_text(i) + SPACE;
+                        }
+
+                        _dbg(dbg, O_BRACKET + row + C_BRACKET);
+                    }
+                }
+            }
         }
     }
 

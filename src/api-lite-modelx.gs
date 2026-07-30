@@ -41,6 +41,14 @@ namespace modelx
         "insert into contact_emails (contact, customer_id) values (?, ?)"}
 
     /**
+     * The intermediate part of an SQL query,
+     * used to order contact records by ID.
+     */
+    const SQL_ORDER_CONTACTS_BY_ID:array of string = {
+        " order by phones.id",
+        " order by emails.id"}
+
+    /**
      * The terminating part of an SQL query,
      * used to retrieve the last record created.
      */
