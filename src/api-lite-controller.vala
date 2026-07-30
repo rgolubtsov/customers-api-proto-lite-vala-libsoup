@@ -156,7 +156,7 @@ namespace controller {
                 if (res_ != OK) { warning(cnx.errmsg()); } else {
                     _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
 
-                    stmt.bind_int(1, contact_cust_id.to_int());
+                    stmt.bind_int(1, int.parse(contact_cust_id));
 
                     var cols = stmt.column_count();
                     while (stmt.step() == ROW) {
