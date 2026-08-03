@@ -16,6 +16,7 @@ using Sqlite;
 
 using helper;
 using controller;
+using controllerx;
 
 /**
  * The main namespace of the daemon.

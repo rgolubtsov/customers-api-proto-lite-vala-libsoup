@@ -72,8 +72,8 @@ namespace controller {
                     _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
 
                     if (stmt.step() == ROW) {
-                        var row = stmt.column_int(0).to_string() // getId()
-                        + V_BAR + stmt.column_text(1);           // getName()
+                        var row = stmt.column_int (0).to_string() // getId()
+                        + V_BAR + stmt.column_text(1);            // getName()
 
                         _dbg(dbg, O_BRACKET + row + C_BRACKET);
                     }
@@ -161,69 +161,6 @@ namespace controller {
                         _dbg(dbg, O_BRACKET + row + C_BRACKET);
                     }
                 }
-            }
-        }
-    }
-
-    /**
-     * The {{{GET /v1/customers}}} endpoint.
-     *
-     * Retrieves from the database and lists all customer profiles.
-     *
-     * @param dbg The debug logging enabler.
-     * @param cnx The database connection.
-     */
-    void list_customers(bool dbg, Database cnx) {
-        _dbg(dbg, O_BRACKET + "3. list_customers" + C_BRACKET);
-
-        Statement stmt;
-
-        // Retrieving all customer profiles from the database.
-        var res = cnx.prepare_v2(SQL_GET_ALL_CUSTOMERS,
-                                 SQL_GET_ALL_CUSTOMERS.length, out stmt);
-
-        if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
-            while (stmt.step() == ROW) {
-                var row = stmt.column_int(0).to_string() // getId()
-                + V_BAR + stmt.column_text(1);           // getName()
-
-                _dbg(dbg, O_BRACKET + row + C_BRACKET);
-            }
-        }
-    }
-
-    /**
-     * The {{{GET /v1/customers/{customer_id}}}} endpoint.
-     *
-     * Retrieves profile details for a given customer from the database.
-     *
-     * @param dbg The debug logging enabler.
-     * @param cnx The database connection.
-     */
-    void get_customer(bool dbg, Database cnx) {
-        _dbg(dbg, O_BRACKET + "4. get_customer" + C_BRACKET);
-
-        Statement stmt;
-
-        // Retrieving profile details for a given customer from the database.
-        var res = cnx.prepare_v2(SQL_GET_CUSTOMER_BY_ID,
-                                 SQL_GET_CUSTOMER_BY_ID.length, out stmt);
-
-        if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
-            var cust_id = 2; // <== TODO: Replace with the actual one.
-            _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string());
-
-            stmt.bind_int(1, cust_id);
-
-            if (stmt.step() == ROW) {
-                var row = stmt.column_int(0).to_string() // getId()
-                + V_BAR + stmt.column_text(1);           // getName()
-
-                _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
         }
     }
