@@ -1,7 +1,7 @@
 /*
  * src/api-lite-core.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.7
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.8
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -16,6 +16,7 @@ using Sqlite;
 
 using helper;
 using controller;
+using controllerx;
 
 /**
  * The main namespace of the daemon.

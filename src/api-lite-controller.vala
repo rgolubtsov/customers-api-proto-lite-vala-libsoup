@@ -1,7 +1,7 @@
 /*
  * src/api-lite-controller.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.7
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.8
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -44,8 +44,6 @@ namespace controller {
      * @param cnx The database connection.
      */
     void add_customer(bool dbg, Database cnx) {
-        // TODO: Implement creating a new customer
-        //       (putting customer data to the database).
         _dbg(dbg, O_BRACKET + "1. add_customer" + C_BRACKET);
 
         Statement stmt;
@@ -55,7 +53,28 @@ namespace controller {
                                  SQL_PUT_CUSTOMER.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
+            var customer_name = "JP"; // <== TODO: Replace with the actual one.
+            _dbg(dbg, O_BRACKET + customer_name + C_BRACKET);
+
+            stmt.bind_text(1, customer_name);
+
+            if (stmt.step() == DONE) {
+                stmt.reset();
+
+                var res_ = cnx.prepare_v2(SQL_GET_ALL_CUSTOMERS
+                                        + SQL_DESC_LIMIT_1,
+                                         (SQL_GET_ALL_CUSTOMERS
+                                        + SQL_DESC_LIMIT_1).length, out stmt);
+
+                if (res_ != OK) { warning(cnx.errmsg()); } else {
+                    if (stmt.step() == ROW) {
+                        var row = stmt.column_int (0).to_string() // getId()
+                        + V_BAR + stmt.column_text(1);            // getName()
+
+                        _dbg(dbg, O_BRACKET + row + C_BRACKET);
+                    }
+                }
+            }
         }
     }
 
@@ -81,9 +100,6 @@ namespace controller {
      * @param cnx The database connection.
      */
     void add_contact(bool dbg, Database cnx) {
-        // TODO: Implement creating a new contact for a given customer
-        //       (putting a contact regarding a given customer
-        //       to the database).
         _dbg(dbg, O_BRACKET + "2. add_contact" + C_BRACKET);
 
         var cont_type = EMAIL; // <== TODO: Replace with the actual one.
@@ -102,76 +118,41 @@ namespace controller {
         var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-        }
-    }
+            // TODO: Replace with the actual ones. -----------+
+            var contact_cust_id = "2";              // <------|
+            var contact_contact = "jp@example.com"; // <------+
+            _dbg(dbg, REST_CUST_ID + EQUALS + contact_cust_id);
+            _dbg(dbg, O_BRACKET + contact_contact + C_BRACKET);
 
-    /**
-     * The {{{GET /v1/customers}}} endpoint.
-     *
-     * Retrieves from the database and lists all customer profiles.
-     *
-     * @param dbg The debug logging enabler.
-     * @param cnx The database connection.
-     */
-    void list_customers(bool dbg, Database cnx) {
-        _dbg(dbg, O_BRACKET + "3. list_customers" + C_BRACKET);
+            stmt.bind_text(1, contact_contact);
+            stmt.bind_text(2, contact_cust_id);
 
-        Statement stmt;
+            if (stmt.step() == DONE) {
+                stmt.reset();
 
-        // Retrieving all customer profiles from the database.
-        var res = cnx.prepare_v2(SQL_GET_ALL_CUSTOMERS,
-                                 SQL_GET_ALL_CUSTOMERS.length, out stmt);
-
-        if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
-            var cols = stmt.column_count();
-            while (stmt.step() == ROW) {
-                var row = EMPTY_STRING;
-                for (var i = 0; i < cols; i++) {
-                    row += stmt.column_name(i) + COLON
-                        +  stmt.column_text(i) + SPACE;
+                var sql_query_ = SQL_GET_CONTACTS_BY_TYPE[1];
+                       if (cont_type == PHONE) {
+                    sql_query_ = SQL_GET_CONTACTS_BY_TYPE[0]
+                               + SQL_ORDER_CONTACTS_BY_ID[0];
+                } else if (cont_type == EMAIL) {
+                    sql_query_ = SQL_GET_CONTACTS_BY_TYPE[1]
+                               + SQL_ORDER_CONTACTS_BY_ID[1];
                 }
 
-                _dbg(dbg, O_BRACKET + row + C_BRACKET);
-            }
-        }
-    }
+                var res_ = cnx.prepare_v2(sql_query_+ SQL_DESC_LIMIT_1,
+                                         (sql_query_+ SQL_DESC_LIMIT_1).length,
+                                          out stmt);
 
-    /**
-     * The {{{GET /v1/customers/{customer_id}}}} endpoint.
-     *
-     * Retrieves profile details for a given customer from the database.
-     *
-     * @param dbg The debug logging enabler.
-     * @param cnx The database connection.
-     */
-    void get_customer(bool dbg, Database cnx) {
-        _dbg(dbg, O_BRACKET + "4. get_customer" + C_BRACKET);
+                if (res_ != OK) { warning(cnx.errmsg()); } else {
+                    stmt.bind_int(1, int.parse(contact_cust_id));
 
-        Statement stmt;
+                    if (stmt.step() == ROW) {
+                        var row = cont_type
+                        + V_BAR + stmt.column_text(0); // getContact()
 
-        // Retrieving profile details for a given customer from the database.
-        var res = cnx.prepare_v2(SQL_GET_CUSTOMER_BY_ID,
-                                 SQL_GET_CUSTOMER_BY_ID.length, out stmt);
-
-        if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
-            var cust_id = 2; // <== TODO: Replace with the actual one.
-
-            stmt.bind_int(1, cust_id);
-
-            var cols = stmt.column_count();
-            if (stmt.step() == ROW) {
-                var row = EMPTY_STRING;
-                for (var i = 0; i < cols; i++) {
-                    row += stmt.column_name(i) + COLON
-                        +  stmt.column_text(i) + SPACE;
+                        _dbg(dbg, O_BRACKET + row + C_BRACKET);
+                    }
                 }
-
-                _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
         }
     }
@@ -196,20 +177,14 @@ namespace controller {
                                  SQL_GET_ALL_CONTACTS.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
             var cust_id = 2; // <== TODO: Replace with the actual one.
+            _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string());
 
             stmt.bind_int(1, cust_id); // <== For retrieving phones.
             stmt.bind_int(2, cust_id); // <== For retrieving emails.
 
-            var cols = stmt.column_count();
             while (stmt.step() == ROW) {
-                var row = EMPTY_STRING;
-                for (var i = 0; i < cols; i++) {
-                    row += stmt.column_name(i) + COLON
-                        +  stmt.column_text(i) + SPACE;
-                }
+                var row = stmt.column_text(0); // getContact()
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
@@ -245,19 +220,14 @@ namespace controller {
         var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
             var cust_id = 2; // <== TODO: Replace with the actual one.
+            _dbg(dbg, REST_CUST_ID   + EQUALS + cust_id.to_string() + SPACE
+    + V_BAR + SPACE + REST_CONT_TYPE + EQUALS + cont_type);
 
             stmt.bind_int(1, cust_id);
 
-            var cols = stmt.column_count();
             while (stmt.step() == ROW) {
-                var row = EMPTY_STRING;
-                for (var i = 0; i < cols; i++) {
-                    row += stmt.column_name(i) + COLON
-                        +  stmt.column_text(i) + SPACE;
-                }
+                var row = stmt.column_text(0); // getContact()
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }

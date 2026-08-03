@@ -1,7 +1,7 @@
 [indent=4]/*
  * src/api-lite-modelx.gs
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.7
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.8
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -39,5 +39,19 @@ namespace modelx
     const SQL_PUT_CONTACT:array of string = {
         "insert into contact_phones (contact, customer_id) values (?, ?)",
         "insert into contact_emails (contact, customer_id) values (?, ?)"}
+
+    /**
+     * The intermediate part of an SQL query,
+     * used to order contact records by ID.
+     */
+    const SQL_ORDER_CONTACTS_BY_ID:array of string = {
+        " order by phones.id",
+        " order by emails.id"}
+
+    /**
+     * The terminating part of an SQL query,
+     * used to retrieve the last record created.
+     */
+    const SQL_DESC_LIMIT_1:string = " desc limit 1"
 
 // vim:set nu et ts=4 sw=4:
