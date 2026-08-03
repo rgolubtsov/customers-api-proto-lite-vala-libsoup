@@ -48,8 +48,6 @@ namespace controllerx
 
         if (res is not OK) do warning(cnx.errmsg())
         else
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET)
-
             while (stmt.step() is ROW)
                 var row = (stmt.column_int (0).to_string() // getId()
                 + V_BAR +  stmt.column_text(1))            // getName()
@@ -75,8 +73,6 @@ namespace controllerx
 
         if (res is not OK) do warning(cnx.errmsg())
         else
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET)
-
             var cust_id = 2 // <== TODO: Replace with the actual one.
             _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string())
 

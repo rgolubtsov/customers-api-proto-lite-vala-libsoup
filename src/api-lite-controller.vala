@@ -53,8 +53,6 @@ namespace controller {
                                  SQL_PUT_CUSTOMER.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
             var customer_name = "JP"; // <== TODO: Replace with the actual one.
             _dbg(dbg, O_BRACKET + customer_name + C_BRACKET);
 
@@ -69,8 +67,6 @@ namespace controller {
                                         + SQL_DESC_LIMIT_1).length, out stmt);
 
                 if (res_ != OK) { warning(cnx.errmsg()); } else {
-                    _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
                     if (stmt.step() == ROW) {
                         var row = stmt.column_int (0).to_string() // getId()
                         + V_BAR + stmt.column_text(1);            // getName()
@@ -122,8 +118,6 @@ namespace controller {
         var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
             // TODO: Replace with the actual ones. -----------+
             var contact_cust_id = "2";              // <------|
             var contact_contact = "jp@example.com"; // <------+
@@ -150,8 +144,6 @@ namespace controller {
                                           out stmt);
 
                 if (res_ != OK) { warning(cnx.errmsg()); } else {
-                    _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
                     stmt.bind_int(1, int.parse(contact_cust_id));
 
                     if (stmt.step() == ROW) {
@@ -185,8 +177,6 @@ namespace controller {
                                  SQL_GET_ALL_CONTACTS.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
             var cust_id = 2; // <== TODO: Replace with the actual one.
             _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string());
 
@@ -230,8 +220,6 @@ namespace controller {
         var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
-
             var cust_id = 2; // <== TODO: Replace with the actual one.
             _dbg(dbg, REST_CUST_ID   + EQUALS + cust_id.to_string() + SPACE
     + V_BAR + SPACE + REST_CONT_TYPE + EQUALS + cont_type);
