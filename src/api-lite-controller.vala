@@ -71,13 +71,9 @@ namespace controller {
                 if (res_ != OK) { warning(cnx.errmsg()); } else {
                     _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
 
-                    var cols = stmt.column_count();
-                    while (stmt.step() == ROW) {
-                        var row = EMPTY_STRING;
-                        for (var i = 0; i < cols; i++) {
-                            row += stmt.column_name(i) + COLON
-                                +  stmt.column_text(i) + SPACE;
-                        }
+                    if (stmt.step() == ROW) {
+                        var row = stmt.column_int(0).to_string() // getId()
+                        + V_BAR + stmt.column_text(1);           // getName()
 
                         _dbg(dbg, O_BRACKET + row + C_BRACKET);
                     }
@@ -158,13 +154,9 @@ namespace controller {
 
                     stmt.bind_int(1, int.parse(contact_cust_id));
 
-                    var cols = stmt.column_count();
-                    while (stmt.step() == ROW) {
-                        var row = EMPTY_STRING;
-                        for (var i = 0; i < cols; i++) {
-                            row += stmt.column_name(i) + COLON
-                                +  stmt.column_text(i) + SPACE;
-                        }
+                    if (stmt.step() == ROW) {
+                        var row = cont_type
+                        + V_BAR + stmt.column_text(0); // getContact()
 
                         _dbg(dbg, O_BRACKET + row + C_BRACKET);
                     }
@@ -193,13 +185,9 @@ namespace controller {
         if (res != OK) { warning(cnx.errmsg()); } else {
             _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
 
-            var cols = stmt.column_count();
             while (stmt.step() == ROW) {
-                var row = EMPTY_STRING;
-                for (var i = 0; i < cols; i++) {
-                    row += stmt.column_name(i) + COLON
-                        +  stmt.column_text(i) + SPACE;
-                }
+                var row = stmt.column_int(0).to_string() // getId()
+                + V_BAR + stmt.column_text(1);           // getName()
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
@@ -227,16 +215,13 @@ namespace controller {
             _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
 
             var cust_id = 2; // <== TODO: Replace with the actual one.
+            _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string());
 
             stmt.bind_int(1, cust_id);
 
-            var cols = stmt.column_count();
             if (stmt.step() == ROW) {
-                var row = EMPTY_STRING;
-                for (var i = 0; i < cols; i++) {
-                    row += stmt.column_name(i) + COLON
-                        +  stmt.column_text(i) + SPACE;
-                }
+                var row = stmt.column_int(0).to_string() // getId()
+                + V_BAR + stmt.column_text(1);           // getName()
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
@@ -266,17 +251,13 @@ namespace controller {
             _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
 
             var cust_id = 2; // <== TODO: Replace with the actual one.
+            _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string());
 
             stmt.bind_int(1, cust_id); // <== For retrieving phones.
             stmt.bind_int(2, cust_id); // <== For retrieving emails.
 
-            var cols = stmt.column_count();
             while (stmt.step() == ROW) {
-                var row = EMPTY_STRING;
-                for (var i = 0; i < cols; i++) {
-                    row += stmt.column_name(i) + COLON
-                        +  stmt.column_text(i) + SPACE;
-                }
+                var row = stmt.column_text(0); // getContact()
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
@@ -315,16 +296,13 @@ namespace controller {
             _dbg(dbg, O_BRACKET + stmt.sql() + C_BRACKET);
 
             var cust_id = 2; // <== TODO: Replace with the actual one.
+            _dbg(dbg, REST_CUST_ID   + EQUALS + cust_id.to_string() + SPACE
+    + V_BAR + SPACE + REST_CONT_TYPE + EQUALS + cont_type);
 
             stmt.bind_int(1, cust_id);
 
-            var cols = stmt.column_count();
             while (stmt.step() == ROW) {
-                var row = EMPTY_STRING;
-                for (var i = 0; i < cols; i++) {
-                    row += stmt.column_name(i) + COLON
-                        +  stmt.column_text(i) + SPACE;
-                }
+                var row = stmt.column_text(0); // getContact()
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }

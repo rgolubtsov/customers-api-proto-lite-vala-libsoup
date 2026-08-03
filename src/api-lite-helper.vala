@@ -23,6 +23,7 @@ namespace helper {
     const string SPACE        =  " ";
     const string DASH         =  "-";
     const string COLON        =  ":";
+    const string V_BAR        =  "|";
     const string EQUALS       =  "=";
     const string O_BRACKET    =  "[";
     const string C_BRACKET    =  "]";
@@ -78,9 +79,10 @@ namespace helper {
     const string LOG_ELIM_REGEX  = ".+: ";
 
     // REST URI path-related constants.
-    const string REST_CUST_ID = "customer_id";
-    const string PHONE        = "phone";
-    const string EMAIL        = "email";
+    const string REST_CUST_ID   = "customer_id";
+    const string REST_CONT_TYPE = "contact_type";
+    const string PHONE          = "phone";
+    const string EMAIL          = "email";
 
     /** The logfile used to store log messages. */
     FileOutputStream logfile;
