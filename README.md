@@ -104,31 +104,38 @@ The microservice has the ability to log messages to a logfile and to the Unix sy
 
 ```
 $ tail -f log/customers-api-lite.log
-[2026-07-24][12:55:20] [DEBUG] [Customers API Lite]
-[2026-07-24][12:55:20] [DEBUG] [dc7c6dd8]
-[2026-07-24][12:55:20] [DEBUG] [8765]
-[2026-07-24][12:55:20] [DEBUG] [1. add_customer]
-[2026-07-24][12:55:20] [DEBUG] [2. add_contact]
-[2026-07-24][12:55:20] [DEBUG] [3. list_customers]
-...
-[2026-07-24][12:55:20] [DEBUG] [id:1 name:Jammy Jellyfish ]
-[2026-07-24][12:55:20] [DEBUG] [id:2 name:Noble Numbat ]
-[2026-07-24][12:55:20] [DEBUG] [4. get_customer]
-...
-[2026-07-24][12:55:20] [DEBUG] [id:2 name:Noble Numbat ]
-[2026-07-24][12:55:20] [DEBUG] [5. list_contacts]
-...
-[2026-07-24][12:55:20] [DEBUG] [contact:+35760X123456 ]
-[2026-07-24][12:55:20] [DEBUG] [contact:+35760Y1234578 ]
-[2026-07-24][12:55:20] [DEBUG] [contact:+35790Z12345890 ]
-[2026-07-24][12:55:20] [DEBUG] [contact:nn@example.org ]
-[2026-07-24][12:55:20] [DEBUG] [contact:nnumbat@example.com ]
-[2026-07-24][12:55:20] [DEBUG] [contact:noble.numbat@example.com ]
-[2026-07-24][12:55:20] [DEBUG] [6. list_contacts_by_type]
-...
-[2026-07-24][12:55:20] [DEBUG] [contact:noble.numbat@example.com ]
-[2026-07-24][12:55:20] [DEBUG] [contact:nnumbat@example.com ]
-[2026-07-24][12:55:20] [DEBUG] [contact:nn@example.org ]
+[2026-08-04][12:00:30] [DEBUG] [Customers API Lite]
+[2026-08-04][12:00:30] [DEBUG] [b9e5cdd8]
+[2026-08-04][12:00:30] [DEBUG] [8765]
+[2026-08-04][12:00:30] [DEBUG] [1. add_customer]
+[2026-08-04][12:00:30] [DEBUG] [JP]
+[2026-08-04][12:00:30] [DEBUG] [3|JP]
+[2026-08-04][12:00:30] [DEBUG] [2. add_contact]
+[2026-08-04][12:00:30] [DEBUG] customer_id=2
+[2026-08-04][12:00:30] [DEBUG] [jp@example.com]
+[2026-08-04][12:00:30] [DEBUG] [email|jp@example.com]
+[2026-08-04][12:00:30] [DEBUG] [3. list_customers]
+[2026-08-04][12:00:30] [DEBUG] [1|Jammy Jellyfish]
+[2026-08-04][12:00:30] [DEBUG] [2|Noble Numbat]
+[2026-08-04][12:00:30] [DEBUG] [3|JP]
+[2026-08-04][12:00:30] [DEBUG] [4. get_customer]
+[2026-08-04][12:00:30] [DEBUG] customer_id=2
+[2026-08-04][12:00:30] [DEBUG] [2|Noble Numbat]
+[2026-08-04][12:00:30] [DEBUG] [5. list_contacts]
+[2026-08-04][12:00:30] [DEBUG] customer_id=2
+[2026-08-04][12:00:30] [DEBUG] [+35760X123456]
+[2026-08-04][12:00:30] [DEBUG] [+35760Y1234578]
+[2026-08-04][12:00:30] [DEBUG] [+35790Z12345890]
+[2026-08-04][12:00:30] [DEBUG] [jp@example.com]
+[2026-08-04][12:00:30] [DEBUG] [nn@example.org]
+[2026-08-04][12:00:30] [DEBUG] [nnumbat@example.com]
+[2026-08-04][12:00:30] [DEBUG] [noble.numbat@example.com]
+[2026-08-04][12:00:30] [DEBUG] [6. list_contacts_by_type]
+[2026-08-04][12:00:30] [DEBUG] customer_id=2 | contact_type=email
+[2026-08-04][12:00:30] [DEBUG] [noble.numbat@example.com]
+[2026-08-04][12:00:30] [DEBUG] [nnumbat@example.com]
+[2026-08-04][12:00:30] [DEBUG] [nn@example.org]
+[2026-08-04][12:00:30] [DEBUG] [jp@example.com]
 ```
 
 Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
@@ -136,31 +143,38 @@ Messages registered by the Unix system logger can be seen and analyzed using the
 ```
 $ journalctl -f
 ...
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [Customers API Lite]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [dc7c6dd8]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [8765]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [1. add_customer]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [2. add_contact]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [3. list_customers]
-...
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [id:1 name:Jammy Jellyfish ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [id:2 name:Noble Numbat ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [4. get_customer]
-...
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [id:2 name:Noble Numbat ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [5. list_contacts]
-...
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [contact:+35760X123456 ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [contact:+35760Y1234578 ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [contact:+35790Z12345890 ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [contact:nn@example.org ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [contact:nnumbat@example.com ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [contact:noble.numbat@example.com ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [6. list_contacts_by_type]
-...
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [contact:noble.numbat@example.com ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [contact:nnumbat@example.com ]
-Jul 24 12:55:20 <hostname> api-lited[<pid>]: [contact:nn@example.org ]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [Customers API Lite]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [b9e5cdd8]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [8765]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [1. add_customer]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [JP]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [3|JP]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [2. add_contact]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: customer_id=2
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [jp@example.com]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [email|jp@example.com]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [3. list_customers]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [1|Jammy Jellyfish]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [2|Noble Numbat]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [3|JP]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [4. get_customer]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: customer_id=2
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [2|Noble Numbat]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [5. list_contacts]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: customer_id=2
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [+35760X123456]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [+35760Y1234578]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [+35790Z12345890]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [jp@example.com]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [nn@example.org]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [nnumbat@example.com]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [noble.numbat@example.com]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [6. list_contacts_by_type]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: customer_id=2 | contact_type=email
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [noble.numbat@example.com]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [nnumbat@example.com]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [nn@example.org]
+Aug 04 12:00:30 <hostname> api-lited[<pid>]: [jp@example.com]
 ```
 
 **TBD** :cd:
