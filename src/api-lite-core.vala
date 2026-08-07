@@ -13,6 +13,7 @@
 using Posix;
 using Log;
 using Sqlite;
+using Soup;
 
 using helper;
 using controller;
@@ -75,13 +76,16 @@ namespace core {
         var server_port = _get_server_port(settings);
         _dbg(dbg, O_BRACKET + server_port.to_string() + C_BRACKET);
 
+        var server = new Server((string) null);
+        server.add_handler(null, null);
+
         // --------------------------------------------------------------------
-         add_customer(dbg,         cnx);
-         add_contact(dbg,          cnx);
+//       add_customer(dbg,         cnx);
+//       add_contact(dbg,          cnx);
         list_customers(dbg,        cnx);
-         get_customer(dbg,         cnx);
-        list_contacts(dbg,         cnx);
-        list_contacts_by_type(dbg, cnx);
+//       get_customer(dbg,         cnx);
+//      list_contacts(dbg,         cnx);
+//      list_contacts_by_type(dbg, cnx);
         // --------------------------------------------------------------------
 
         _cleanup();
