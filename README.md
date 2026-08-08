@@ -47,7 +47,7 @@ $ sudo pacman -Syu base-devel vala docker
 ```
 $ BIN_DIR="bin"; \
   SRC_DIR="src"; \
-  valac --pkg=posix --pkg=gio-2.0 --pkg=sqlite3 -d ${BIN_DIR} -o api-lited ${SRC_DIR}/* && \
+  valac --pkg=posix --pkg=gio-2.0 --pkg=sqlite3 --pkg=libsoup-3.0 -d ${BIN_DIR} -o api-lited ${SRC_DIR}/* && \
   rm -vRf ${BIN_DIR}/${SRC_DIR}/ && \
   DB_PATH="data/db"; \
   DB_FILE="customers-api-lite.db.xz"; \
