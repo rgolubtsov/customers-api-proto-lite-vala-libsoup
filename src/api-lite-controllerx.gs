@@ -1,7 +1,7 @@
 [indent=4]/*
  * src/api-lite-controllerx.gs
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.8
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.9
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -12,8 +12,8 @@
 
 uses Sqlite
 
-uses helper
-uses model
+uses Helper
+uses Model
 
 /**
  * The controller namespace of the daemon (in Genie).
@@ -26,7 +26,7 @@ uses model
  *
  * @since 0.0.8
  */
-namespace controllerx
+namespace ControllerX
     // REST API endpoints -----------------------------------------------------
 
     /**

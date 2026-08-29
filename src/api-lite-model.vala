@@ -1,7 +1,7 @@
 /*
  * src/api-lite-model.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.8
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.9
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -15,7 +15,7 @@
  *
  * @since 0.0.5
  */
-namespace model {
+namespace Model {
     /**
      * The SQL query for retrieving all customer profiles.
      *

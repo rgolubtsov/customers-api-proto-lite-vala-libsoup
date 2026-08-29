@@ -1,7 +1,7 @@
 /*
  * src/api-lite-core.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.8
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.9
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -13,21 +13,23 @@
 using Posix;
 using Log;
 using Sqlite;
+using Soup;
 
-using helper;
-using controller;
-using controllerx;
+using Helper;
+using Handler;
+using Controller;
+using ControllerX;
 
 /**
  * The main namespace of the daemon.
  *
  * @since 0.0.1
  */
-namespace core {
+namespace Core {
     /**
      * This method is in fact the microservice entry point.
      * It gets called just in the {{{main()}}} method but wrapped
-     * into the {{{core}}} namespace for better conformity.
+     * into the {{{Core}}} namespace for better conformity.
      *
      * @param args An array of command-line arguments.
      *
@@ -73,15 +75,18 @@ namespace core {
 
         // Getting the port number used to run the Soup web server.
         var server_port = _get_server_port(settings);
-        _dbg(dbg, O_BRACKET + server_port.to_string() + C_BRACKET);
+
+        // Starting up the Soup web server.
+        var server = new Server((string) null);
+        server.add_handler(null, request_handler);
 
         // --------------------------------------------------------------------
-         add_customer(dbg,         cnx);
-         add_contact(dbg,          cnx);
+//       add_customer(dbg,         cnx);
+//       add_contact(dbg,          cnx);
         list_customers(dbg,        cnx);
-         get_customer(dbg,         cnx);
-        list_contacts(dbg,         cnx);
-        list_contacts_by_type(dbg, cnx);
+//       get_customer(dbg,         cnx);
+//      list_contacts(dbg,         cnx);
+//      list_contacts_by_type(dbg, cnx);
         // --------------------------------------------------------------------
 
         _cleanup();
@@ -98,7 +103,7 @@ namespace core {
  * @return The exit code of the overall termination of the daemon.
  */
 int main(string[] args) {
-    return core.startup(args);
+    return Core.startup(args);
 }
 
 // vim:set nu et ts=4 sw=4:

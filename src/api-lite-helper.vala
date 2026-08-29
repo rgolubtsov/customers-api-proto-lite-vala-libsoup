@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.8
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.9
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -17,7 +17,7 @@ using Posix;
  *
  * @since 0.0.2
  */
-namespace helper {
+namespace Helper {
     // Helper constants.
     const string EMPTY_STRING =   "";
     const string SPACE        =  " ";

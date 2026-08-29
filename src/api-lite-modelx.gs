@@ -1,7 +1,7 @@
 [indent=4]/*
  * src/api-lite-modelx.gs
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.8
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.9
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -21,7 +21,7 @@
  *
  * @since 0.0.7
  */
-namespace modelx
+namespace ModelX
     /**
      * The SQL query for creating a new customer
      * (putting customer data to the database).
