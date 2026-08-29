@@ -15,7 +15,7 @@
  *
  * @since 0.0.5
  */
-namespace model {
+namespace Model {
     /**
      * The SQL query for retrieving all customer profiles.
      *

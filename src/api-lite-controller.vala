@@ -12,16 +12,16 @@
 
 using Sqlite;
 
-using helper;
-using model;
-using modelx;
+using Helper;
+using Model;
+using ModelX;
 
 /**
  * The controller namespace of the daemon.
  *
  * @since 0.0.5
  */
-namespace controller {
+namespace Controller {
     // REST API endpoints -----------------------------------------------------
 
     /**

@@ -15,20 +15,20 @@ using Log;
 using Sqlite;
 using Soup;
 
-using helper;
-using controller;
-using controllerx;
+using Helper;
+using Controller;
+using ControllerX;
 
 /**
  * The main namespace of the daemon.
  *
  * @since 0.0.1
  */
-namespace core {
+namespace Core {
     /**
      * This method is in fact the microservice entry point.
      * It gets called just in the {{{main()}}} method but wrapped
-     * into the {{{core}}} namespace for better conformity.
+     * into the {{{Core}}} namespace for better conformity.
      *
      * @param args An array of command-line arguments.
      *
@@ -102,7 +102,7 @@ namespace core {
  * @return The exit code of the overall termination of the daemon.
  */
 int main(string[] args) {
-    return core.startup(args);
+    return Core.startup(args);
 }
 
 // vim:set nu et ts=4 sw=4:

@@ -17,7 +17,7 @@ using Posix;
  *
  * @since 0.0.2
  */
-namespace helper {
+namespace Helper {
     // Helper constants.
     const string EMPTY_STRING =   "";
     const string SPACE        =  " ";

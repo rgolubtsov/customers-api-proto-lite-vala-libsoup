@@ -12,8 +12,8 @@
 
 uses Sqlite
 
-uses helper
-uses model
+uses Helper
+uses Model
 
 /**
  * The controller namespace of the daemon (in Genie).
@@ -26,7 +26,7 @@ uses model
  *
  * @since 0.0.8
  */
-namespace controllerx
+namespace ControllerX
     // REST API endpoints -----------------------------------------------------
 
     /**

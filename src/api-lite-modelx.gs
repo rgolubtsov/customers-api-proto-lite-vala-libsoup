@@ -21,7 +21,7 @@
  *
  * @since 0.0.7
  */
-namespace modelx
+namespace ModelX
     /**
      * The SQL query for creating a new customer
      * (putting customer data to the database).
