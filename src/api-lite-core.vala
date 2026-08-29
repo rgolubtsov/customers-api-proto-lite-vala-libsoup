@@ -16,6 +16,7 @@ using Sqlite;
 using Soup;
 
 using Helper;
+using Handler;
 using Controller;
 using ControllerX;
 
@@ -74,10 +75,10 @@ namespace Core {
 
         // Getting the port number used to run the Soup web server.
         var server_port = _get_server_port(settings);
-        _dbg(dbg, O_BRACKET + server_port.to_string() + C_BRACKET);
 
+        // Starting up the Soup web server.
         var server = new Server((string) null);
-        server.add_handler(null, null);
+        server.add_handler(null, request_handler);
 
         // --------------------------------------------------------------------
 //       add_customer(dbg,         cnx);
