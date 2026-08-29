@@ -1,7 +1,7 @@
 /*
  * src/api-lite-handler.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.8
+ * Customers API Lite microservice prototype (Vala port). Version 0.0.9
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -15,7 +15,7 @@ using Soup;
 /**
  * The request handler namespace of the daemon.
  *
- * @since 0.0.8
+ * @since 0.0.9
  */
 namespace Handler {
     /**
