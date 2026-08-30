@@ -1,7 +1,7 @@
 /*
  * src/api-lite-handler.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.0.9
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.0
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -27,10 +27,12 @@ namespace Handler {
      * @param path   The path component of the request message URI.
      * @param query  The parsed query component of the request message URI.
      */
-    void request_handler(Server                    server,
-                         ServerMessage             msg,
-                         string                    path,
-                         HashTable<string,string>? query) {
+    void request_handler(Server                     server,
+                         ServerMessage              msg,
+                         string                     path,
+                         HashTable<string, string>? query) {
+
+        msg.set_status(Status.OK, null);
     }
 }
 
