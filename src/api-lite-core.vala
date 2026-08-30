@@ -76,9 +76,16 @@ namespace Core {
         // Getting the port number used to run the Soup web server.
         var server_port = _get_server_port(settings);
 
-        // Starting up the Soup web server.
-        var server = new Server((string) null);
+        var server = new Server(SERVER_HEADER, EMPTY_STRING);
         server.add_handler(null, request_handler);
+
+        // Trying to start up the Soup web server.
+        try {
+            server.listen_all(server_port, (ServerListenOptions) null);
+            var loop = new MainLoop(); loop.run();
+        } catch (Error e) {
+            warning(e.message);
+        }
 
         // --------------------------------------------------------------------
 //       add_customer(dbg,         cnx);

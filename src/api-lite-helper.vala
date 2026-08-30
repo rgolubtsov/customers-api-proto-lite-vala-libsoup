@@ -84,6 +84,9 @@ namespace Helper {
     const string PHONE          = "phone";
     const string EMAIL          = "email";
 
+    // HTTP response-related constants.
+    const string SERVER_HEADER = "server_header";
+
     /** The logfile used to store log messages. */
     FileOutputStream logfile;
 
