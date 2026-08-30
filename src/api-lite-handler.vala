@@ -27,10 +27,12 @@ namespace Handler {
      * @param path   The path component of the request message URI.
      * @param query  The parsed query component of the request message URI.
      */
-    void request_handler(Server                    server,
-                         ServerMessage             msg,
-                         string                    path,
-                         HashTable<string,string>? query) {
+    void request_handler(Server                     server,
+                         ServerMessage              msg,
+                         string                     path,
+                         HashTable<string, string>? query) {
+
+        msg.set_status(Status.OK, null);
     }
 }
 
