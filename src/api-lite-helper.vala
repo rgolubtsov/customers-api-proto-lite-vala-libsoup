@@ -11,6 +11,7 @@
  */
 
 using Posix;
+using Sqlite;
 
 /**
  * The helper namespace for the daemon.
@@ -21,6 +22,7 @@ namespace Helper {
     // Helper constants.
     const string EMPTY_STRING =   "";
     const string SPACE        =  " ";
+    const string SLASH        =  "/";
     const string DASH         =  "-";
     const string COLON        =  ":";
     const string V_BAR        =  "|";
@@ -78,8 +80,15 @@ namespace Helper {
     const string DT_FORMAT       = "%02u";
     const string LOG_ELIM_REGEX  = ".+: ";
 
+    // Allowed HTTP methods.
+    const string HTTP_PUT = "PUT";
+    const string HTTP_GET = "GET";
+
     // REST URI path-related constants.
+    const string REST_VERSION   = "v1";
+    const string REST_PREFIX    = "customers";
     const string REST_CUST_ID   = "customer_id";
+    const string REST_CONTACTS  = "contacts";
     const string REST_CONT_TYPE = "contact_type";
     const string PHONE          = "phone";
     const string EMAIL          = "email";
@@ -92,6 +101,9 @@ namespace Helper {
 
     /** The debug logging enabler, a global to use in the request handler. */
     bool dbg_;
+
+    /** The database connection, a global to use in the request handler. */
+    unowned Database cnx_;
 
     /**
      * The log writer callback. Gets called on every message logging attempt.

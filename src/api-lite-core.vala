@@ -17,8 +17,6 @@ using Soup;
 
 using Helper;
 using Handler;
-using Controller;
-using ControllerX;
 
 /**
  * The main namespace of the daemon.
@@ -70,7 +68,8 @@ namespace Core {
         // Connecting to the database.
         var res = Database.open(database_path, out cnx);
         if (res == OK) {
-            _dbg(dbg, O_BRACKET + ((ulong) cnx).to_string(HEX_F) + C_BRACKET);
+            _dbg(dbg, O_BRACKET + ((ulong) cnx).to_string(HEX_F)
+                    + C_BRACKET); cnx_ = cnx;
         } else { warning(cnx.errmsg()); }
 
         // Getting the port number used to run the Soup web server.
@@ -86,15 +85,6 @@ namespace Core {
         } catch (Error e) {
             warning(e.message);
         }
-
-        // --------------------------------------------------------------------
-//       add_customer(dbg,         cnx);
-//       add_contact(dbg,          cnx);
-        list_customers(dbg,        cnx);
-//       get_customer(dbg,         cnx);
-//      list_contacts(dbg,         cnx);
-//      list_contacts_by_type(dbg, cnx);
-        // --------------------------------------------------------------------
 
         _cleanup();
 

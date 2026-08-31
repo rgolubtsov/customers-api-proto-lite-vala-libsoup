@@ -13,6 +13,8 @@
 using Soup;
 
 using Helper;
+using Controller;
+using ControllerX;
 
 /**
  * The request handler namespace of the daemon.
@@ -34,7 +36,40 @@ namespace Handler {
                          string                     path,
                          HashTable<string, string>? query) {
 
-        _dbg(dbg_, O_BRACKET + path + C_BRACKET);
+        var method = msg.get_method();
+        _dbg(dbg_, O_BRACKET + method + C_BRACKET);
+        _dbg(dbg_, O_BRACKET + path   + C_BRACKET);
+
+               if (method == HTTP_PUT) {
+                   if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX)) {
+                add_customer(dbg_, cnx_);
+            } else if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX
+                              + SLASH + REST_CONTACTS)) {
+                add_contact(dbg_, cnx_);
+            } else {
+                _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+            }
+        } else if (method == HTTP_GET) {
+                   if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX)) {
+                list_customers(dbg_, cnx_);
+            } else if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX
+                              + SLASH + COLON + REST_CUST_ID)) {
+                get_customer(dbg_, cnx_);
+            } else if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX
+                              + SLASH + COLON + REST_CUST_ID
+                              + SLASH + REST_CONTACTS)) {
+                list_contacts(dbg_, cnx_);
+            } else if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX
+                              + SLASH + COLON + REST_CUST_ID
+                              + SLASH + REST_CONTACTS + SLASH
+                              + COLON + REST_CONT_TYPE)) {
+                list_contacts_by_type(dbg_, cnx_);
+            } else {
+                _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+            }
+        } else {
+            _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+        }
 
         msg.set_status(Status.OK, null);
     }
