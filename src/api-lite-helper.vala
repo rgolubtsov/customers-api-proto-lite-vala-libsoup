@@ -90,6 +90,9 @@ namespace Helper {
     /** The logfile used to store log messages. */
     FileOutputStream logfile;
 
+    /** The debug logging enabler, a global to use in the request handler. */
+    bool dbg_;
+
     /**
      * The log writer callback. Gets called on every message logging attempt.
      *

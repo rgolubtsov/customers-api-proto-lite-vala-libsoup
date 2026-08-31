@@ -53,7 +53,7 @@ namespace Core {
         var settings = _get_settings();
 
         // Identifying whether debug logging is enabled.
-        var dbg = _is_debug_log_enabled(settings);
+        var dbg = _is_debug_log_enabled(settings); dbg_ = dbg;
 
         var daemon_name = EMPTY_STRING;
         try { daemon_name = settings.get_string(DAEMON_GROUP, DAEMON_NAME); }

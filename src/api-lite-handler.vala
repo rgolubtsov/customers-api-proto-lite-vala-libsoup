@@ -12,6 +12,8 @@
 
 using Soup;
 
+using Helper;
+
 /**
  * The request handler namespace of the daemon.
  *
@@ -31,6 +33,8 @@ namespace Handler {
                          ServerMessage              msg,
                          string                     path,
                          HashTable<string, string>? query) {
+
+        _dbg(dbg_, O_BRACKET + path + C_BRACKET);
 
         msg.set_status(Status.OK, null);
     }
