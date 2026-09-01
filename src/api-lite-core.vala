@@ -83,7 +83,11 @@ namespace Core {
             server.listen_all(server_port, (ServerListenOptions) null);
             var loop = new MainLoop(); loop.run();
         } catch (Error e) {
-            warning(e.message);
+            if (e.code == 33) {
+                warning(ERR_CANNOT_START_SERVER + ERR_ADDR_ALREADY_IN_USE);
+            } else {
+                warning(ERR_CANNOT_START_SERVER + ERR_SERV_UNKNOWN_REASON);
+            }
         }
 
         _cleanup();

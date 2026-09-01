@@ -38,6 +38,12 @@ namespace Helper {
     const string ERR_PORT_VALID_MUST_BE_POSITIVE_INT
         = "Valid server port must be a positive integer value, in the range "
         + "1024 .. 49151. The default value of 8080 will be used instead.";
+    const string ERR_CANNOT_START_SERVER
+        = "FATAL: Cannot start server ";
+    const string ERR_ADDR_ALREADY_IN_USE
+        = "due to address requested already in use. Quitting...";
+    const string ERR_SERV_UNKNOWN_REASON
+        = "for an unknown reason. Quitting...";
 
     /**
      * The filename of the daemon settings (as a series
