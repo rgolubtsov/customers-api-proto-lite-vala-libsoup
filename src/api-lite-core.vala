@@ -55,13 +55,13 @@ namespace Core {
 
         var daemon_name = EMPTY_STRING;
         try { daemon_name = settings.get_string(DAEMON_GROUP, DAEMON_NAME); }
-        catch (KeyFileError e) { closelog(); return EXIT_FAILURE; }
+        catch (KeyFileError e) { _cleanup(); return EXIT_FAILURE; }
         _dbg(dbg, O_BRACKET + daemon_name + C_BRACKET);
 
         // Getting the SQLite database path.
         var database_path = EMPTY_STRING;
         try { database_path = settings.get_string(SQLITE_GROUP, DB_PATH); }
-        catch (KeyFileError e) { closelog(); return EXIT_FAILURE; }
+        catch (KeyFileError e) { _cleanup(); return EXIT_FAILURE; }
 
         Database cnx;
 
@@ -72,7 +72,7 @@ namespace Core {
                     + C_BRACKET); cnx_ = cnx;
         } else {
             warning(ERR_DATABASE_CANNOT_CONNECT, cnx.errmsg());
-            closelog(); return EXIT_FAILURE;
+            _cleanup(); return EXIT_FAILURE;
         }
 
         // Getting the port number used to run the Soup web server.
