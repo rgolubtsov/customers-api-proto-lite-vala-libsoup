@@ -87,10 +87,14 @@ namespace Core {
             var loop = new MainLoop(); loop.run();
         } catch (Error e) {
             if (e.code == ERR_EADDRINUSE_CODE) {
-                warning(ERR_CANNOT_START_SERVER + ERR_ADDR_ALREADY_IN_USE);
+                warning(ERR_CANNOT_START_SERVER
+                      + ERR_ADDR_ALREADY_IN_USE, e.message);
             } else {
-                warning(ERR_CANNOT_START_SERVER + ERR_SERV_UNKNOWN_REASON);
+                warning(ERR_CANNOT_START_SERVER
+                      + ERR_SERV_UNKNOWN_REASON, e.message);
             }
+
+            _cleanup(); return EXIT_FAILURE;
         }
 
         _cleanup();

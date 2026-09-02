@@ -43,9 +43,9 @@ namespace Helper {
     const string ERR_CANNOT_START_SERVER
         = "FATAL: Cannot start server ";
     const string ERR_ADDR_ALREADY_IN_USE
-        = "due to address requested already in use. Quitting...";
+        = "due to address requested already in use: %s.";
     const string ERR_SERV_UNKNOWN_REASON
-        = "for an unknown reason. Quitting...";
+        = "for an unknown reason: %s.";
     const int ERR_EADDRINUSE_CODE = 33;
 
     /**
