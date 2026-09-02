@@ -190,7 +190,7 @@ namespace Helper {
             }
         }
 
-        if (!is_loaded) exit(EXIT_FAILURE);
+        if (!is_loaded) { closelog(); exit(EXIT_FAILURE); }
 
         return settings;
     }
