@@ -35,6 +35,8 @@ namespace Helper {
     // Common error messages.
     const string ERR_SETTINGS_NOT_FOUND
         = "FATAL: Unable to get daemon settings: %s.";
+    const string ERR_DATABASE_NOT_FOUND
+        = "FATAL: Unable to open database: %s.";
     const string ERR_PORT_VALID_MUST_BE_POSITIVE_INT
         = "Valid server port must be a positive integer value, in the range "
         + "1024 .. 49151. The default value of 8080 will be used instead.";
