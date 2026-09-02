@@ -70,7 +70,9 @@ namespace Core {
         if (res == OK) {
             _dbg(dbg, O_BRACKET + ((ulong) cnx).to_string(HEX_F)
                     + C_BRACKET); cnx_ = cnx;
-        } else { warning(ERR_DATABASE_NOT_FOUND, cnx.errmsg()); }
+        } else {
+            warning(ERR_DATABASE_NOT_FOUND, cnx.errmsg()); return EXIT_FAILURE;
+        }
 
         // Getting the port number used to run the Soup web server.
         var server_port = _get_server_port(settings);
