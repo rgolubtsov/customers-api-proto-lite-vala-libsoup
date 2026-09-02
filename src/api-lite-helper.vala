@@ -44,6 +44,7 @@ namespace Helper {
         = "due to address requested already in use. Quitting...";
     const string ERR_SERV_UNKNOWN_REASON
         = "for an unknown reason. Quitting...";
+    const int ERR_EADDRINUSE_CODE = 33;
 
     /**
      * The filename of the daemon settings (as a series
