@@ -83,7 +83,11 @@ namespace Core {
 
         // Trying to start up the Soup web server.
         try {
-            server.listen_all(server_port, (ServerListenOptions) null);
+            if(server.listen_all(server_port, (ServerListenOptions) null)) {
+                info(            MSG_SERVER_STARTED + server_port.to_string());
+                syslog(LOG_INFO, MSG_SERVER_STARTED + server_port.to_string());
+            }
+
             var loop = new MainLoop(); loop.run();
         } catch (Error e) {
             if (e.code == ERR_EADDRINUSE_CODE) {

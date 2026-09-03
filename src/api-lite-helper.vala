@@ -48,6 +48,10 @@ namespace Helper {
         = "for an unknown reason: %s.";
     const int ERR_EADDRINUSE_CODE = 33;
 
+    // Common notification messages.
+    const string MSG_SERVER_STARTED = "Server started on port ";
+    const string MSG_SERVER_STOPPED = "Server stopped";
+
     /**
      * The filename of the daemon settings (as a series
      * of {{{GLib.KeyFile}}} key-value pairs).
