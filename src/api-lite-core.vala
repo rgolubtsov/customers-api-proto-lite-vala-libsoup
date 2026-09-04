@@ -83,7 +83,7 @@ namespace Core {
 
         // Trying to start up the Soup web server.
         try {
-            if(server.listen_all(server_port, (ServerListenOptions) null)) {
+            if (server.listen_all(server_port, (ServerListenOptions) null)) {
                 info(            MSG_SERVER_STARTED + server_port.to_string());
                 syslog(LOG_INFO, MSG_SERVER_STARTED + server_port.to_string());
             }
