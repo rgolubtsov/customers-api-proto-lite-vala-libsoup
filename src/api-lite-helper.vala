@@ -249,6 +249,12 @@ namespace Helper {
         // Calling <syslog.h> closelog();
         closelog();
     }
+
+    // Helper method. Does same things as the {{{_cleanup()}}} method,
+    //                but gets called when an appropriate POSIX signal
+    //                is received. There are two signals supported:
+    //                {{{SIGINT}}} (<Ctrl-C>) and {{{SIGTERM}}}.
+    void __cleanup() { _cleanup(); exit(EXIT_SUCCESS); }
 }
 
 // vim:set nu et ts=4 sw=4:

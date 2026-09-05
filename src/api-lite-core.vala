@@ -81,6 +81,10 @@ namespace Core {
         var server = new Server(SERVER_HEADER, EMPTY_STRING);
         server.add_handler(null, request_handler);
 
+        // Attaching Unix signal handlers to ensure daemon clean shutdown.
+        Unix.signal_add(ProcessSignal.INT,  (SourceFunc) __cleanup);
+        Unix.signal_add(ProcessSignal.TERM, (SourceFunc) __cleanup);
+
         // Trying to start up the Soup web server.
         try {
             if (server.listen_all(server_port, (ServerListenOptions) null)) {
@@ -101,8 +105,6 @@ namespace Core {
 
             _cleanup(); return EXIT_FAILURE;
         }
-
-        _cleanup();
 
         return EXIT_SUCCESS;
     }
