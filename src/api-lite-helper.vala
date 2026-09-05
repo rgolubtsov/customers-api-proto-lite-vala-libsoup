@@ -254,7 +254,11 @@ namespace Helper {
     //                but gets called when an appropriate POSIX signal
     //                is received. There are two signals supported:
     //                {{{SIGINT}}} (<Ctrl-C>) and {{{SIGTERM}}}.
-    void __cleanup() { _cleanup(); exit(EXIT_SUCCESS); }
+    void __cleanup() {
+        info(MSG_SERVER_STOPPED); syslog(LOG_INFO, MSG_SERVER_STOPPED);
+
+        _cleanup(); exit(EXIT_SUCCESS);
+    }
 }
 
 // vim:set nu et ts=4 sw=4:
