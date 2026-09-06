@@ -68,15 +68,29 @@ $ make all  # <== Building the daemon.
 
 ## Running
 
-**Run** the microservice:
+**Run** the microservice using its executable directly, built previously by the Vala compiler or GNU Make's `all` target:
 
 ```
 $ ./bin/api-lited; echo $?
 ...
-0
 ```
 
-**TBD** :cd:
+To run the microservice as a *true* daemon, i.e. in the background, redirecting all the console output to `/dev/null`, the following form of invocation of its executable can be used:
+
+```
+$ ./bin/api-lited > /dev/null 2>&1 &
+[1] <pid>
+```
+
+**Note:** This will suppress all the console output only; logging to a logfile and to the Unix syslog will remain unchanged.
+
+The daemonized microservice then can be stopped gracefully at any time by issuing the following command:
+
+```
+$ kill -SIGTERM <pid>
+$
+[1]+  Done                       ./bin/api-lited > /dev/null 2>&1
+```
 
 ## Consuming
 
