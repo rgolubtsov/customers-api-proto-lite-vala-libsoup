@@ -44,8 +44,6 @@ namespace Controller {
      * @param cnx The database connection.
      */
     void add_customer(bool dbg, Database cnx) {
-        _dbg(dbg, O_BRACKET + "1. add_customer" + C_BRACKET);
-
         Statement stmt;
 
         // Creating a new customer (putting customer data to the database).
@@ -100,8 +98,6 @@ namespace Controller {
      * @param cnx The database connection.
      */
     void add_contact(bool dbg, Database cnx) {
-        _dbg(dbg, O_BRACKET + "2. add_contact" + C_BRACKET);
-
         var cont_type = EMAIL; // <== TODO: Replace with the actual one.
 
         var sql_query = SQL_PUT_CONTACT[1];
@@ -167,8 +163,6 @@ namespace Controller {
      * @param cnx The database connection.
      */
     void list_contacts(bool dbg, Database cnx) {
-        _dbg(dbg, O_BRACKET + "5. list_contacts" + C_BRACKET);
-
         Statement stmt;
 
         // Retrieving all contacts associated with a given customer
@@ -202,8 +196,6 @@ namespace Controller {
      * @param cnx The database connection.
      */
     void list_contacts_by_type(bool dbg, Database cnx) {
-        _dbg(dbg, O_BRACKET + "6. list_contacts_by_type" + C_BRACKET);
-
         var cont_type = EMAIL; // <== TODO: Replace with the actual one.
 
         var sql_query = SQL_GET_CONTACTS_BY_TYPE[1];

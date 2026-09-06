@@ -38,8 +38,6 @@ namespace ControllerX
      * @param cnx The database connection.
      */
     def list_customers(dbg:bool, cnx:Database)
-        _dbg(dbg, O_BRACKET + "3. list_customers" + C_BRACKET)
-
         stmt:Statement
 
         // Retrieving all customer profiles from the database.
@@ -63,8 +61,6 @@ namespace ControllerX
      * @param cnx The database connection.
      */
     def get_customer(dbg:bool, cnx:Database)
-        _dbg(dbg, O_BRACKET + "4. get_customer" + C_BRACKET)
-
         stmt:Statement
 
         // Retrieving profile details for a given customer from the database.
