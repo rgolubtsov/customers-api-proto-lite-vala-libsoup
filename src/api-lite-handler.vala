@@ -57,29 +57,28 @@ namespace Handler {
 
         var method = msg.get_method();
 
+        // --- /v1/customers -----------------------------------------
+        var REST_CONTEXT = SLASH + REST_VERSION + SLASH + REST_PREFIX;
+
                if (method == HTTP_PUT) {
-                   if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX)) {
+                   if (path ==  REST_CONTEXT) {
                 add_customer(dbg_, cnx_);
-            } else if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX
-                              + SLASH + REST_CONTACTS)) {
+            } else if (path == (REST_CONTEXT + SLASH + REST_CONTACTS)) {
                 add_contact(dbg_, cnx_);
             } else {
                 _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
             }
         } else if (method == HTTP_GET) {
-                   if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX)) {
+                   if (path ==  REST_CONTEXT) {
                 list_customers(dbg_, cnx_);
-            } else if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX
-                              + SLASH + COLON + REST_CUST_ID)) {
+            } else if (path == (REST_CONTEXT + SLASH + COLON + REST_CUST_ID)) {
                 get_customer(dbg_, cnx_);
-            } else if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX
-                              + SLASH + COLON + REST_CUST_ID
-                              + SLASH + REST_CONTACTS)) {
+            } else if (path == (REST_CONTEXT + SLASH + COLON + REST_CUST_ID
+                                             + SLASH + REST_CONTACTS)) {
                 list_contacts(dbg_, cnx_);
-            } else if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX
-                              + SLASH + COLON + REST_CUST_ID
-                              + SLASH + REST_CONTACTS + SLASH
-                              + COLON + REST_CONT_TYPE)) {
+            } else if (path == (REST_CONTEXT + SLASH + COLON + REST_CUST_ID
+                                             + SLASH + REST_CONTACTS + SLASH
+                                             + COLON + REST_CONT_TYPE)) {
                 list_contacts_by_type(dbg_, cnx_);
             } else {
                 _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
