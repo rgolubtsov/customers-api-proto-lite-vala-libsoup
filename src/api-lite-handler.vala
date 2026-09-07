@@ -23,8 +23,8 @@ using ControllerX;
  */
 namespace Handler {
     /**
-     * The default request "early" handler callback,
-     * or commonly known as a request filter.
+     * The request "early" handler callback, commonly known as a request filter
+     * for the "/v1/customers"-prefixed URI path.
      *
      * @param server The Soup web server.
      * @param msg    The request message being processed.
@@ -42,7 +42,7 @@ namespace Handler {
     }
 
     /**
-     * The default request handler callback.
+     * The request handler callback for the "/v1/customers"-prefixed URI path.
      * Used to process the incoming request.
      *
      * @param server The Soup web server.
