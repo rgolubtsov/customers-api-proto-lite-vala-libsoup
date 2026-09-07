@@ -23,6 +23,25 @@ using ControllerX;
  */
 namespace Handler {
     /**
+     * The default request "early" handler callback,
+     * or commonly known as a request filter.
+     *
+     * @param server The Soup web server.
+     * @param msg    The request message being processed.
+     * @param path   The path component of the request message URI.
+     * @param query  The parsed query component of the request message URI.
+     */
+    void request_filter(Server                     server,
+                        ServerMessage              msg,
+                        string                     path,
+                        HashTable<string, string>? query) {
+
+        var method = msg.get_method();
+        _dbg(dbg_, O_BRACKET + method + C_BRACKET);
+        _dbg(dbg_, O_BRACKET + path   + C_BRACKET);
+    }
+
+    /**
      * The default request handler callback.
      * Used to process the incoming request.
      *
@@ -37,8 +56,6 @@ namespace Handler {
                          HashTable<string, string>? query) {
 
         var method = msg.get_method();
-        _dbg(dbg_, O_BRACKET + method + C_BRACKET);
-        _dbg(dbg_, O_BRACKET + path   + C_BRACKET);
 
                if (method == HTTP_PUT) {
                    if (path == (SLASH + REST_VERSION + SLASH + REST_PREFIX)) {

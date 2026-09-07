@@ -79,6 +79,7 @@ namespace Core {
         var server_port = _get_server_port(settings);
 
         var server = new Server(SERVER_HEADER, EMPTY_STRING);
+        server.add_early_handler(null, request_filter);
         server.add_handler(null, request_handler);
 
         // Attaching Unix signal handlers to ensure daemon clean shutdown.
