@@ -94,8 +94,9 @@ namespace Helper {
     const string LOG_ELIM_REGEX  = ".+: ";
 
     // Allowed HTTP methods.
-    const string HTTP_PUT = "PUT";
-    const string HTTP_GET = "GET";
+    const string HTTP_PUT  = "PUT";
+    const string HTTP_GET  = "GET";
+    const string HTTP_HEAD = "HEAD";
 
     // REST URI path-related constants.
     const string REST_VERSION   = "v1";

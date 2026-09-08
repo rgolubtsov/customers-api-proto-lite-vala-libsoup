@@ -68,7 +68,7 @@ namespace Handler {
             } else {
                 _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
             }
-        } else if (method == HTTP_GET) {
+        } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
                    if (path ==  REST_CONTEXT) {
                 list_customers(dbg_, cnx_);
             } else if (path == (REST_CONTEXT + SLASH + COLON + REST_CUST_ID)) {
