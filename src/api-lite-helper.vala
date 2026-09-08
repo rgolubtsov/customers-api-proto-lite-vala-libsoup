@@ -102,10 +102,12 @@ namespace Helper {
     const string REST_VERSION   = "v1";
     const string REST_PREFIX    = "customers";
     const string REST_CUST_ID   = "customer_id";
+    const string REST_CUST_ID_R = "\\d+";
     const string REST_CONTACTS  = "contacts";
     const string REST_CONT_TYPE = "contact_type";
     const string PHONE          = "phone";
     const string EMAIL          = "email";
+    const string EOL_R          = "$";
 
     // HTTP response-related constants.
     const string SERVER_HEADER = "server_header";

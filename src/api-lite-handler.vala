@@ -60,32 +60,43 @@ namespace Handler {
         // --- /v1/customers -----------------------------------------
         var REST_CONTEXT = SLASH + REST_VERSION + SLASH + REST_PREFIX;
 
-               if (method == HTTP_PUT) {
-                   if (path ==  REST_CONTEXT) {
-                add_customer(dbg_, cnx_);
-            } else if (path == (REST_CONTEXT + SLASH + REST_CONTACTS)) {
-                add_contact(dbg_, cnx_);
+        try {
+            var get_customer_path_regex          = new Regex(
+                REST_CONTEXT + SLASH + REST_CUST_ID_R + EOL_R);
+            var list_contacts_path_regex         = new Regex(
+                REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH + REST_CONTACTS
+                                                      + EOL_R);
+            var list_contacts_by_type_path_regex = new Regex(
+                REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH + REST_CONTACTS
+                                                      + SLASH + EMAIL + EOL_R);
+            //                                                    ^
+            //                                                    |
+            // TODO: Replace with the actual one. ----------------+
+
+                   if (method == HTTP_PUT) {
+                       if (path ==  REST_CONTEXT) {
+                    add_customer(dbg_, cnx_);
+                } else if (path == (REST_CONTEXT + SLASH + REST_CONTACTS)) {
+                    add_contact(dbg_, cnx_);
+                } else {
+                    _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+                }
+            } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
+                       if (path ==  REST_CONTEXT) {
+                    list_customers(dbg_, cnx_);
+                } else if (get_customer_path_regex.match(path)) {
+                    get_customer(dbg_, cnx_);
+                } else if (list_contacts_path_regex.match(path)) {
+                    list_contacts(dbg_, cnx_);
+                } else if (list_contacts_by_type_path_regex.match(path)) {
+                    list_contacts_by_type(dbg_, cnx_);
+                } else {
+                    _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+                }
             } else {
                 _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
             }
-        } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
-                   if (path ==  REST_CONTEXT) {
-                list_customers(dbg_, cnx_);
-            } else if (path == (REST_CONTEXT + SLASH + COLON + REST_CUST_ID)) {
-                get_customer(dbg_, cnx_);
-            } else if (path == (REST_CONTEXT + SLASH + COLON + REST_CUST_ID
-                                             + SLASH + REST_CONTACTS)) {
-                list_contacts(dbg_, cnx_);
-            } else if (path == (REST_CONTEXT + SLASH + COLON + REST_CUST_ID
-                                             + SLASH + REST_CONTACTS + SLASH
-                                             + COLON + REST_CONT_TYPE)) {
-                list_contacts_by_type(dbg_, cnx_);
-            } else {
-                _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
-            }
-        } else {
-            _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
-        }
+        } catch (RegexError e) {}
 
         msg.set_status(Status.OK, null);
     }
