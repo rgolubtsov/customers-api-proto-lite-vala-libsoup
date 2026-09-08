@@ -108,6 +108,8 @@ namespace Helper {
     const string PHONE          = "phone";
     const string EMAIL          = "email";
     const string EOL_R          = "$";
+    const string REST_CONTEXT   = SLASH + REST_VERSION
+                                + SLASH + REST_PREFIX;
 
     // HTTP response-related constants.
     const string SERVER_HEADER = "server_header";

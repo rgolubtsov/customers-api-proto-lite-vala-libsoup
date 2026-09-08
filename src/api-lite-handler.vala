@@ -57,9 +57,6 @@ namespace Handler {
 
         var method = msg.get_method();
 
-        // --- /v1/customers -----------------------------------------
-        var REST_CONTEXT = SLASH + REST_VERSION + SLASH + REST_PREFIX;
-
         try {
             var get_customer_path_regex          = new Regex(
                 REST_CONTEXT + SLASH + REST_CUST_ID_R + EOL_R);
