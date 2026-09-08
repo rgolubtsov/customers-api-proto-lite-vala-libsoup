@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.2
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.3
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -94,17 +94,22 @@ namespace Helper {
     const string LOG_ELIM_REGEX  = ".+: ";
 
     // Allowed HTTP methods.
-    const string HTTP_PUT = "PUT";
-    const string HTTP_GET = "GET";
+    const string HTTP_PUT  = "PUT";
+    const string HTTP_GET  = "GET";
+    const string HTTP_HEAD = "HEAD";
 
     // REST URI path-related constants.
     const string REST_VERSION   = "v1";
     const string REST_PREFIX    = "customers";
     const string REST_CUST_ID   = "customer_id";
+    const string REST_CUST_ID_R = "\\d+";
     const string REST_CONTACTS  = "contacts";
     const string REST_CONT_TYPE = "contact_type";
     const string PHONE          = "phone";
     const string EMAIL          = "email";
+    const string EOL_R          = "$";
+    const string REST_CONTEXT   = SLASH + REST_VERSION
+                                + SLASH + REST_PREFIX;
 
     // HTTP response-related constants.
     const string SERVER_HEADER = "server_header";

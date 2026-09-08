@@ -1,7 +1,7 @@
 /*
  * src/api-lite-core.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.2
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.3
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -79,7 +79,13 @@ namespace Core {
         var server_port = _get_server_port(settings);
 
         var server = new Server(SERVER_HEADER, EMPTY_STRING);
-        server.add_handler(null, request_handler);
+//      server.add_early_handler(null, request_filter);
+//      server.add_handler(null, request_handler);
+
+        // Attaching HTTP request handlers to process incoming requests
+        // for the "/v1/customers"-prefixed URI path.
+        server.add_early_handler(REST_CONTEXT, request_filter);
+        server.add_handler(REST_CONTEXT, request_handler);
 
         // Attaching Unix signal handlers to ensure daemon clean shutdown.
         Unix.signal_add(ProcessSignal.INT,  (SourceFunc) __cleanup);
