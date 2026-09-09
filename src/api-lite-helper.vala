@@ -47,6 +47,12 @@ namespace Helper {
     const string ERR_SERV_UNKNOWN_REASON
         = "for an unknown reason: %s.";
     const int ERR_EADDRINUSE_CODE = 33;
+    const string ERR_REQ_NOT_FOUND_1
+        = "HTTP 404 Not Found: No such REST URI path exists. "
+        + "Please check your inputs.";
+    const string ERR_REQ_NOT_ALLOWED
+        = "HTTP 405 Method Not Allowed: Bad HTTP method used. "
+        + "Please check your inputs.";
 
     // Common notification messages.
     const string MSG_SERVER_STARTED = "Server started on port ";
