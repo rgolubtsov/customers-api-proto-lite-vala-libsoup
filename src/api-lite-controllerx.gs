@@ -11,6 +11,7 @@
  */
 
 uses Sqlite
+uses Soup
 
 uses Helper
 uses Model
@@ -36,8 +37,9 @@ namespace ControllerX
      *
      * @param dbg The debug logging enabler.
      * @param cnx The database connection.
+     * @param msg The request message being processed.
      */
-    def list_customers(dbg:bool, cnx:Database)
+    def list_customers(dbg:bool, cnx:Database, msg:ServerMessage)
         stmt:Statement
 
         // Retrieving all customer profiles from the database.
@@ -52,6 +54,8 @@ namespace ControllerX
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET)
 
+        msg.set_status(Soup.Status.OK, null);
+
     /**
      * The {{{GET /v1/customers/{customer_id}}}} endpoint.
      *
@@ -59,8 +63,9 @@ namespace ControllerX
      *
      * @param dbg The debug logging enabler.
      * @param cnx The database connection.
+     * @param msg The request message being processed.
      */
-    def get_customer(dbg:bool, cnx:Database)
+    def get_customer(dbg:bool, cnx:Database, msg:ServerMessage)
         stmt:Statement
 
         // Retrieving profile details for a given customer from the database.
@@ -79,5 +84,7 @@ namespace ControllerX
                 + V_BAR +  stmt.column_text(1))            // getName()
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET)
+
+        msg.set_status(Soup.Status.OK, null);
 
 // vim:set nu et ts=4 sw=4:

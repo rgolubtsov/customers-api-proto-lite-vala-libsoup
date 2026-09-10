@@ -72,21 +72,21 @@ namespace Handler {
 
                    if (method == HTTP_PUT) {
                        if (path ==  REST_CONTEXT) {
-                    add_customer(dbg_, cnx_);
+                    add_customer(dbg_, cnx_, msg);
                 } else if (path == (REST_CONTEXT + SLASH + REST_CONTACTS)) {
-                    add_contact(dbg_, cnx_);
+                    add_contact(dbg_, cnx_, msg);
                 } else {
                     _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
                 }
             } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
                        if (path ==  REST_CONTEXT) {
-                    list_customers(dbg_, cnx_);
+                    list_customers(dbg_, cnx_, msg);
                 } else if (get_customer_path_regex.match(path)) {
-                    get_customer(dbg_, cnx_);
+                    get_customer(dbg_, cnx_, msg);
                 } else if (list_contacts_path_regex.match(path)) {
-                    list_contacts(dbg_, cnx_);
+                    list_contacts(dbg_, cnx_, msg);
                 } else if (list_contacts_by_type_path_regex.match(path)) {
-                    list_contacts_by_type(dbg_, cnx_);
+                    list_contacts_by_type(dbg_, cnx_, msg);
                 } else {
                     _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
                     msg.set_status(Status.NOT_FOUND, null);
@@ -96,8 +96,6 @@ namespace Handler {
                 msg.set_status(Status.METHOD_NOT_ALLOWED, null);
             }
         } catch (RegexError e) {}
-
-        msg.set_status(Status.OK, null);
     }
 }
 
