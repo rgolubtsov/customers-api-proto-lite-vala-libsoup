@@ -124,7 +124,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers \
 > content-type: application/json
 > Content-Length: 25
 ...
-< HTTP/1.1 200 OK
+< HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
@@ -143,7 +143,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
 > content-type: application/json
 > Content-Length: 44
 ...
-< HTTP/1.1 200 OK
+< HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
@@ -162,7 +162,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
 > content-type: application/json
 > Content-Length: 58
 ...
-< HTTP/1.1 200 OK
+< HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
@@ -218,7 +218,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/phone
 ...
 > GET /v1/customers/3/contacts/phone HTTP/1.1
 ...
-< HTTP/1.1 200 OK
+< HTTP/1.1 404 Not Found
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
