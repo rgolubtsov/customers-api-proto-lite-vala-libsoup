@@ -1,7 +1,7 @@
 /*
  * src/api-lite-controller.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.3
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.4
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -11,6 +11,7 @@
  */
 
 using Sqlite;
+using Soup;
 
 using Helper;
 using Model;
@@ -42,8 +43,9 @@ namespace Controller {
      *
      * @param dbg The debug logging enabler.
      * @param cnx The database connection.
+     * @param msg The request message being processed.
      */
-    void add_customer(bool dbg, Database cnx) {
+    void add_customer(bool dbg, Database cnx, ServerMessage msg) {
         Statement stmt;
 
         // Creating a new customer (putting customer data to the database).
@@ -74,6 +76,8 @@ namespace Controller {
                 }
             }
         }
+
+        msg.set_status(Soup.Status.CREATED, null);
     }
 
     /**
@@ -96,8 +100,9 @@ namespace Controller {
      *
      * @param dbg The debug logging enabler.
      * @param cnx The database connection.
+     * @param msg The request message being processed.
      */
-    void add_contact(bool dbg, Database cnx) {
+    void add_contact(bool dbg, Database cnx, ServerMessage msg) {
         var cont_type = EMAIL; // <== TODO: Replace with the actual one.
 
         var sql_query = SQL_PUT_CONTACT[1];
@@ -151,6 +156,8 @@ namespace Controller {
                 }
             }
         }
+
+        msg.set_status(Soup.Status.CREATED, null);
     }
 
     /**
@@ -161,8 +168,9 @@ namespace Controller {
      *
      * @param dbg The debug logging enabler.
      * @param cnx The database connection.
+     * @param msg The request message being processed.
      */
-    void list_contacts(bool dbg, Database cnx) {
+    void list_contacts(bool dbg, Database cnx, ServerMessage msg) {
         Statement stmt;
 
         // Retrieving all contacts associated with a given customer
@@ -183,6 +191,8 @@ namespace Controller {
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
         }
+
+        msg.set_status(Soup.Status.OK, null);
     }
 
     /**
@@ -194,8 +204,9 @@ namespace Controller {
      *
      * @param dbg The debug logging enabler.
      * @param cnx The database connection.
+     * @param msg The request message being processed.
      */
-    void list_contacts_by_type(bool dbg, Database cnx) {
+    void list_contacts_by_type(bool dbg, Database cnx, ServerMessage msg) {
         var cont_type = EMAIL; // <== TODO: Replace with the actual one.
 
         var sql_query = SQL_GET_CONTACTS_BY_TYPE[1];
@@ -224,6 +235,8 @@ namespace Controller {
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
         }
+
+        msg.set_status(Soup.Status.OK, null);
     }
 }
 

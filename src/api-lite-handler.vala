@@ -1,7 +1,7 @@
 /*
  * src/api-lite-handler.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.3
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.4
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -72,30 +72,30 @@ namespace Handler {
 
                    if (method == HTTP_PUT) {
                        if (path ==  REST_CONTEXT) {
-                    add_customer(dbg_, cnx_);
+                    add_customer(dbg_, cnx_, msg);
                 } else if (path == (REST_CONTEXT + SLASH + REST_CONTACTS)) {
-                    add_contact(dbg_, cnx_);
+                    add_contact(dbg_, cnx_, msg);
                 } else {
                     _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
                 }
             } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
                        if (path ==  REST_CONTEXT) {
-                    list_customers(dbg_, cnx_);
+                    list_customers(dbg_, cnx_, msg);
                 } else if (get_customer_path_regex.match(path)) {
-                    get_customer(dbg_, cnx_);
+                    get_customer(dbg_, cnx_, msg);
                 } else if (list_contacts_path_regex.match(path)) {
-                    list_contacts(dbg_, cnx_);
+                    list_contacts(dbg_, cnx_, msg);
                 } else if (list_contacts_by_type_path_regex.match(path)) {
-                    list_contacts_by_type(dbg_, cnx_);
+                    list_contacts_by_type(dbg_, cnx_, msg);
                 } else {
-                    _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+                    _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
+                    msg.set_status(Status.NOT_FOUND, null);
                 }
             } else {
-                _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+                _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_ALLOWED + C_BRACKET);
+                msg.set_status(Status.METHOD_NOT_ALLOWED, null);
             }
         } catch (RegexError e) {}
-
-        msg.set_status(Status.OK, null);
     }
 }
 
