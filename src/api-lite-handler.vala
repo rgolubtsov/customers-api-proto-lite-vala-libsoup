@@ -88,10 +88,12 @@ namespace Handler {
                 } else if (list_contacts_by_type_path_regex.match(path)) {
                     list_contacts_by_type(dbg_, cnx_);
                 } else {
-                    _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+                    _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
+                    msg.set_status(Status.NOT_FOUND, null);
                 }
             } else {
-                _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+                _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_ALLOWED + C_BRACKET);
+                msg.set_status(Status.METHOD_NOT_ALLOWED, null);
             }
         } catch (RegexError e) {}
 
