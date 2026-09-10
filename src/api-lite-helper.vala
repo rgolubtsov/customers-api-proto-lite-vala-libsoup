@@ -48,10 +48,10 @@ namespace Helper {
         = "for an unknown reason: %s.";
     const int ERR_EADDRINUSE_CODE = 33;
     const string ERR_REQ_NOT_FOUND_1
-        = "HTTP 404 Not Found: No such REST URI path exists. "
+        = "HTTP 404 Not Found - No such REST URI path exists. "
         + "Please check your inputs.";
     const string ERR_REQ_NOT_ALLOWED
-        = "HTTP 405 Method Not Allowed: Bad HTTP method used. "
+        = "HTTP 405 Method Not Allowed - Bad HTTP method used. "
         + "Please check your inputs.";
 
     // Common notification messages.
