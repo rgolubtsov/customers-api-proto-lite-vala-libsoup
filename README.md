@@ -128,6 +128,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers \
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
+< X-Request-Method: PUT
 ...
 ```
 
@@ -147,6 +148,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
+< X-Request-Method: PUT
 ...
 ```
 
@@ -166,6 +168,7 @@ $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
+< X-Request-Method: PUT
 ...
 ```
 
@@ -180,6 +183,7 @@ $ curl -v http://localhost:8765/v1/customers
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
+< X-Request-Method: GET
 ...
 ```
 
@@ -194,6 +198,7 @@ $ curl -v http://localhost:8765/v1/customers/3
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
+< X-Request-Method: GET
 ...
 ```
 
@@ -208,6 +213,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
+< X-Request-Method: GET
 ...
 ```
 
@@ -222,6 +228,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/phone
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
+< X-Request-Method: GET
 ...
 ```
 
@@ -236,6 +243,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/email
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
+< X-Request-Method: GET
 ...
 ```
 
