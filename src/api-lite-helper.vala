@@ -119,6 +119,7 @@ namespace Helper {
 
     // HTTP response-related constants.
     const string SERVER_HEADER = "server_header";
+    const string HDR_X_REQ_M   = "X-Request-Method";
 
     /** The logfile used to store log messages. */
     FileOutputStream logfile;

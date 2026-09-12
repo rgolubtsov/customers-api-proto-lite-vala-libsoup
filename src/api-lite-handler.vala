@@ -36,9 +36,7 @@ namespace Handler {
                         string                     path,
                         HashTable<string, string>? query) {
 
-        var method = msg.get_method();
-        _dbg(dbg_, O_BRACKET + method + C_BRACKET);
-        _dbg(dbg_, O_BRACKET + path   + C_BRACKET);
+        msg.get_response_headers().append(HDR_X_REQ_M, msg.get_method());
     }
 
     /**
@@ -56,6 +54,8 @@ namespace Handler {
                          HashTable<string, string>? query) {
 
         var method = msg.get_method();
+        _dbg(dbg_, O_BRACKET + method + C_BRACKET);
+        _dbg(dbg_, O_BRACKET + path   + C_BRACKET);
 
         try {
             var get_customer_path_regex          = new Regex(
