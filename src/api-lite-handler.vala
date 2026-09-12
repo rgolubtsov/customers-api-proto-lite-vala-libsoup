@@ -76,7 +76,10 @@ namespace Handler {
                 } else if (path == (REST_CONTEXT + SLASH + REST_CONTACTS)) {
                     add_contact(dbg_, cnx_, msg);
                 } else {
-                    _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+                    // For any other route Soup will automatically respond
+                    // with the HTTP 404 Not Found status code, or:
+                    _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
+                    msg.set_status(Status.NOT_FOUND, null);
                 }
             } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
                        if (path ==  REST_CONTEXT) {
@@ -88,6 +91,8 @@ namespace Handler {
                 } else if (list_contacts_by_type_path_regex.match(path)) {
                     list_contacts_by_type(dbg_, cnx_, msg);
                 } else {
+                    // For any other route Soup will automatically respond
+                    // with the HTTP 404 Not Found status code, or:
                     _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
                     msg.set_status(Status.NOT_FOUND, null);
                 }
