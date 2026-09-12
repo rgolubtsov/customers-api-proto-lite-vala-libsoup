@@ -36,9 +36,7 @@ namespace Handler {
                         string                     path,
                         HashTable<string, string>? query) {
 
-        var method = msg.get_method();
-        _dbg(dbg_, O_BRACKET + method + C_BRACKET);
-        _dbg(dbg_, O_BRACKET + path   + C_BRACKET);
+        msg.get_response_headers().append(HDR_X_REQ_M, msg.get_method());
     }
 
     /**
@@ -56,6 +54,8 @@ namespace Handler {
                          HashTable<string, string>? query) {
 
         var method = msg.get_method();
+        _dbg(dbg_, O_BRACKET + method + C_BRACKET);
+        _dbg(dbg_, O_BRACKET + path   + C_BRACKET);
 
         try {
             var get_customer_path_regex          = new Regex(
@@ -76,7 +76,10 @@ namespace Handler {
                 } else if (path == (REST_CONTEXT + SLASH + REST_CONTACTS)) {
                     add_contact(dbg_, cnx_, msg);
                 } else {
-                    _dbg(dbg_, O_BRACKET + method + V_BAR + path + C_BRACKET);
+                    // For any other route Soup will automatically respond
+                    // with the HTTP 404 Not Found status code, or:
+                    _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
+                    msg.set_status(Status.NOT_FOUND, null);
                 }
             } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
                        if (path ==  REST_CONTEXT) {
@@ -88,11 +91,14 @@ namespace Handler {
                 } else if (list_contacts_by_type_path_regex.match(path)) {
                     list_contacts_by_type(dbg_, cnx_, msg);
                 } else {
+                    // For any other route Soup will automatically respond
+                    // with the HTTP 404 Not Found status code, or:
                     _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
                     msg.set_status(Status.NOT_FOUND, null);
                 }
             } else {
                 _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_ALLOWED + C_BRACKET);
+                msg.get_response_headers().append(HDR_ALLOW, HDR_ALLOWED);
                 msg.set_status(Status.METHOD_NOT_ALLOWED, null);
             }
         } catch (RegexError e) {}
