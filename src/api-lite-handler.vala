@@ -43,6 +43,17 @@ namespace Handler {
      * The request handler callback for the "/v1/customers"-prefixed URI path.
      * Used to process the incoming request.
      *
+     * Allowed and properly handled routes are the following ones:
+     *
+     * {{{
+     * PUT /v1/customers
+     * PUT /v1/customers/contacts
+     * GET /v1/customers
+     * GET /v1/customers/{customer_id}
+     * GET /v1/customers/{customer_id}/contacts
+     * GET /v1/customers/{customer_id}/contacts/{contact_type}
+     * }}}
+     *
      * @param server The Soup web server.
      * @param msg    The request message being processed.
      * @param path   The path component of the request message URI.
@@ -57,31 +68,32 @@ namespace Handler {
         _dbg(dbg_, O_BRACKET + method + C_BRACKET);
         _dbg(dbg_, O_BRACKET + path   + C_BRACKET);
 
-        try {
-            var get_customer_path_regex          = new Regex(
-                REST_CONTEXT + SLASH + REST_CUST_ID_R + EOL_R);
-            var list_contacts_path_regex         = new Regex(
-                REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH + REST_CONTACTS
-                                                      + EOL_R);
-            var list_contacts_by_type_path_regex = new Regex(
-                REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH + REST_CONTACTS
-                                                      + SLASH + EMAIL + EOL_R);
-            //                                                    ^
-            //                                                    |
-            // TODO: Replace with the actual one. ----------------+
+               if (method == HTTP_PUT) {
+                   if (path ==  REST_CONTEXT) {
+                add_customer(dbg_, cnx_, msg);
+            } else if (path == (REST_CONTEXT + SLASH + REST_CONTACTS)) {
+                add_contact(dbg_, cnx_, msg);
+            } else {
+                // For any other route Soup will automatically respond
+                // with the HTTP 404 Not Found status code, or:
+                _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
+                msg.set_status(Status.NOT_FOUND, null);
+            }
+        } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
+            try {
+                var get_customer_path_regex
+                    = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + EOL_R);
+                var list_contacts_path_regex
+                    = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH
+                                                     + REST_CONTACTS  + EOL_R);
+                var list_contacts_by_type_path_regex
+                    = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH
+                                                     + REST_CONTACTS  + SLASH
+                                                     + EMAIL          + EOL_R);
+                //                                         ^
+                //                                         |
+                // TODO: Replace with the actual one. -----+
 
-                   if (method == HTTP_PUT) {
-                       if (path ==  REST_CONTEXT) {
-                    add_customer(dbg_, cnx_, msg);
-                } else if (path == (REST_CONTEXT + SLASH + REST_CONTACTS)) {
-                    add_contact(dbg_, cnx_, msg);
-                } else {
-                    // For any other route Soup will automatically respond
-                    // with the HTTP 404 Not Found status code, or:
-                    _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
-                    msg.set_status(Status.NOT_FOUND, null);
-                }
-            } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
                        if (path ==  REST_CONTEXT) {
                     list_customers(dbg_, cnx_, msg);
                 } else if (get_customer_path_regex.match(path)) {
@@ -96,12 +108,12 @@ namespace Handler {
                     _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
                     msg.set_status(Status.NOT_FOUND, null);
                 }
-            } else {
-                _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_ALLOWED + C_BRACKET);
-                msg.get_response_headers().append(HDR_ALLOW, HDR_ALLOWED);
-                msg.set_status(Status.METHOD_NOT_ALLOWED, null);
-            }
-        } catch (RegexError e) {}
+            } catch (RegexError e) {}
+        } else {
+            _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_ALLOWED + C_BRACKET);
+            msg.get_response_headers().append(HDR_ALLOW, HDR_ALLOWED);
+            msg.set_status(Status.METHOD_NOT_ALLOWED, null);
+        }
     }
 }
 
