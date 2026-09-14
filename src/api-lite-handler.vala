@@ -89,10 +89,7 @@ namespace Handler {
                 var list_contacts_by_type_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH
                                                      + REST_CONTACTS  + SLASH
-                                                     + EMAIL          + EOL_R);
-                //                                         ^
-                //                                         |
-                // TODO: Replace with the actual one. -----+
+                                            + _get_contact_type(path) + EOL_R);
 
                        if (path ==  REST_CONTEXT) {
                     list_customers(dbg_, cnx_, msg);
@@ -114,6 +111,18 @@ namespace Handler {
             msg.get_response_headers().append(HDR_ALLOW, HDR_ALLOWED);
             msg.set_status(Status.METHOD_NOT_ALLOWED, null);
         }
+    }
+
+    // Helper method. Used to find a valid contact type in the route path
+    //                and (if found such) returns the type of contact:
+    //                phone or email.
+    string _get_contact_type(string path) {
+             if (path.contains(SLASH + REST_CONTACTS + SLASH + PHONE))
+            return PHONE;
+        else if (path.contains(SLASH + REST_CONTACTS + SLASH + EMAIL))
+            return EMAIL;
+        else
+            return EMPTY_STRING;
     }
 }
 
