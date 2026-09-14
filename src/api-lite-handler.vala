@@ -86,10 +86,11 @@ namespace Handler {
                 var list_contacts_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH
                                                      + REST_CONTACTS  + EOL_R);
+                var contact_type = _get_contact_type(path);
                 var list_contacts_by_type_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH
                                                      + REST_CONTACTS  + SLASH
-                                            + _get_contact_type(path) + EOL_R);
+                                                     + contact_type   + EOL_R);
 
                        if (path ==  REST_CONTEXT) {
                     list_customers(dbg_, cnx_, msg);
@@ -98,7 +99,7 @@ namespace Handler {
                 } else if (list_contacts_path_regex.match(path)) {
                     list_contacts(dbg_, cnx_, msg);
                 } else if (list_contacts_by_type_path_regex.match(path)) {
-                    list_contacts_by_type(dbg_, cnx_, msg);
+                    list_contacts_by_type(dbg_, cnx_, msg, contact_type);
                 } else {
                     // For any other route Soup will automatically respond
                     // with the HTTP 404 Not Found status code, or:
