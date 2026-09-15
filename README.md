@@ -182,9 +182,11 @@ $ curl -v http://localhost:8765/v1/customers
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Content-Type: application/json
+< Content-Length: 87
 < X-Request-Method: GET
 ...
+[{"id":1,"name":"Jammy Jellyfish"},{"id":2,"name":"Noble Numbat"},{"id":3,"name":"JP"}]
 ```
 
 4. **Retrieve customer**
@@ -224,7 +226,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/phone
 ...
 > GET /v1/customers/3/contacts/phone HTTP/1.1
 ...
-< HTTP/1.1 404 Not Found
+< HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
