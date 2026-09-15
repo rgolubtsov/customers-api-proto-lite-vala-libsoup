@@ -92,6 +92,6 @@ namespace ControllerX
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET)
 
-        msg.set_status(Soup.Status.OK, null);
+        msg.set_status(Soup.Status.OK, null)
 
 // vim:set nu et ts=4 sw=4:
