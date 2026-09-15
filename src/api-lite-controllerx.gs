@@ -1,7 +1,7 @@
 [indent=4]/*
  * src/api-lite-controllerx.gs
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.4
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.5
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -12,6 +12,7 @@
 
 uses Sqlite
 uses Soup
+uses Json
 
 uses Helper
 uses Model
@@ -48,13 +49,38 @@ namespace ControllerX
 
         if (res is not OK) do warning(cnx.errmsg())
         else
+            _customers:array of Customer = { Customer(0, EMPTY_STRING) }
+
             while (stmt.step() is ROW)
-                var row = (stmt.column_int (0).to_string() // getId()
-                + V_BAR +  stmt.column_text(1))            // getName()
+                _customers += Customer(stmt.column_int (0),
+                                       stmt.column_text(1))
 
-                _dbg(dbg, O_BRACKET + row + C_BRACKET)
+            // Eliminating the unneeded first element from the customers array.
+            customers:array of Customer = _customers[1:_customers.length]
 
-        msg.set_status(Soup.Status.OK, null);
+            var
+                json_ary  = new Json.Array()
+                json_node = new Json.Node(ARRAY)
+                json_gen  = new Generator()
+                json_body = new StringBuilder()
+
+            for customer in customers
+                var json_obj = new Json.Object()
+                json_obj.set_int_member(   JSON_ID,   customer.id  )
+                json_obj.set_string_member(JSON_NAME, customer.name)
+                json_ary.add_object_element(json_obj)
+
+            json_node.init_array(json_ary)
+            json_gen.set_root(json_node)
+            json_gen.to_gstring(json_body)
+
+            _dbg(dbg, O_BRACKET + customers[0].id.to_string() // getId()
+                    + V_BAR     + customers[0].name           // getName()
+                    + C_BRACKET)
+
+            msg.set_response(MIME_TYPE, COPY, json_body.data)
+
+        msg.set_status(Soup.Status.OK, null)
 
     /**
      * The {{{GET /v1/customers/{customer_id}}}} endpoint.
@@ -85,6 +111,6 @@ namespace ControllerX
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET)
 
-        msg.set_status(Soup.Status.OK, null);
+        msg.set_status(Soup.Status.OK, null)
 
 // vim:set nu et ts=4 sw=4:

@@ -47,7 +47,7 @@ $ sudo pacman -Syu base-devel vala docker
 ```
 $ BIN_DIR="bin"; \
   SRC_DIR="src"; \
-  valac --pkg=posix --pkg=gio-2.0 --pkg=sqlite3 --pkg=libsoup-3.0 -d ${BIN_DIR} -o api-lited ${SRC_DIR}/* && \
+  valac --pkg=posix --pkg=gio-2.0 --pkg=sqlite3 --pkg=libsoup-3.0 --pkg=json-glib-1.0 -d ${BIN_DIR} -o api-lited ${SRC_DIR}/* && \
   rm -vRf ${BIN_DIR}/${SRC_DIR}/ && \
   DB_PATH="data/db"; \
   DB_FILE="customers-api-lite.db.xz"; \
@@ -182,9 +182,11 @@ $ curl -v http://localhost:8765/v1/customers
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Content-Type: application/json
+< Content-Length: 87
 < X-Request-Method: GET
 ...
+[{"id":1,"name":"Jammy Jellyfish"},{"id":2,"name":"Noble Numbat"},{"id":3,"name":"JP"}]
 ```
 
 4. **Retrieve customer**
@@ -224,7 +226,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/phone
 ...
 > GET /v1/customers/3/contacts/phone HTTP/1.1
 ...
-< HTTP/1.1 404 Not Found
+< HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
 < Content-Length: 0
@@ -255,54 +257,55 @@ The microservice has the ability to log messages to a logfile and to the Unix sy
 
 ```
 $ tail -f log/customers-api-lite.log
-[2026-09-10][12:20:00] [DEBUG] [Customers API Lite]
-[2026-09-10][12:20:00] [DEBUG] [1e4e9e08]
-[2026-09-10][12:20:00] [INFO ] Server started on port 8765
-[2026-09-10][12:21:00] [DEBUG] [PUT]
-[2026-09-10][12:21:00] [DEBUG] [/v1/customers]
-[2026-09-10][12:21:00] [DEBUG] [JP]
-[2026-09-10][12:21:00] [DEBUG] [3|JP]
-[2026-09-10][12:21:10] [DEBUG] [PUT]
-[2026-09-10][12:21:10] [DEBUG] [/v1/customers/contacts]
-[2026-09-10][12:21:10] [DEBUG] customer_id=2
-[2026-09-10][12:21:10] [DEBUG] [jp@example.com]
-[2026-09-10][12:21:10] [DEBUG] [email|jp@example.com]
-[2026-09-10][12:22:00] [DEBUG] [PUT]
-[2026-09-10][12:22:00] [DEBUG] [/v1/customers/contacts]
-[2026-09-10][12:22:00] [DEBUG] customer_id=2
-[2026-09-10][12:22:00] [DEBUG] [jp@example.com]
-[2026-09-10][12:22:00] [DEBUG] [email|jp@example.com]
-[2026-09-10][12:22:10] [DEBUG] [GET]
-[2026-09-10][12:22:10] [DEBUG] [/v1/customers]
-[2026-09-10][12:22:10] [DEBUG] [1|Jammy Jellyfish]
-[2026-09-10][12:22:10] [DEBUG] [2|Noble Numbat]
-[2026-09-10][12:22:10] [DEBUG] [3|JP]
-[2026-09-10][12:22:20] [DEBUG] [GET]
-[2026-09-10][12:22:20] [DEBUG] [/v1/customers/3]
-[2026-09-10][12:22:20] [DEBUG] customer_id=2
-[2026-09-10][12:22:20] [DEBUG] [2|Noble Numbat]
-[2026-09-10][12:22:30] [DEBUG] [GET]
-[2026-09-10][12:22:30] [DEBUG] [/v1/customers/3/contacts]
-[2026-09-10][12:22:30] [DEBUG] customer_id=2
-[2026-09-10][12:22:30] [DEBUG] [+35760X123456]
-[2026-09-10][12:22:30] [DEBUG] [+35760Y1234578]
-[2026-09-10][12:22:30] [DEBUG] [+35790Z12345890]
-[2026-09-10][12:22:30] [DEBUG] [jp@example.com]
-[2026-09-10][12:22:30] [DEBUG] [nn@example.org]
-[2026-09-10][12:22:30] [DEBUG] [nnumbat@example.com]
-[2026-09-10][12:22:30] [DEBUG] [noble.numbat@example.com]
-[2026-09-10][12:23:00] [DEBUG] [GET]
-[2026-09-10][12:23:00] [DEBUG] [/v1/customers/3/contacts/phone]
-[2026-09-10][12:23:00] [DEBUG] [HTTP 404 Not Found - No such REST URI path exists. Please check your inputs.]
-[2026-09-10][12:23:10] [DEBUG] [GET]
-[2026-09-10][12:23:10] [DEBUG] [/v1/customers/3/contacts/email]
-[2026-09-10][12:23:10] [DEBUG] customer_id=2 | contact_type=email
-[2026-09-10][12:23:10] [DEBUG] [noble.numbat@example.com]
-[2026-09-10][12:23:10] [DEBUG] [nnumbat@example.com]
-[2026-09-10][12:23:10] [DEBUG] [nn@example.org]
-[2026-09-10][12:23:10] [DEBUG] [jp@example.com]
-[2026-09-10][12:23:10] [DEBUG] [jp@example.com]
-[2026-09-10][12:23:50] [INFO ] Server stopped
+[2026-09-15][22:30:00] [DEBUG] [Customers API Lite]
+[2026-09-15][22:30:00] [DEBUG] [e1890e08]
+[2026-09-15][22:30:00] [INFO ] Server started on port 8765
+[2026-09-15][22:35:00] [DEBUG] [PUT]
+[2026-09-15][22:35:00] [DEBUG] [/v1/customers]
+[2026-09-15][22:35:00] [DEBUG] [JP]
+[2026-09-15][22:35:00] [DEBUG] [3|JP]
+[2026-09-15][22:35:10] [DEBUG] [PUT]
+[2026-09-15][22:35:10] [DEBUG] [/v1/customers/contacts]
+[2026-09-15][22:35:10] [DEBUG] customer_id=2
+[2026-09-15][22:35:10] [DEBUG] [jp@example.com]
+[2026-09-15][22:35:10] [DEBUG] [email|jp@example.com]
+[2026-09-15][22:35:20] [DEBUG] [PUT]
+[2026-09-15][22:35:20] [DEBUG] [/v1/customers/contacts]
+[2026-09-15][22:35:20] [DEBUG] customer_id=2
+[2026-09-15][22:35:20] [DEBUG] [jp@example.com]
+[2026-09-15][22:35:20] [DEBUG] [email|jp@example.com]
+[2026-09-15][22:35:30] [DEBUG] [GET]
+[2026-09-15][22:35:30] [DEBUG] [/v1/customers]
+[2026-09-15][22:35:30] [DEBUG] [1|Jammy Jellyfish]
+[2026-09-15][22:35:40] [DEBUG] [GET]
+[2026-09-15][22:35:40] [DEBUG] [/v1/customers/3]
+[2026-09-15][22:35:40] [DEBUG] customer_id=2
+[2026-09-15][22:35:40] [DEBUG] [2|Noble Numbat]
+[2026-09-15][22:35:50] [DEBUG] [GET]
+[2026-09-15][22:35:50] [DEBUG] [/v1/customers/3/contacts]
+[2026-09-15][22:35:50] [DEBUG] customer_id=2
+[2026-09-15][22:35:50] [DEBUG] [+35760X123456]
+[2026-09-15][22:35:50] [DEBUG] [+35760Y1234578]
+[2026-09-15][22:35:50] [DEBUG] [+35790Z12345890]
+[2026-09-15][22:35:50] [DEBUG] [jp@example.com]
+[2026-09-15][22:35:50] [DEBUG] [nn@example.org]
+[2026-09-15][22:35:50] [DEBUG] [nnumbat@example.com]
+[2026-09-15][22:35:50] [DEBUG] [noble.numbat@example.com]
+[2026-09-15][22:36:00] [DEBUG] [GET]
+[2026-09-15][22:36:00] [DEBUG] [/v1/customers/3/contacts/phone]
+[2026-09-15][22:36:00] [DEBUG] customer_id=2 | contact_type=phone
+[2026-09-15][22:36:00] [DEBUG] [+35760X123456]
+[2026-09-15][22:36:00] [DEBUG] [+35760Y1234578]
+[2026-09-15][22:36:00] [DEBUG] [+35790Z12345890]
+[2026-09-15][22:36:10] [DEBUG] [GET]
+[2026-09-15][22:36:10] [DEBUG] [/v1/customers/3/contacts/email]
+[2026-09-15][22:36:10] [DEBUG] customer_id=2 | contact_type=email
+[2026-09-15][22:36:10] [DEBUG] [noble.numbat@example.com]
+[2026-09-15][22:36:10] [DEBUG] [nnumbat@example.com]
+[2026-09-15][22:36:10] [DEBUG] [nn@example.org]
+[2026-09-15][22:36:10] [DEBUG] [jp@example.com]
+[2026-09-15][22:36:10] [DEBUG] [jp@example.com]
+[2026-09-15][22:40:00] [INFO ] Server stopped
 ```
 
 Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
@@ -310,54 +313,55 @@ Messages registered by the Unix system logger can be seen and analyzed using the
 ```
 $ journalctl -f
 ...
-Sep 10 12:20:00 <hostname> api-lited[<pid>]: [Customers API Lite]
-Sep 10 12:20:00 <hostname> api-lited[<pid>]: [1e4e9e08]
-Sep 10 12:20:00 <hostname> api-lited[<pid>]: Server started on port 8765
-Sep 10 12:21:00 <hostname> api-lited[<pid>]: [PUT]
-Sep 10 12:21:00 <hostname> api-lited[<pid>]: [/v1/customers]
-Sep 10 12:21:00 <hostname> api-lited[<pid>]: [JP]
-Sep 10 12:21:00 <hostname> api-lited[<pid>]: [3|JP]
-Sep 10 12:21:10 <hostname> api-lited[<pid>]: [PUT]
-Sep 10 12:21:10 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
-Sep 10 12:21:10 <hostname> api-lited[<pid>]: customer_id=2
-Sep 10 12:21:10 <hostname> api-lited[<pid>]: [jp@example.com]
-Sep 10 12:21:10 <hostname> api-lited[<pid>]: [email|jp@example.com]
-Sep 10 12:22:00 <hostname> api-lited[<pid>]: [PUT]
-Sep 10 12:22:00 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
-Sep 10 12:22:00 <hostname> api-lited[<pid>]: customer_id=2
-Sep 10 12:22:00 <hostname> api-lited[<pid>]: [jp@example.com]
-Sep 10 12:22:00 <hostname> api-lited[<pid>]: [email|jp@example.com]
-Sep 10 12:22:10 <hostname> api-lited[<pid>]: [GET]
-Sep 10 12:22:10 <hostname> api-lited[<pid>]: [/v1/customers]
-Sep 10 12:22:10 <hostname> api-lited[<pid>]: [1|Jammy Jellyfish]
-Sep 10 12:22:10 <hostname> api-lited[<pid>]: [2|Noble Numbat]
-Sep 10 12:22:10 <hostname> api-lited[<pid>]: [3|JP]
-Sep 10 12:22:20 <hostname> api-lited[<pid>]: [GET]
-Sep 10 12:22:20 <hostname> api-lited[<pid>]: [/v1/customers/3]
-Sep 10 12:22:20 <hostname> api-lited[<pid>]: customer_id=2
-Sep 10 12:22:20 <hostname> api-lited[<pid>]: [2|Noble Numbat]
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: [GET]
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts]
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: customer_id=2
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: [+35760X123456]
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: [+35760Y1234578]
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: [+35790Z12345890]
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: [jp@example.com]
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: [nn@example.org]
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: [nnumbat@example.com]
-Sep 10 12:22:30 <hostname> api-lited[<pid>]: [noble.numbat@example.com]
-Sep 10 12:23:00 <hostname> api-lited[<pid>]: [GET]
-Sep 10 12:23:00 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts/phone]
-Sep 10 12:23:00 <hostname> api-lited[<pid>]: [HTTP 404 Not Found - No such REST URI path exists. Please check your inputs.]
-Sep 10 12:23:10 <hostname> api-lited[<pid>]: [GET]
-Sep 10 12:23:10 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts/email]
-Sep 10 12:23:10 <hostname> api-lited[<pid>]: customer_id=2 | contact_type=email
-Sep 10 12:23:10 <hostname> api-lited[<pid>]: [noble.numbat@example.com]
-Sep 10 12:23:10 <hostname> api-lited[<pid>]: [nnumbat@example.com]
-Sep 10 12:23:10 <hostname> api-lited[<pid>]: [nn@example.org]
-Sep 10 12:23:10 <hostname> api-lited[<pid>]: [jp@example.com]
-Sep 10 12:23:10 <hostname> api-lited[<pid>]: [jp@example.com]
-Sep 10 12:23:50 <hostname> api-lited[<pid>]: Server stopped
+Sep 15 22:30:00 <hostname> api-lited[<pid>]: [Customers API Lite]
+Sep 15 22:30:00 <hostname> api-lited[<pid>]: [e1890e08]
+Sep 15 22:30:00 <hostname> api-lited[<pid>]: Server started on port 8765
+Sep 15 22:35:00 <hostname> api-lited[<pid>]: [PUT]
+Sep 15 22:35:00 <hostname> api-lited[<pid>]: [/v1/customers]
+Sep 15 22:35:00 <hostname> api-lited[<pid>]: [JP]
+Sep 15 22:35:00 <hostname> api-lited[<pid>]: [3|JP]
+Sep 15 22:35:10 <hostname> api-lited[<pid>]: [PUT]
+Sep 15 22:35:10 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
+Sep 15 22:35:10 <hostname> api-lited[<pid>]: customer_id=2
+Sep 15 22:35:10 <hostname> api-lited[<pid>]: [jp@example.com]
+Sep 15 22:35:10 <hostname> api-lited[<pid>]: [email|jp@example.com]
+Sep 15 22:35:20 <hostname> api-lited[<pid>]: [PUT]
+Sep 15 22:35:20 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
+Sep 15 22:35:20 <hostname> api-lited[<pid>]: customer_id=2
+Sep 15 22:35:20 <hostname> api-lited[<pid>]: [jp@example.com]
+Sep 15 22:35:20 <hostname> api-lited[<pid>]: [email|jp@example.com]
+Sep 15 22:35:30 <hostname> api-lited[<pid>]: [GET]
+Sep 15 22:35:30 <hostname> api-lited[<pid>]: [/v1/customers]
+Sep 15 22:35:30 <hostname> api-lited[<pid>]: [1|Jammy Jellyfish]
+Sep 15 22:35:40 <hostname> api-lited[<pid>]: [GET]
+Sep 15 22:35:40 <hostname> api-lited[<pid>]: [/v1/customers/3]
+Sep 15 22:35:40 <hostname> api-lited[<pid>]: customer_id=2
+Sep 15 22:35:40 <hostname> api-lited[<pid>]: [2|Noble Numbat]
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: [GET]
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts]
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: customer_id=2
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: [+35760X123456]
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: [+35760Y1234578]
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: [+35790Z12345890]
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: [jp@example.com]
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: [nn@example.org]
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: [nnumbat@example.com]
+Sep 15 22:35:50 <hostname> api-lited[<pid>]: [noble.numbat@example.com]
+Sep 15 22:36:00 <hostname> api-lited[<pid>]: [GET]
+Sep 15 22:36:00 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts/phone]
+Sep 15 22:36:00 <hostname> api-lited[<pid>]: customer_id=2 | contact_type=phone
+Sep 15 22:36:00 <hostname> api-lited[<pid>]: [+35760X123456]
+Sep 15 22:36:00 <hostname> api-lited[<pid>]: [+35760Y1234578]
+Sep 15 22:36:00 <hostname> api-lited[<pid>]: [+35790Z12345890]
+Sep 15 22:36:10 <hostname> api-lited[<pid>]: [GET]
+Sep 15 22:36:10 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts/email]
+Sep 15 22:36:10 <hostname> api-lited[<pid>]: customer_id=2 | contact_type=email
+Sep 15 22:36:10 <hostname> api-lited[<pid>]: [noble.numbat@example.com]
+Sep 15 22:36:10 <hostname> api-lited[<pid>]: [nnumbat@example.com]
+Sep 15 22:36:10 <hostname> api-lited[<pid>]: [nn@example.org]
+Sep 15 22:36:10 <hostname> api-lited[<pid>]: [jp@example.com]
+Sep 15 22:36:10 <hostname> api-lited[<pid>]: [jp@example.com]
+Sep 15 22:40:00 <hostname> api-lited[<pid>]: Server stopped
 ```
 
 **TBD** :cd:

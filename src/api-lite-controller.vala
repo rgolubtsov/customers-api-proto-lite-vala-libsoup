@@ -1,7 +1,7 @@
 /*
  * src/api-lite-controller.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.4
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.5
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -202,17 +202,20 @@ namespace Controller {
      * Retrieves from the database and lists all contacts of a given type
      * associated with a given customer.
      *
-     * @param dbg The debug logging enabler.
-     * @param cnx The database connection.
-     * @param msg The request message being processed.
+     * @param dbg          The debug logging enabler.
+     * @param cnx          The database connection.
+     * @param msg          The request message being processed.
+     * @param contact_type The type of contact: phone or email.
      */
-    void list_contacts_by_type(bool dbg, Database cnx, ServerMessage msg) {
-        var cont_type = EMAIL; // <== TODO: Replace with the actual one.
+    void list_contacts_by_type(bool          dbg,
+                               Database      cnx,
+                               ServerMessage msg,
+                               string        contact_type) {
 
         var sql_query = SQL_GET_CONTACTS_BY_TYPE[1];
-               if (cont_type == PHONE) {
+               if (contact_type == PHONE) {
             sql_query = SQL_GET_CONTACTS_BY_TYPE[0];
-        } else if (cont_type == EMAIL) {
+        } else if (contact_type == EMAIL) {
             sql_query = SQL_GET_CONTACTS_BY_TYPE[1];
         }
 
@@ -225,7 +228,7 @@ namespace Controller {
         if (res != OK) { warning(cnx.errmsg()); } else {
             var cust_id = 2; // <== TODO: Replace with the actual one.
             _dbg(dbg, REST_CUST_ID   + EQUALS + cust_id.to_string() + SPACE
-    + V_BAR + SPACE + REST_CONT_TYPE + EQUALS + cont_type);
+    + V_BAR + SPACE + REST_CONT_TYPE + EQUALS + contact_type);
 
             stmt.bind_int(1, cust_id);
 
