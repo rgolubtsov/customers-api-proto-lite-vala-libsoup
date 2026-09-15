@@ -113,8 +113,9 @@ namespace Handler {
                 }
             } catch (RegexError e) {}
         } else {
-            _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_ALLOWED + C_BRACKET);
             msg.get_response_headers().append(HDR_ALLOW, HDR_ALLOWED);
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_REQ_NOT_ALLOWED));
             msg.set_status(Status.METHOD_NOT_ALLOWED, null);
         }
     }
