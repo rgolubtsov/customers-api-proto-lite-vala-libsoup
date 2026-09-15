@@ -48,13 +48,20 @@ namespace ControllerX
 
         if (res is not OK) do warning(cnx.errmsg())
         else
+            _customers:array of Customer = { Customer(0, EMPTY_STRING) }
+
             while (stmt.step() is ROW)
-                var row = (stmt.column_int (0).to_string() // getId()
-                + V_BAR +  stmt.column_text(1))            // getName()
+                _customers += Customer(stmt.column_int (0), // getId()
+                                       stmt.column_text(1)) // getName()
 
-                _dbg(dbg, O_BRACKET + row + C_BRACKET)
+            // Eliminating the unneeded first element from the customers array.
+            customers:array of Customer = _customers[1:_customers.length]
 
-        msg.set_status(Soup.Status.OK, null);
+            for customer in customers
+                _dbg(dbg, O_BRACKET + customer.id.to_string()
+                            + V_BAR + customer.name + C_BRACKET)
+
+        msg.set_status(Soup.Status.OK, null)
 
     /**
      * The {{{GET /v1/customers/{customer_id}}}} endpoint.
