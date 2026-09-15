@@ -11,6 +11,7 @@
  */
 
 using Soup;
+using Json;
 
 using Helper;
 using Controller;
@@ -75,8 +76,11 @@ namespace Handler {
                 add_contact(dbg_, cnx_, msg);
             } else {
                 // For any other route Soup will automatically respond
-                // with the HTTP 404 Not Found status code, or:
-                _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
+                // with the HTTP 404 Not Found status code, or (if this
+                // handler is registered as a default request handler)
+                // respond with the following:
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_NOT_FOUND_1));
                 msg.set_status(Status.NOT_FOUND, null);
             }
         } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
@@ -102,8 +106,11 @@ namespace Handler {
                     list_contacts_by_type(dbg_, cnx_, msg, contact_type);
                 } else {
                     // For any other route Soup will automatically respond
-                    // with the HTTP 404 Not Found status code, or:
-                    _dbg(dbg_, O_BRACKET + ERR_REQ_NOT_FOUND_1 + C_BRACKET);
+                    // with the HTTP 404 Not Found status code, or (if this
+                    // handler is registered as a default request handler)
+                    // respond with the following:
+                    msg.set_response(MIME_TYPE, COPY,
+                       _get_err_json_body(ERR_REQ_NOT_FOUND_1));
                     msg.set_status(Status.NOT_FOUND, null);
                 }
             } catch (RegexError e) {}
@@ -112,6 +119,22 @@ namespace Handler {
             msg.get_response_headers().append(HDR_ALLOW, HDR_ALLOWED);
             msg.set_status(Status.METHOD_NOT_ALLOWED, null);
         }
+    }
+
+    // Helper method. Returns a serialized JSON object for a given error
+    //                message to use directly as an HTTP response body.
+    uint8[] _get_err_json_body(string err_msg) {
+        var json_obj  = new Json.Object();
+        var json_node = new Json.Node(OBJECT);
+        var json_gen  = new Generator();
+        var json_body = new StringBuilder();
+
+        json_obj.set_string_member(JSON_ERROR, err_msg);
+        json_node.init_object(json_obj);
+        json_gen.set_root(json_node);
+        json_gen.to_gstring(json_body);
+
+        return json_body.data;
     }
 
     // Helper method. Used to find a valid contact type in the route path

@@ -48,10 +48,10 @@ namespace Helper {
         = "for an unknown reason: %s.";
     const int ERR_EADDRINUSE_CODE = 33;
     const string ERR_REQ_NOT_FOUND_1
-        = "HTTP 404 Not Found - No such REST URI path exists. "
+        = "HTTP 404 Not Found: No such REST URI path exists. "
         + "Please check your inputs.";
     const string ERR_REQ_NOT_ALLOWED
-        = "HTTP 405 Method Not Allowed - Bad HTTP method used. "
+        = "HTTP 405 Method Not Allowed: Bad HTTP method used. "
         + "Please check your inputs.";
 
     // Common notification messages.
@@ -122,6 +122,8 @@ namespace Helper {
     const string HDR_X_REQ_M   = "X-Request-Method";
     const string HDR_ALLOW     = "Allow";
     const string HDR_ALLOWED   = "PUT, GET, HEAD";
+    const string MIME_TYPE     = "application/json";
+    const string JSON_ERROR    = "error";
 
     /** The logfile used to store log messages. */
     FileOutputStream logfile;
