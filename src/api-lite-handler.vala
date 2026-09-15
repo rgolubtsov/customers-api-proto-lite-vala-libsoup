@@ -76,9 +76,8 @@ namespace Handler {
                 add_contact(dbg_, cnx_, msg);
             } else {
                 // For any other route Soup will automatically respond
-                // with the HTTP 404 Not Found status code, or (if this
-                // handler is registered as a default request handler)
-                // respond with the following:
+                // with the HTTP 404 Not Found status code, or respond
+                // with the following:
                 msg.set_response(MIME_TYPE, COPY,
                    _get_err_json_body(ERR_REQ_NOT_FOUND_1));
                 msg.set_status(Status.NOT_FOUND, null);
@@ -106,9 +105,8 @@ namespace Handler {
                     list_contacts_by_type(dbg_, cnx_, msg, contact_type);
                 } else {
                     // For any other route Soup will automatically respond
-                    // with the HTTP 404 Not Found status code, or (if this
-                    // handler is registered as a default request handler)
-                    // respond with the following:
+                    // with the HTTP 404 Not Found status code, or respond
+                    // with the following:
                     msg.set_response(MIME_TYPE, COPY,
                        _get_err_json_body(ERR_REQ_NOT_FOUND_1));
                     msg.set_status(Status.NOT_FOUND, null);
