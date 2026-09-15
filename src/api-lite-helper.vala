@@ -124,6 +124,8 @@ namespace Helper {
     const string HDR_ALLOWED   = "PUT, GET, HEAD";
     const string MIME_TYPE     = "application/json";
     const string JSON_ERROR    = "error";
+    const string JSON_ID       = "id";
+    const string JSON_NAME     = "name";
 
     /** The logfile used to store log messages. */
     FileOutputStream logfile;

@@ -12,6 +12,7 @@
 
 uses Sqlite
 uses Soup
+uses Json
 
 uses Helper
 uses Model
@@ -51,15 +52,33 @@ namespace ControllerX
             _customers:array of Customer = { Customer(0, EMPTY_STRING) }
 
             while (stmt.step() is ROW)
-                _customers += Customer(stmt.column_int (0), // getId()
-                                       stmt.column_text(1)) // getName()
+                _customers += Customer(stmt.column_int (0),
+                                       stmt.column_text(1))
 
             // Eliminating the unneeded first element from the customers array.
             customers:array of Customer = _customers[1:_customers.length]
 
+            var
+                json_ary  = new Json.Array()
+                json_node = new Json.Node(ARRAY)
+                json_gen  = new Generator()
+                json_body = new StringBuilder()
+
             for customer in customers
-                _dbg(dbg, O_BRACKET + customer.id.to_string()
-                            + V_BAR + customer.name + C_BRACKET)
+                var json_obj = new Json.Object()
+                json_obj.set_int_member(   JSON_ID,   customer.id  )
+                json_obj.set_string_member(JSON_NAME, customer.name)
+                json_ary.add_object_element(json_obj)
+
+            json_node.init_array(json_ary)
+            json_gen.set_root(json_node)
+            json_gen.to_gstring(json_body)
+
+            _dbg(dbg, O_BRACKET + customers[0].id.to_string() // getId()
+                    + V_BAR     + customers[0].name           // getName()
+                    + C_BRACKET)
+
+            msg.set_response(MIME_TYPE, COPY, json_body.data)
 
         msg.set_status(Soup.Status.OK, null)
 
