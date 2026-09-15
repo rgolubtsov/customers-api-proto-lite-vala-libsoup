@@ -88,6 +88,28 @@ namespace Model {
          where
               (cust.id = emails.customer_id) and
               (cust.id =                  ?)"""};
+
+    /** The struct defining the Customer entity. */
+    struct Customer {
+        int    id;
+        string name;
+
+        public Customer(int _id, string _name) {
+            id   = _id;
+            name = _name;
+        }
+    }
+
+    /** The struct defining the Contact entity. */
+    struct Contact {
+        string contact;
+        string customer_id;
+
+        Contact(string _contact, string _customer_id) {
+            contact     = _contact;
+            customer_id = _customer_id;
+        }
+    }
 }
 
 // vim:set nu et ts=4 sw=4:
