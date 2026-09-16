@@ -97,6 +97,8 @@ namespace ControllerX
                      msg        :ServerMessage,
                      customer_id:int)
 
+        _dbg(dbg, REST_CUST_ID + EQUALS + customer_id.to_string())
+
         stmt:Statement
 
         // Retrieving profile details for a given customer from the database.
@@ -105,10 +107,7 @@ namespace ControllerX
 
         if (res is not OK) do warning(cnx.errmsg())
         else
-            var cust_id = customer_id
-            _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string())
-
-            stmt.bind_int(1, cust_id)
+            stmt.bind_int(1, customer_id)
 
             if (stmt.step() is ROW)
                 var customer = Customer(stmt.column_int (0),

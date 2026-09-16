@@ -176,6 +176,8 @@ namespace Controller {
                        ServerMessage msg,
                        int           customer_id) {
 
+        _dbg(dbg, REST_CUST_ID + EQUALS + customer_id.to_string());
+
         Statement stmt;
 
         // Retrieving all contacts associated with a given customer
@@ -184,11 +186,8 @@ namespace Controller {
                                  SQL_GET_ALL_CONTACTS.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            var cust_id = customer_id;
-            _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string());
-
-            stmt.bind_int(1, cust_id); // <== For retrieving phones.
-            stmt.bind_int(2, cust_id); // <== For retrieving emails.
+            stmt.bind_int(1, customer_id); // <== For retrieving phones.
+            stmt.bind_int(2, customer_id); // <== For retrieving emails.
 
             while (stmt.step() == ROW) {
                 var row = stmt.column_text(0); // getContact()
@@ -219,6 +218,9 @@ namespace Controller {
                                int           customer_id,
                                string        contact_type) {
 
+        _dbg(dbg, REST_CUST_ID   + EQUALS + customer_id.to_string() + SPACE
++ V_BAR + SPACE + REST_CONT_TYPE + EQUALS + contact_type);
+
         var sql_query = SQL_GET_CONTACTS_BY_TYPE[1];
                if (contact_type == PHONE) {
             sql_query = SQL_GET_CONTACTS_BY_TYPE[0];
@@ -233,11 +235,7 @@ namespace Controller {
         var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            var cust_id = customer_id;
-            _dbg(dbg, REST_CUST_ID   + EQUALS + cust_id.to_string() + SPACE
-    + V_BAR + SPACE + REST_CONT_TYPE + EQUALS + contact_type);
-
-            stmt.bind_int(1, cust_id);
+            stmt.bind_int(1, customer_id);
 
             while (stmt.step() == ROW) {
                 var row = stmt.column_text(0); // getContact()
