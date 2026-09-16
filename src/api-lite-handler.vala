@@ -11,7 +11,6 @@
  */
 
 using Soup;
-using Json;
 
 using Helper;
 using Controller;
@@ -118,22 +117,6 @@ namespace Handler {
                _get_err_json_body(ERR_REQ_NOT_ALLOWED));
             msg.set_status(Status.METHOD_NOT_ALLOWED, null);
         }
-    }
-
-    // Helper method. Returns a serialized JSON object for a given error
-    //                message to use directly as an HTTP response body.
-    uint8[] _get_err_json_body(string err_msg) {
-        var json_obj  = new Json.Object();
-        var json_node = new Json.Node(OBJECT);
-        var json_gen  = new Generator();
-        var json_body = new StringBuilder();
-
-        json_obj.set_string_member(JSON_ERROR, err_msg);
-        json_node.init_object(json_obj);
-        json_gen.set_root(json_node);
-        json_gen.to_gstring(json_body);
-
-        return json_body.data;
     }
 
     // Helper method. Used to find a valid contact type in the route path

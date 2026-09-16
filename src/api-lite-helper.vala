@@ -12,6 +12,7 @@
 
 using Posix;
 using Sqlite;
+using Json;
 
 /**
  * The helper namespace for the daemon.
@@ -50,6 +51,8 @@ namespace Helper {
     const string ERR_REQ_NOT_FOUND_1
         = "HTTP 404 Not Found: No such REST URI path exists. "
         + "Please check your inputs.";
+    const string ERR_REQ_NOT_FOUND_2
+        = "HTTP 404 Not Found: No such customer exists.";
     const string ERR_REQ_NOT_ALLOWED
         = "HTTP 405 Method Not Allowed: Bad HTTP method used. "
         + "Please check your inputs.";
@@ -276,6 +279,22 @@ namespace Helper {
         info(MSG_SERVER_STOPPED); syslog(LOG_INFO, MSG_SERVER_STOPPED);
 
         _cleanup(); exit(EXIT_SUCCESS);
+    }
+
+    // Helper method. Returns a serialized JSON object for a given error
+    //                message to use directly as an HTTP response body.
+    uint8[] _get_err_json_body(string err_msg) {
+        var json_obj  = new Json.Object();
+        var json_node = new Json.Node(OBJECT);
+        var json_gen  = new Generator();
+        var json_body = new StringBuilder();
+
+        json_obj.set_string_member(JSON_ERROR, err_msg);
+        json_node.init_object(json_obj);
+        json_gen.set_root(json_node);
+        json_gen.to_gstring(json_body);
+
+        return json_body.data;
     }
 }
 
