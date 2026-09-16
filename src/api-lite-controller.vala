@@ -166,11 +166,16 @@ namespace Controller {
      * Retrieves from the database and lists all contacts
      * associated with a given customer.
      *
-     * @param dbg The debug logging enabler.
-     * @param cnx The database connection.
-     * @param msg The request message being processed.
+     * @param dbg         The debug logging enabler.
+     * @param cnx         The database connection.
+     * @param msg         The request message being processed.
+     * @param customer_id The customer ID.
      */
-    void list_contacts(bool dbg, Database cnx, ServerMessage msg) {
+    void list_contacts(bool          dbg,
+                       Database      cnx,
+                       ServerMessage msg,
+                       string        customer_id) {
+
         Statement stmt;
 
         // Retrieving all contacts associated with a given customer
@@ -205,11 +210,13 @@ namespace Controller {
      * @param dbg          The debug logging enabler.
      * @param cnx          The database connection.
      * @param msg          The request message being processed.
+     * @param customer_id  The customer ID.
      * @param contact_type The type of contact: phone or email.
      */
     void list_contacts_by_type(bool          dbg,
                                Database      cnx,
                                ServerMessage msg,
+                               string        customer_id,
                                string        contact_type) {
 
         var sql_query = SQL_GET_CONTACTS_BY_TYPE[1];

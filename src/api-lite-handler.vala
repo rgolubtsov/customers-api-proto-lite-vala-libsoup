@@ -82,13 +82,15 @@ namespace Handler {
                 msg.set_status(Status.NOT_FOUND, null);
             }
         } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
+            var customer_id  = _get_customer_id( path);
+            var contact_type = _get_contact_type(path);
+
             try {
                 var get_customer_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + EOL_R);
                 var list_contacts_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH
                                                      + REST_CONTACTS  + EOL_R);
-                var contact_type = _get_contact_type(path);
                 var list_contacts_by_type_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH
                                                      + REST_CONTACTS  + SLASH
@@ -97,11 +99,12 @@ namespace Handler {
                        if (path ==  REST_CONTEXT) {
                     list_customers(dbg_, cnx_, msg);
                 } else if (get_customer_path_regex.match(path)) {
-                    get_customer(dbg_, cnx_, msg);
+                    get_customer(dbg_, cnx_, msg, customer_id);
                 } else if (list_contacts_path_regex.match(path)) {
-                    list_contacts(dbg_, cnx_, msg);
+                    list_contacts(dbg_, cnx_, msg, customer_id);
                 } else if (list_contacts_by_type_path_regex.match(path)) {
-                    list_contacts_by_type(dbg_, cnx_, msg, contact_type);
+                    list_contacts_by_type(dbg_, cnx_, msg, customer_id,
+                                                           contact_type);
                 } else {
                     // For any other route Soup will automatically respond
                     // with the HTTP 404 Not Found status code, or respond
@@ -117,6 +120,17 @@ namespace Handler {
                _get_err_json_body(ERR_REQ_NOT_ALLOWED));
             msg.set_status(Status.METHOD_NOT_ALLOWED, null);
         }
+    }
+
+    // Helper method. Used to find a customer ID in the route path
+    //                and (if found such) returns it
+    //                in its text representation.
+    string _get_customer_id(string path) {
+        try { if (new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R).match(path))
+            return new Regex(SLASH).split(path)[3];
+        } catch (RegexError e) {}
+
+        return EMPTY_STRING;
     }
 
     // Helper method. Used to find a valid contact type in the route path

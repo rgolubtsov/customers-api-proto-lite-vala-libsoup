@@ -87,11 +87,16 @@ namespace ControllerX
      *
      * Retrieves profile details for a given customer from the database.
      *
-     * @param dbg The debug logging enabler.
-     * @param cnx The database connection.
-     * @param msg The request message being processed.
+     * @param dbg         The debug logging enabler.
+     * @param cnx         The database connection.
+     * @param msg         The request message being processed.
+     * @param customer_id The customer ID.
      */
-    def get_customer(dbg:bool, cnx:Database, msg:ServerMessage)
+    def get_customer(dbg        :bool,
+                     cnx        :Database,
+                     msg        :ServerMessage,
+                     customer_id:string)
+
         stmt:Statement
 
         // Retrieving profile details for a given customer from the database.
