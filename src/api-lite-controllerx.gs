@@ -106,11 +106,30 @@ namespace ControllerX
             stmt.bind_int(1, cust_id)
 
             if (stmt.step() is ROW)
-                var row = (stmt.column_int (0).to_string() // getId()
-                + V_BAR +  stmt.column_text(1))            // getName()
+                var customer = Customer(stmt.column_int (0),
+                                        stmt.column_text(1))
 
-                _dbg(dbg, O_BRACKET + row + C_BRACKET)
+                var
+                    json_obj  = new Json.Object()
+                    json_node = new Json.Node(OBJECT)
+                    json_gen  = new Generator()
+                    json_body = new StringBuilder()
 
-        msg.set_status(Soup.Status.OK, null)
+                json_obj.set_int_member(   JSON_ID,   customer.id  )
+                json_obj.set_string_member(JSON_NAME, customer.name)
+                json_node.init_object(json_obj)
+                json_gen.set_root(json_node)
+                json_gen.to_gstring(json_body)
+
+                _dbg(dbg, O_BRACKET + customer.id.to_string() // getId()
+                        + V_BAR     + customer.name           // getName()
+                        + C_BRACKET)
+
+                msg.set_response(MIME_TYPE, COPY, json_body.data)
+                msg.set_status(Soup.Status.OK, null)
+            else
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_NOT_FOUND_2))
+                msg.set_status(Soup.Status.NOT_FOUND, null)
 
 // vim:set nu et ts=4 sw=4:
