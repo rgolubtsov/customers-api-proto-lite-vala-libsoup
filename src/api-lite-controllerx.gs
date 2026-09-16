@@ -95,7 +95,7 @@ namespace ControllerX
     def get_customer(dbg        :bool,
                      cnx        :Database,
                      msg        :ServerMessage,
-                     customer_id:string)
+                     customer_id:int)
 
         stmt:Statement
 
@@ -105,7 +105,7 @@ namespace ControllerX
 
         if (res is not OK) do warning(cnx.errmsg())
         else
-            var cust_id = 2 // <== TODO: Replace with the actual one.
+            var cust_id = customer_id
             _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string())
 
             stmt.bind_int(1, cust_id)

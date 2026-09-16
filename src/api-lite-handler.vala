@@ -82,7 +82,7 @@ namespace Handler {
                 msg.set_status(Status.NOT_FOUND, null);
             }
         } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
-            var customer_id  = _get_customer_id( path);
+            var customer_id  = int.parse(_get_customer_id(path));
             var contact_type = _get_contact_type(path);
 
             try {
