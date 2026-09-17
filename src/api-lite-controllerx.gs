@@ -1,7 +1,7 @@
 [indent=4]/*
  * src/api-lite-controllerx.gs
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.5
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.6
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -87,30 +87,58 @@ namespace ControllerX
      *
      * Retrieves profile details for a given customer from the database.
      *
-     * @param dbg The debug logging enabler.
-     * @param cnx The database connection.
-     * @param msg The request message being processed.
+     * @param dbg         The debug logging enabler.
+     * @param cnx         The database connection.
+     * @param msg         The request message being processed.
+     * @param customer_id The customer ID.
      */
-    def get_customer(dbg:bool, cnx:Database, msg:ServerMessage)
+    def get_customer(dbg        :bool,
+                     cnx        :Database,
+                     msg        :ServerMessage,
+                     customer_id:int)
+
+        _dbg(dbg, REST_CUST_ID + EQUALS + customer_id.to_string())
+
         stmt:Statement
 
         // Retrieving profile details for a given customer from the database.
         var res = cnx.prepare_v2(SQL_GET_CUSTOMER_BY_ID,
                                  SQL_GET_CUSTOMER_BY_ID.length, out stmt)
 
-        if (res is not OK) do warning(cnx.errmsg())
-        else
-            var cust_id = 2 // <== TODO: Replace with the actual one.
-            _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string())
+        if (res is not OK)
+            warning(cnx.errmsg())
 
-            stmt.bind_int(1, cust_id)
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_SRV_INTERNAL_ERROR))
+            msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null)
+        else
+            stmt.bind_int(1, customer_id)
 
             if (stmt.step() is ROW)
-                var row = (stmt.column_int (0).to_string() // getId()
-                + V_BAR +  stmt.column_text(1))            // getName()
+                var customer = Customer(stmt.column_int (0),
+                                        stmt.column_text(1))
 
-                _dbg(dbg, O_BRACKET + row + C_BRACKET)
+                var
+                    json_obj  = new Json.Object()
+                    json_node = new Json.Node(OBJECT)
+                    json_gen  = new Generator()
+                    json_body = new StringBuilder()
 
-        msg.set_status(Soup.Status.OK, null)
+                json_obj.set_int_member(   JSON_ID,   customer.id  )
+                json_obj.set_string_member(JSON_NAME, customer.name)
+                json_node.init_object(json_obj)
+                json_gen.set_root(json_node)
+                json_gen.to_gstring(json_body)
+
+                _dbg(dbg, O_BRACKET + customer.id.to_string() // getId()
+                        + V_BAR     + customer.name           // getName()
+                        + C_BRACKET)
+
+                msg.set_response(MIME_TYPE, COPY, json_body.data)
+                msg.set_status(Soup.Status.OK, null)
+            else
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_NOT_FOUND_2))
+                msg.set_status(Soup.Status.NOT_FOUND, null)
 
 // vim:set nu et ts=4 sw=4:

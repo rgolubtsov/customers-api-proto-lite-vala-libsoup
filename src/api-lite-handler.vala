@@ -1,7 +1,7 @@
 /*
  * src/api-lite-handler.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.5
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.6
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -11,7 +11,6 @@
  */
 
 using Soup;
-using Json;
 
 using Helper;
 using Controller;
@@ -83,13 +82,15 @@ namespace Handler {
                 msg.set_status(Status.NOT_FOUND, null);
             }
         } else if ((method == HTTP_GET) || (method == HTTP_HEAD)) {
+            var customer_id  = int.parse(_get_customer_id(path));
+            var contact_type = _get_contact_type(path);
+
             try {
                 var get_customer_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + EOL_R);
                 var list_contacts_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH
                                                      + REST_CONTACTS  + EOL_R);
-                var contact_type = _get_contact_type(path);
                 var list_contacts_by_type_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + SLASH
                                                      + REST_CONTACTS  + SLASH
@@ -98,15 +99,22 @@ namespace Handler {
                        if (path ==  REST_CONTEXT) {
                     list_customers(dbg_, cnx_, msg);
                 } else if (get_customer_path_regex.match(path)) {
-                    get_customer(dbg_, cnx_, msg);
+                    get_customer(dbg_, cnx_, msg, customer_id);
                 } else if (list_contacts_path_regex.match(path)) {
-                    list_contacts(dbg_, cnx_, msg);
+                    list_contacts(dbg_, cnx_, msg, customer_id);
                 } else if (list_contacts_by_type_path_regex.match(path)) {
-                    list_contacts_by_type(dbg_, cnx_, msg, contact_type);
+                    list_contacts_by_type(dbg_, cnx_, msg, customer_id,
+                                                           contact_type);
                 } else {
                     // For any other route Soup will automatically respond
                     // with the HTTP 404 Not Found status code, or respond
                     // with the following:
+                    if (customer_id == 0) {
+                        msg.set_response(MIME_TYPE, COPY,
+                           _get_err_json_body(ERR_REQ_MALFORMED));
+                        msg.set_status(Status.BAD_REQUEST, null); return;
+                    }
+
                     msg.set_response(MIME_TYPE, COPY,
                        _get_err_json_body(ERR_REQ_NOT_FOUND_1));
                     msg.set_status(Status.NOT_FOUND, null);
@@ -120,20 +128,15 @@ namespace Handler {
         }
     }
 
-    // Helper method. Returns a serialized JSON object for a given error
-    //                message to use directly as an HTTP response body.
-    uint8[] _get_err_json_body(string err_msg) {
-        var json_obj  = new Json.Object();
-        var json_node = new Json.Node(OBJECT);
-        var json_gen  = new Generator();
-        var json_body = new StringBuilder();
+    // Helper method. Used to find a customer ID in the route path
+    //                and (if found such) returns it
+    //                in its text representation.
+    string _get_customer_id(string path) {
+        try { if (new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R).match(path))
+            return new Regex(SLASH).split(path)[3];
+        } catch (RegexError e) {}
 
-        json_obj.set_string_member(JSON_ERROR, err_msg);
-        json_node.init_object(json_obj);
-        json_gen.set_root(json_node);
-        json_gen.to_gstring(json_body);
-
-        return json_body.data;
+        return EMPTY_STRING;
     }
 
     // Helper method. Used to find a valid contact type in the route path

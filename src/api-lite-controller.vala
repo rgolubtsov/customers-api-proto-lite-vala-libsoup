@@ -1,7 +1,7 @@
 /*
  * src/api-lite-controller.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.5
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.6
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -166,11 +166,18 @@ namespace Controller {
      * Retrieves from the database and lists all contacts
      * associated with a given customer.
      *
-     * @param dbg The debug logging enabler.
-     * @param cnx The database connection.
-     * @param msg The request message being processed.
+     * @param dbg         The debug logging enabler.
+     * @param cnx         The database connection.
+     * @param msg         The request message being processed.
+     * @param customer_id The customer ID.
      */
-    void list_contacts(bool dbg, Database cnx, ServerMessage msg) {
+    void list_contacts(bool          dbg,
+                       Database      cnx,
+                       ServerMessage msg,
+                       int           customer_id) {
+
+        _dbg(dbg, REST_CUST_ID + EQUALS + customer_id.to_string());
+
         Statement stmt;
 
         // Retrieving all contacts associated with a given customer
@@ -179,11 +186,8 @@ namespace Controller {
                                  SQL_GET_ALL_CONTACTS.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            var cust_id = 2; // <== TODO: Replace with the actual one.
-            _dbg(dbg, REST_CUST_ID + EQUALS + cust_id.to_string());
-
-            stmt.bind_int(1, cust_id); // <== For retrieving phones.
-            stmt.bind_int(2, cust_id); // <== For retrieving emails.
+            stmt.bind_int(1, customer_id); // <== For retrieving phones.
+            stmt.bind_int(2, customer_id); // <== For retrieving emails.
 
             while (stmt.step() == ROW) {
                 var row = stmt.column_text(0); // getContact()
@@ -205,12 +209,17 @@ namespace Controller {
      * @param dbg          The debug logging enabler.
      * @param cnx          The database connection.
      * @param msg          The request message being processed.
+     * @param customer_id  The customer ID.
      * @param contact_type The type of contact: phone or email.
      */
     void list_contacts_by_type(bool          dbg,
                                Database      cnx,
                                ServerMessage msg,
+                               int           customer_id,
                                string        contact_type) {
+
+        _dbg(dbg, REST_CUST_ID   + EQUALS + customer_id.to_string() + SPACE
++ V_BAR + SPACE + REST_CONT_TYPE + EQUALS + contact_type);
 
         var sql_query = SQL_GET_CONTACTS_BY_TYPE[1];
                if (contact_type == PHONE) {
@@ -226,11 +235,7 @@ namespace Controller {
         var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
 
         if (res != OK) { warning(cnx.errmsg()); } else {
-            var cust_id = 2; // <== TODO: Replace with the actual one.
-            _dbg(dbg, REST_CUST_ID   + EQUALS + cust_id.to_string() + SPACE
-    + V_BAR + SPACE + REST_CONT_TYPE + EQUALS + contact_type);
-
-            stmt.bind_int(1, cust_id);
+            stmt.bind_int(1, customer_id);
 
             while (stmt.step() == ROW) {
                 var row = stmt.column_text(0); // getContact()

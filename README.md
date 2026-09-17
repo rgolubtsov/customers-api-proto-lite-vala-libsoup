@@ -32,6 +32,7 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 * **[Running](#running)**
 * **[Consuming](#consuming)**
   * **[Logging](#logging)**
+  * **[Error handling](#error-handling)**
 
 ## Building
 
@@ -365,6 +366,21 @@ Sep 15 22:40:00 <hostname> api-lited[<pid>]: Server stopped
 ```
 
 **TBD** :cd:
+
+### Error handling
+
+When the URI path or request body passed in an incoming request contains inappropriate input, the microservice will respond with the HTTP `400 Bad Request` status code or with the HTTP `404 Not Found` status code, including a specific response body in JSON representation which may describe a possible cause of underlying client error, like the following:
+
+```
+$ curl http://localhost:8765/v1/customers/=qwerty4838=-i-.--089asdf..nj524987
+{"error":"HTTP 400 Bad Request: Request is malformed. Please check your inputs."}
+$
+$ curl http://localhost:8765/v1/customers/3..,,7/contacts
+{"error":"HTTP 404 Not Found: No such REST URI path exists. Please check your inputs."}
+$
+$ curl http://localhost:8765/v1/customers/--089asdf../contacts/email
+{"error":"HTTP 400 Bad Request: Request is malformed. Please check your inputs."}
+```
 
 ---
 
