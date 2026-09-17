@@ -105,7 +105,12 @@ namespace ControllerX
         var res = cnx.prepare_v2(SQL_GET_CUSTOMER_BY_ID,
                                  SQL_GET_CUSTOMER_BY_ID.length, out stmt)
 
-        if (res is not OK) do warning(cnx.errmsg())
+        if (res is not OK)
+            warning(cnx.errmsg())
+
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_SRV_INTERNAL_ERROR))
+            msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null)
         else
             stmt.bind_int(1, customer_id)
 

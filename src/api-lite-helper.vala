@@ -59,6 +59,9 @@ namespace Helper {
     const string ERR_REQ_NOT_ALLOWED
         = "HTTP 405 Method Not Allowed: Bad HTTP method used. "
         + "Please check your inputs.";
+    const string ERR_SRV_INTERNAL_ERROR
+        = "HTTP 500 Internal Server Error: Something went wrong. "
+        + "Please try again later.";
 
     // Common notification messages.
     const string MSG_SERVER_STARTED = "Server started on port ";
