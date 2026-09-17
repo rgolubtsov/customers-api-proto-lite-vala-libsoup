@@ -200,9 +200,11 @@ $ curl -v http://localhost:8765/v1/customers/3
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Content-Type: application/json
+< Content-Length: 20
 < X-Request-Method: GET
 ...
+{"id":3,"name":"JP"}
 ```
 
 5. **List contacts for a given customer**
