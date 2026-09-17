@@ -61,7 +61,7 @@ namespace ControllerX
                                        stmt.column_text(1))
 
             // Eliminating the unneeded first element from the customers array.
-            customers:array of Customer = _customers[1:_customers.length]
+            var customers = _customers[1:_customers.length]
 
             var
                 json_ary  = new Json.Array()
