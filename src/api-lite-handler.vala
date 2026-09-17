@@ -85,14 +85,6 @@ namespace Handler {
             var customer_id  = int.parse(_get_customer_id(path));
             var contact_type = _get_contact_type(path);
 
-            if (customer_id == 0) {
-                msg.set_response(MIME_TYPE, COPY,
-                   _get_err_json_body(ERR_REQ_MALFORMED));
-                msg.set_status(Status.BAD_REQUEST, null);
-
-                return;
-            }
-
             try {
                 var get_customer_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + EOL_R);
@@ -117,6 +109,12 @@ namespace Handler {
                     // For any other route Soup will automatically respond
                     // with the HTTP 404 Not Found status code, or respond
                     // with the following:
+                    if (customer_id == 0) {
+                        msg.set_response(MIME_TYPE, COPY,
+                           _get_err_json_body(ERR_REQ_MALFORMED));
+                        msg.set_status(Status.BAD_REQUEST, null); return;
+                    }
+
                     msg.set_response(MIME_TYPE, COPY,
                        _get_err_json_body(ERR_REQ_NOT_FOUND_1));
                     msg.set_status(Status.NOT_FOUND, null);
