@@ -85,6 +85,14 @@ namespace Handler {
             var customer_id  = int.parse(_get_customer_id(path));
             var contact_type = _get_contact_type(path);
 
+            if (customer_id == 0) {
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_MALFORMED));
+                msg.set_status(Status.BAD_REQUEST, null);
+
+                return;
+            }
+
             try {
                 var get_customer_path_regex
                     = new Regex(REST_CONTEXT + SLASH + REST_CUST_ID_R + EOL_R);

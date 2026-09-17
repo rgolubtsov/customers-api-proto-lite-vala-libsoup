@@ -48,6 +48,9 @@ namespace Helper {
     const string ERR_SERV_UNKNOWN_REASON
         = "for an unknown reason: %s.";
     const int ERR_EADDRINUSE_CODE = 33;
+    const string ERR_REQ_MALFORMED
+        = "HTTP 400 Bad Request: Request is malformed. "
+        + "Please check your inputs.";
     const string ERR_REQ_NOT_FOUND_1
         = "HTTP 404 Not Found: No such REST URI path exists. "
         + "Please check your inputs.";
