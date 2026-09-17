@@ -52,7 +52,13 @@ namespace Controller {
         var res = cnx.prepare_v2(SQL_PUT_CUSTOMER,
                                  SQL_PUT_CUSTOMER.length, out stmt);
 
-        if (res != OK) { warning(cnx.errmsg()); } else {
+        if (res != OK) {
+            warning(cnx.errmsg());
+
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
+            msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
+        } else {
             var customer_name = "JP"; // <== TODO: Replace with the actual one.
             _dbg(dbg, O_BRACKET + customer_name + C_BRACKET);
 
@@ -66,7 +72,13 @@ namespace Controller {
                                          (SQL_GET_ALL_CUSTOMERS
                                         + SQL_DESC_LIMIT_1).length, out stmt);
 
-                if (res_ != OK) { warning(cnx.errmsg()); } else {
+                if (res_ != OK) {
+                    warning(cnx.errmsg());
+
+                    msg.set_response(MIME_TYPE, COPY,
+                       _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
+                    msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
+                } else {
                     if (stmt.step() == ROW) {
                         var row = stmt.column_int (0).to_string() // getId()
                         + V_BAR + stmt.column_text(1);            // getName()
@@ -75,9 +87,9 @@ namespace Controller {
                     }
                 }
             }
-        }
 
-        msg.set_status(Soup.Status.CREATED, null);
+            msg.set_status(Soup.Status.CREATED, null);
+        }
     }
 
     /**
@@ -118,7 +130,13 @@ namespace Controller {
         // to the database).
         var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
 
-        if (res != OK) { warning(cnx.errmsg()); } else {
+        if (res != OK) {
+            warning(cnx.errmsg());
+
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
+            msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
+        } else {
             // TODO: Replace with the actual ones. -----------+
             var contact_cust_id = "2";              // <------|
             var contact_contact = "jp@example.com"; // <------+
@@ -144,7 +162,13 @@ namespace Controller {
                                          (sql_query_+ SQL_DESC_LIMIT_1).length,
                                           out stmt);
 
-                if (res_ != OK) { warning(cnx.errmsg()); } else {
+                if (res_ != OK) {
+                    warning(cnx.errmsg());
+
+                    msg.set_response(MIME_TYPE, COPY,
+                       _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
+                    msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
+                } else {
                     stmt.bind_int(1, int.parse(contact_cust_id));
 
                     if (stmt.step() == ROW) {
@@ -155,9 +179,9 @@ namespace Controller {
                     }
                 }
             }
-        }
 
-        msg.set_status(Soup.Status.CREATED, null);
+            msg.set_status(Soup.Status.CREATED, null);
+        }
     }
 
     /**
@@ -185,7 +209,13 @@ namespace Controller {
         var res = cnx.prepare_v2(SQL_GET_ALL_CONTACTS,
                                  SQL_GET_ALL_CONTACTS.length, out stmt);
 
-        if (res != OK) { warning(cnx.errmsg()); } else {
+        if (res != OK) {
+            warning(cnx.errmsg());
+
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
+            msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
+        } else {
             stmt.bind_int(1, customer_id); // <== For retrieving phones.
             stmt.bind_int(2, customer_id); // <== For retrieving emails.
 
@@ -194,9 +224,9 @@ namespace Controller {
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
-        }
 
-        msg.set_status(Soup.Status.OK, null);
+            msg.set_status(Soup.Status.OK, null);
+        }
     }
 
     /**
@@ -234,7 +264,13 @@ namespace Controller {
         // with a given customer from the database.
         var res = cnx.prepare_v2(sql_query, sql_query.length, out stmt);
 
-        if (res != OK) { warning(cnx.errmsg()); } else {
+        if (res != OK) {
+            warning(cnx.errmsg());
+
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
+            msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
+        } else {
             stmt.bind_int(1, customer_id);
 
             while (stmt.step() == ROW) {
@@ -242,9 +278,9 @@ namespace Controller {
 
                 _dbg(dbg, O_BRACKET + row + C_BRACKET);
             }
-        }
 
-        msg.set_status(Soup.Status.OK, null);
+            msg.set_status(Soup.Status.OK, null);
+        }
     }
 }
 

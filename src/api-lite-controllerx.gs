@@ -47,7 +47,12 @@ namespace ControllerX
         var res = cnx.prepare_v2(SQL_GET_ALL_CUSTOMERS,
                                  SQL_GET_ALL_CUSTOMERS.length, out stmt)
 
-        if (res is not OK) do warning(cnx.errmsg())
+        if (res is not OK)
+            warning(cnx.errmsg())
+
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_SRV_INTERNAL_ERROR))
+            msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null)
         else
             _customers:array of Customer = { Customer(0, EMPTY_STRING) }
 
@@ -79,8 +84,7 @@ namespace ControllerX
                     + C_BRACKET)
 
             msg.set_response(MIME_TYPE, COPY, json_body.data)
-
-        msg.set_status(Soup.Status.OK, null)
+            msg.set_status(Soup.Status.OK, null)
 
     /**
      * The {{{GET /v1/customers/{customer_id}}}} endpoint.
