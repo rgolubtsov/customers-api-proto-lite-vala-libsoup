@@ -78,6 +78,8 @@ namespace Controller {
                     msg.set_response(MIME_TYPE, COPY,
                        _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
                     msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
+
+                    return;
                 } else {
                     if (stmt.step() == ROW) {
                         var row = stmt.column_int (0).to_string() // getId()
@@ -168,6 +170,8 @@ namespace Controller {
                     msg.set_response(MIME_TYPE, COPY,
                        _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
                     msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
+
+                    return;
                 } else {
                     stmt.bind_int(1, int.parse(contact_cust_id));
 
