@@ -308,12 +308,42 @@ namespace Controller {
         } else {
             stmt.bind_int(1, customer_id);
 
-            while (stmt.step() == ROW) {
-                var row = stmt.column_text(0); // getContact()
+            Contact[] contacts = { Contact(EMPTY_STRING, EMPTY_STRING) };
 
-                _dbg(dbg, O_BRACKET + row + C_BRACKET);
+            while (stmt.step() == ROW)
+                contacts += Contact(stmt.column_text(0),
+                                    customer_id.to_string());
+
+            if (contacts.length == 1) {
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_NOT_FOUND_3));
+                msg.set_status(Soup.Status.NOT_FOUND, null);
+
+                return;
             }
 
+            // Eliminating the unneeded first element from the contacts array.
+            if (contacts.length > 1) contacts = contacts[1:contacts.length];
+
+            var json_ary  = new Json.Array();
+            var json_node = new Json.Node(ARRAY);
+            var json_gen  = new Generator();
+            var json_body = new StringBuilder();
+
+            foreach (var contact in contacts) {
+                var json_obj = new Json.Object();
+                json_obj.set_string_member(JSON_CONTACT, contact.contact);
+                json_ary.add_object_element(json_obj);
+            }
+
+            json_node.init_array(json_ary);
+            json_gen.set_root(json_node);
+            json_gen.to_gstring(json_body);
+
+            _dbg(dbg, O_BRACKET + contacts[0].contact // getContact()
+                    + C_BRACKET);
+
+            msg.set_response(MIME_TYPE, COPY, json_body.data);
             msg.set_status(Soup.Status.OK, null);
         }
     }
