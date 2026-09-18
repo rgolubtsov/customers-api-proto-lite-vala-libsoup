@@ -32,12 +32,12 @@ namespace Controller {
      * Creates a new customer (puts customer data to the database).
      *
      * The request body is defined exactly in the form
-     * as {{{{\"name\":\"{customer_name}\"}}}}. It should be passed
+     * as {{{{"name":"{customer_name}"}}}}. It should be passed
      * with the accompanied request header {{{content-type}}}
      * just like the following:
      *
      * {{{
-     * -H 'content-type: application/json' -d '{\"name\":\"{customer_name}\"}'
+     * -H 'content-type: application/json' -d '{"name":"{customer_name}"}'
      * }}}
      *
      * {{{{customer_name}}}} is a name assigned to a newly created customer.
@@ -102,12 +102,12 @@ namespace Controller {
      * regarding a given customer to the database).
      *
      * The request body is defined exactly in the form as
-     * {{{{\"customer_id\":\"{customer_id}\",\"contact\":\"{customer_contact}\"}}}}.
+     * {{{{"customer_id":"{customer_id}","contact":"{customer_contact}"}}}}.
      * It should be passed with the accompanied request header
      * {{{content-type}}} just like the following:
      *
      * {{{
-     * -H 'content-type: application/json' -d '{\"customer_id\":\"{customer_id}\",\"contact\":\"{customer_contact}\"}'
+     * -H 'content-type: application/json' -d '{"customer_id":"{customer_id}","contact":"{customer_contact}"}'
      * }}}
      *
      * {{{{customer_id}}}} is the customer ID used to associate a newly created
