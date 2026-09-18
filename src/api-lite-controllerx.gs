@@ -54,14 +54,21 @@ namespace ControllerX
                _get_err_json_body(ERR_SRV_INTERNAL_ERROR))
             msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null)
         else
-            _customers:array of Customer = { Customer(0, EMPTY_STRING) }
+            customers:array of Customer = { Customer(0, EMPTY_STRING) }
 
             while (stmt.step() is ROW)
-                _customers += Customer(stmt.column_int (0),
-                                       stmt.column_text(1))
+                customers += Customer(stmt.column_int (0),
+                                      stmt.column_text(1))
+
+            if (customers.length is 1)
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_NOT_FOUND_2))
+                msg.set_status(Soup.Status.NOT_FOUND, null)
+
+                return
 
             // Eliminating the unneeded first element from the customers array.
-            var customers = _customers[1:_customers.length]
+            if (customers.length>1) do customers=customers[1:customers.length]
 
             var
                 json_ary  = new Json.Array()
