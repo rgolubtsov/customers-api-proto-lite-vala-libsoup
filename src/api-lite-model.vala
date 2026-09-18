@@ -105,7 +105,7 @@ namespace Model {
         string contact;
         string customer_id;
 
-        Contact(string _contact, string _customer_id) {
+        public Contact(string _contact, string _customer_id) {
             contact     = _contact;
             customer_id = _customer_id;
         }

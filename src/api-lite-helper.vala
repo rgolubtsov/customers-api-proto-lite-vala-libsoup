@@ -56,6 +56,9 @@ namespace Helper {
         + "Please check your inputs.";
     const string ERR_REQ_NOT_FOUND_2
         = "HTTP 404 Not Found: No such customer exists.";
+    const string ERR_REQ_NOT_FOUND_3
+        = "HTTP 404 Not Found: No contacts belonging to a given customer "
+        + "exist, or no such customer exists.";
     const string ERR_REQ_NOT_ALLOWED
         = "HTTP 405 Method Not Allowed: Bad HTTP method used. "
         + "Please check your inputs.";
@@ -135,6 +138,7 @@ namespace Helper {
     const string JSON_ERROR    = "error";
     const string JSON_ID       = "id";
     const string JSON_NAME     = "name";
+    const string JSON_CONTACT  = "contact";
 
     /** The logfile used to store log messages. */
     FileOutputStream logfile;
