@@ -210,46 +210,52 @@ $ curl -v http://localhost:8765/v1/customers/3
 5. **List contacts for a given customer**
 
 ```
-$ curl -v http://localhost:8765/v1/customers/3/contacts
+$ curl -v http://localhost:8765/v1/customers/2/contacts
 ...
-> GET /v1/customers/3/contacts HTTP/1.1
+> GET /v1/customers/2/contacts HTTP/1.1
 ...
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Content-Type: application/json
+< Content-Length: 219
 < X-Request-Method: GET
 ...
+[{"contact":"+35760X123456"},{"contact":"+35760Y1234578"},{"contact":"+35790Z12345890"},{"contact":"jp@example.com"},{"contact":"nn@example.org"},{"contact":"nnumbat@example.com"},{"contact":"noble.numbat@example.com"}]
 ```
 
 6. **List contacts of a given type for a given customer**
 
 ```
-$ curl -v http://localhost:8765/v1/customers/3/contacts/phone
+$ curl -v http://localhost:8765/v1/customers/2/contacts/phone
 ...
-> GET /v1/customers/3/contacts/phone HTTP/1.1
+> GET /v1/customers/2/contacts/phone HTTP/1.1
 ...
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Content-Type: application/json
+< Content-Length: 88
 < X-Request-Method: GET
 ...
+[{"contact":"+35760X123456"},{"contact":"+35760Y1234578"},{"contact":"+35790Z12345890"}]
 ```
 
 Or list **email** contacts:
 
 ```
-$ curl -v http://localhost:8765/v1/customers/3/contacts/email
+$ curl -v http://localhost:8765/v1/customers/2/contacts/email
 ...
-> GET /v1/customers/3/contacts/email HTTP/1.1
+> GET /v1/customers/2/contacts/email HTTP/1.1
 ...
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Content-Type: application/json
+< Content-Length: 161
 < X-Request-Method: GET
 ...
+[{"contact":"noble.numbat@example.com"},{"contact":"nnumbat@example.com"},{"contact":"nn@example.org"},{"contact":"jp@example.com"},{"contact":"jp@example.com"}]
 ```
 
 > ^ The given names in customer accounts and in email contacts (in samples above) are for demonstrational purposes only. They have nothing common WRT any actual, ever really encountered names elsewhere.
