@@ -132,6 +132,7 @@ namespace Helper {
     // HTTP response-related constants.
     const string SERVER_HEADER = "server_header";
     const string HDR_X_REQ_M   = "X-Request-Method";
+    const string HDR_LOCATION  = "Location";
     const string HDR_ALLOW     = "Allow";
     const string HDR_ALLOWED   = "PUT, GET, HEAD";
     const string MIME_TYPE     = "application/json";
