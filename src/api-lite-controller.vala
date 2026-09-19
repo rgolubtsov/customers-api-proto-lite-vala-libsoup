@@ -119,15 +119,29 @@ namespace Controller {
                     return;
                 } else {
                     if (stmt.step() == ROW) {
-                        var row = stmt.column_int (0).to_string() // getId()
-                        + V_BAR + stmt.column_text(1);            // getName()
+                        var customer = Customer(stmt.column_int (0),
+                                                stmt.column_text(1));
 
-                        _dbg(dbg, O_BRACKET + row + C_BRACKET);
+                        var json_obj  = new Json.Object();
+                        var json_node = new Json.Node(OBJECT);
+                        var json_gen  = new Generator();
+                        var json_body = new StringBuilder();
+
+                        json_obj.set_int_member(   JSON_ID,   customer.id  );
+                        json_obj.set_string_member(JSON_NAME, customer.name);
+                        json_node.init_object(json_obj);
+                        json_gen.set_root(json_node);
+                        json_gen.to_gstring(json_body);
+
+                        _dbg(dbg, O_BRACKET + customer.id.to_string()
+                                + V_BAR     + customer.name
+                                + C_BRACKET);
+
+                        msg.set_response(MIME_TYPE, COPY, json_body.data);
+                        msg.set_status(Soup.Status.CREATED, null);
                     }
                 }
             }
-
-            msg.set_status(Soup.Status.CREATED, null);
         }
     }
 
