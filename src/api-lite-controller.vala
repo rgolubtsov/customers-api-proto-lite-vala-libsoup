@@ -47,6 +47,45 @@ namespace Controller {
      * @param msg The request message being processed.
      */
     void add_customer(bool dbg, Database cnx, ServerMessage msg) {
+        var payload = msg.get_request_body().data;
+
+        if (payload.length == 0) {
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_REQ_MALFORMED));
+            msg.set_status(Soup.Status.BAD_REQUEST, null); return;
+        }
+
+        var    json_parser = new Parser();
+        string customer_name;
+
+        try {
+            json_parser.load_from_data((string) payload);
+            var json_node = json_parser.get_root();
+
+            if (json_node.get_node_type() != OBJECT) {
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_MALFORMED));
+                msg.set_status(Soup.Status.BAD_REQUEST, null); return;
+            }
+
+            customer_name = json_node.get_object()
+                .get_string_member_with_default(JSON_NAME, EMPTY_STRING);
+
+            if (customer_name == EMPTY_STRING) {
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_MALFORMED));
+                msg.set_status(Soup.Status.BAD_REQUEST, null); return;
+            }
+        } catch (Error e) {
+            warning(e.message);
+
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_REQ_MALFORMED));
+            msg.set_status(Soup.Status.BAD_REQUEST, null); return;
+        }
+
+        _dbg(dbg, O_BRACKET + customer_name + C_BRACKET);
+
         Statement stmt;
 
         // Creating a new customer (putting customer data to the database).
@@ -60,9 +99,6 @@ namespace Controller {
                _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
             msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
         } else {
-            var customer_name = "JP"; // <== TODO: Replace with the actual one.
-            _dbg(dbg, O_BRACKET + customer_name + C_BRACKET);
-
             stmt.bind_text(1, customer_name);
 
             if (stmt.step() == DONE) {
