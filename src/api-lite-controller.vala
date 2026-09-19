@@ -137,6 +137,8 @@ namespace Controller {
                                 + V_BAR     + customer.name
                                 + C_BRACKET);
 
+                        msg.get_response_headers().append(HDR_LOCATION,
+                            REST_CONTEXT + SLASH + customer.id.to_string());
                         msg.set_response(MIME_TYPE, COPY, json_body.data);
                         msg.set_status(Soup.Status.CREATED, null);
                     }
