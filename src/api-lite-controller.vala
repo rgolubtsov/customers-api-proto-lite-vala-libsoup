@@ -283,15 +283,32 @@ namespace Controller {
                     stmt.bind_int(1, customer_id);
 
                     if (stmt.step() == ROW) {
-                        var row = contact_type
-                        + V_BAR + stmt.column_text(0); // getContact()
+                        var contact = Contact(stmt.column_text(0),
+                                              customer_id.to_string());
 
-                        _dbg(dbg, O_BRACKET + row + C_BRACKET);
+                        var json_obj  = new Json.Object();
+                        var json_node = new Json.Node(OBJECT);
+                        var json_gen  = new Generator();
+                        var json_body = new StringBuilder();
+
+                        json_obj.set_string_member(JSON_CONTACT,
+                                                   contact.contact);
+                        json_node.init_object(json_obj);
+                        json_gen.set_root(json_node);
+                        json_gen.to_gstring(json_body);
+
+                        _dbg(dbg, O_BRACKET + contact_type
+                                + V_BAR     + contact.contact // getContact()
+                                + C_BRACKET);
+
+                        msg.get_response_headers().append(HDR_LOCATION,
+                            REST_CONTEXT  + SLASH + contact.customer_id + SLASH
+                          + REST_CONTACTS + SLASH + contact_type);
+                        msg.set_response(MIME_TYPE, COPY, json_body.data);
+                        msg.set_status(Soup.Status.CREATED, null);
                     }
                 }
             }
-
-            msg.set_status(Soup.Status.CREATED, null);
         }
     }
 
