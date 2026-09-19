@@ -141,6 +141,10 @@ namespace Helper {
     const string JSON_NAME     = "name";
     const string JSON_CONTACT  = "contact";
 
+    // Regex patterns for contact phones and emails.
+    const string PHONE_REGEX = "^\\+\\d{9,14}";
+    const string EMAIL_REGEX = ".{1,63}@.{3,190}";
+
     /** The logfile used to store log messages. */
     FileOutputStream logfile;
 
