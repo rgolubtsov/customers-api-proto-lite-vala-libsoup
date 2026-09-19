@@ -1,7 +1,7 @@
 /*
  * src/api-lite-controller.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.7
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.8
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -32,12 +32,12 @@ namespace Controller {
      * Creates a new customer (puts customer data to the database).
      *
      * The request body is defined exactly in the form
-     * as {{{{\"name\":\"{customer_name}\"}}}}. It should be passed
+     * as {{{{"name":"{customer_name}"}}}}. It should be passed
      * with the accompanied request header {{{content-type}}}
      * just like the following:
      *
      * {{{
-     * -H 'content-type: application/json' -d '{\"name\":\"{customer_name}\"}'
+     * -H 'content-type: application/json' -d '{"name":"{customer_name}"}'
      * }}}
      *
      * {{{{customer_name}}}} is a name assigned to a newly created customer.
@@ -47,6 +47,45 @@ namespace Controller {
      * @param msg The request message being processed.
      */
     void add_customer(bool dbg, Database cnx, ServerMessage msg) {
+        var payload = msg.get_request_body().data;
+
+        if (payload.length == 0) {
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_REQ_MALFORMED));
+            msg.set_status(Soup.Status.BAD_REQUEST, null); return;
+        }
+
+        var    json_parser = new Parser();
+        string customer_name;
+
+        try {
+            json_parser.load_from_data((string) payload);
+            var json_node = json_parser.get_root();
+
+            if (json_node.get_node_type() != OBJECT) {
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_MALFORMED));
+                msg.set_status(Soup.Status.BAD_REQUEST, null); return;
+            }
+
+            customer_name = json_node.get_object()
+                .get_string_member_with_default(JSON_NAME, EMPTY_STRING);
+
+            if (customer_name == EMPTY_STRING) {
+                msg.set_response(MIME_TYPE, COPY,
+                   _get_err_json_body(ERR_REQ_MALFORMED));
+                msg.set_status(Soup.Status.BAD_REQUEST, null); return;
+            }
+        } catch (Error e) {
+            warning(e.message);
+
+            msg.set_response(MIME_TYPE, COPY,
+               _get_err_json_body(ERR_REQ_MALFORMED));
+            msg.set_status(Soup.Status.BAD_REQUEST, null); return;
+        }
+
+        _dbg(dbg, O_BRACKET + customer_name + C_BRACKET);
+
         Statement stmt;
 
         // Creating a new customer (putting customer data to the database).
@@ -60,9 +99,6 @@ namespace Controller {
                _get_err_json_body(ERR_SRV_INTERNAL_ERROR));
             msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null);
         } else {
-            var customer_name = "JP"; // <== TODO: Replace with the actual one.
-            _dbg(dbg, O_BRACKET + customer_name + C_BRACKET);
-
             stmt.bind_text(1, customer_name);
 
             if (stmt.step() == DONE) {
@@ -83,15 +119,31 @@ namespace Controller {
                     return;
                 } else {
                     if (stmt.step() == ROW) {
-                        var row = stmt.column_int (0).to_string() // getId()
-                        + V_BAR + stmt.column_text(1);            // getName()
+                        var customer = Customer(stmt.column_int (0),
+                                                stmt.column_text(1));
 
-                        _dbg(dbg, O_BRACKET + row + C_BRACKET);
+                        var json_obj  = new Json.Object();
+                        var json_node = new Json.Node(OBJECT);
+                        var json_gen  = new Generator();
+                        var json_body = new StringBuilder();
+
+                        json_obj.set_int_member(   JSON_ID,   customer.id  );
+                        json_obj.set_string_member(JSON_NAME, customer.name);
+                        json_node.init_object(json_obj);
+                        json_gen.set_root(json_node);
+                        json_gen.to_gstring(json_body);
+
+                        _dbg(dbg, O_BRACKET + customer.id.to_string()
+                                + V_BAR     + customer.name
+                                + C_BRACKET);
+
+                        msg.get_response_headers().append(HDR_LOCATION,
+                            REST_CONTEXT + SLASH + customer.id.to_string());
+                        msg.set_response(MIME_TYPE, COPY, json_body.data);
+                        msg.set_status(Soup.Status.CREATED, null);
                     }
                 }
             }
-
-            msg.set_status(Soup.Status.CREATED, null);
         }
     }
 
@@ -102,12 +154,12 @@ namespace Controller {
      * regarding a given customer to the database).
      *
      * The request body is defined exactly in the form as
-     * {{{{\"customer_id\":\"{customer_id}\",\"contact\":\"{customer_contact}\"}}}}.
+     * {{{{"customer_id":"{customer_id}","contact":"{customer_contact}"}}}}.
      * It should be passed with the accompanied request header
      * {{{content-type}}} just like the following:
      *
      * {{{
-     * -H 'content-type: application/json' -d '{\"customer_id\":\"{customer_id}\",\"contact\":\"{customer_contact}\"}'
+     * -H 'content-type: application/json' -d '{"customer_id":"{customer_id}","contact":"{customer_contact}"}'
      * }}}
      *
      * {{{{customer_id}}}} is the customer ID used to associate a newly created

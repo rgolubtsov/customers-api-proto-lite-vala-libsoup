@@ -128,9 +128,12 @@ $ curl -vXPUT http://localhost:8765/v1/customers \
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Location: /v1/customers/3
+< Content-Type: application/json
+< Content-Length: 32
 < X-Request-Method: PUT
 ...
+{"id":3,"name":"Jamison Palmer"}
 ```
 
 2. **Create contact**
@@ -184,10 +187,10 @@ $ curl -v http://localhost:8765/v1/customers
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 87
+< Content-Length: 99
 < X-Request-Method: GET
 ...
-[{"id":1,"name":"Jammy Jellyfish"},{"id":2,"name":"Noble Numbat"},{"id":3,"name":"JP"}]
+[{"id":1,"name":"Jammy Jellyfish"},{"id":2,"name":"Noble Numbat"},{"id":3,"name":"Jamison Palmer"}]
 ```
 
 4. **Retrieve customer**
@@ -201,10 +204,10 @@ $ curl -v http://localhost:8765/v1/customers/3
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 20
+< Content-Length: 32
 < X-Request-Method: GET
 ...
-{"id":3,"name":"JP"}
+{"id":3,"name":"Jamison Palmer"}
 ```
 
 5. **List contacts for a given customer**

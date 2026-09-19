@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.7
+ * Customers API Lite microservice prototype (Vala port). Version 0.1.8
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -132,6 +132,7 @@ namespace Helper {
     // HTTP response-related constants.
     const string SERVER_HEADER = "server_header";
     const string HDR_X_REQ_M   = "X-Request-Method";
+    const string HDR_LOCATION  = "Location";
     const string HDR_ALLOW     = "Allow";
     const string HDR_ALLOWED   = "PUT, GET, HEAD";
     const string MIME_TYPE     = "application/json";
