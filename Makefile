@@ -21,8 +21,15 @@ DB_PATH = data/db
 DB_FILE = customers-api-lite.db.xz
 
 # Specify flags and other vars here.
-VALAC  = valac
-VFLAGS = --pkg=posix --pkg=gio-2.0 --pkg=sqlite3 --pkg=libsoup-3.0 --pkg=json-glib-1.0 -d $(BIN_DIR) -o $(DMON)
+VALAC       = valac
+VFLAGS_PROD = --disable-assert -X -O3 -X -s
+VFLAGS      = $(VFLAGS_PROD)      \
+              --pkg=posix         \
+              --pkg=gio-2.0       \
+              --pkg=sqlite3       \
+              --pkg=libsoup-3.0   \
+              --pkg=json-glib-1.0 \
+              -d $(BIN_DIR) -o $(DMON)
 
 RMFLAGS = -vR
 UNXZ    = unxz
