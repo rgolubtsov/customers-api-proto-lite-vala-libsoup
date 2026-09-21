@@ -141,19 +141,22 @@ $ curl -vXPUT http://localhost:8765/v1/customers \
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
        -H 'content-type: application/json' \
-       -d '{"customer_id":"3","contact":"+12197654320"}'
+       -d '{"customer_id":"3","contact":"+12197654320"      }'
 ...
 > PUT /v1/customers/contacts HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 44
+> Content-Length: 50
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Location: /v1/customers/3/contacts/phone
+< Content-Type: application/json
+< Content-Length: 26
 < X-Request-Method: PUT
 ...
+{"contact":"+12197654320"}
 ```
 
 Or create **email** contact:
@@ -161,19 +164,22 @@ Or create **email** contact:
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
        -H 'content-type: application/json' \
-       -d '{"customer_id":"3","contact":"jamison.palmer@example.com"}'
+       -d '{"customer_id":"3","contact":"jamison.palmer@example.com"    }'
 ...
 > PUT /v1/customers/contacts HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 58
+> Content-Length: 62
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Location: /v1/customers/3/contacts/email
+< Content-Type: application/json
+< Content-Length: 40
 < X-Request-Method: PUT
 ...
+{"contact":"jamison.palmer@example.com"}
 ```
 
 3. **List customers**
@@ -213,52 +219,52 @@ $ curl -v http://localhost:8765/v1/customers/3
 5. **List contacts for a given customer**
 
 ```
-$ curl -v http://localhost:8765/v1/customers/2/contacts
+$ curl -v http://localhost:8765/v1/customers/3/contacts
 ...
-> GET /v1/customers/2/contacts HTTP/1.1
+> GET /v1/customers/3/contacts HTTP/1.1
 ...
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 219
+< Content-Length: 69
 < X-Request-Method: GET
 ...
-[{"contact":"+35760X123456"},{"contact":"+35760Y1234578"},{"contact":"+35790Z12345890"},{"contact":"jp@example.com"},{"contact":"nn@example.org"},{"contact":"nnumbat@example.com"},{"contact":"noble.numbat@example.com"}]
+[{"contact":"+12197654320"},{"contact":"jamison.palmer@example.com"}]
 ```
 
 6. **List contacts of a given type for a given customer**
 
 ```
-$ curl -v http://localhost:8765/v1/customers/2/contacts/phone
+$ curl -v http://localhost:8765/v1/customers/3/contacts/phone
 ...
-> GET /v1/customers/2/contacts/phone HTTP/1.1
+> GET /v1/customers/3/contacts/phone HTTP/1.1
 ...
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 88
+< Content-Length: 28
 < X-Request-Method: GET
 ...
-[{"contact":"+35760X123456"},{"contact":"+35760Y1234578"},{"contact":"+35790Z12345890"}]
+[{"contact":"+12197654320"}]
 ```
 
 Or list **email** contacts:
 
 ```
-$ curl -v http://localhost:8765/v1/customers/2/contacts/email
+$ curl -v http://localhost:8765/v1/customers/3/contacts/email
 ...
-> GET /v1/customers/2/contacts/email HTTP/1.1
+> GET /v1/customers/3/contacts/email HTTP/1.1
 ...
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 161
+< Content-Length: 42
 < X-Request-Method: GET
 ...
-[{"contact":"noble.numbat@example.com"},{"contact":"nnumbat@example.com"},{"contact":"nn@example.org"},{"contact":"jp@example.com"},{"contact":"jp@example.com"}]
+[{"contact":"jamison.palmer@example.com"}]
 ```
 
 > ^ The given names in customer accounts and in email contacts (in samples above) are for demonstrational purposes only. They have nothing common WRT any actual, ever really encountered names elsewhere.
