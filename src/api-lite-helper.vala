@@ -55,8 +55,10 @@ namespace Helper {
         = "HTTP 404 Not Found: No such REST URI path exists. "
         + "Please check your inputs.";
     const string ERR_REQ_NOT_FOUND_2
-        = "HTTP 404 Not Found: No such customer exists.";
+        = "HTTP 404 Not Found: No customers exist yet.";
     const string ERR_REQ_NOT_FOUND_3
+        = "HTTP 404 Not Found: No such customer exists.";
+    const string ERR_REQ_NOT_FOUND_4
         = "HTTP 404 Not Found: No contacts belonging to a given customer "
         + "exist, or no such customer exists.";
     const string ERR_REQ_NOT_ALLOWED

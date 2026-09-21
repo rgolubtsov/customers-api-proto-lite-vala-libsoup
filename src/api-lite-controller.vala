@@ -355,7 +355,7 @@ namespace Controller {
 
             if (contacts.length == 1) {
                 msg.set_response(MIME_TYPE, COPY,
-                   _get_err_json_body(ERR_REQ_NOT_FOUND_3));
+                   _get_err_json_body(ERR_REQ_NOT_FOUND_4));
                 msg.set_status(Soup.Status.NOT_FOUND, null);
 
                 return;
@@ -439,7 +439,7 @@ namespace Controller {
 
             if (contacts.length == 1) {
                 msg.set_response(MIME_TYPE, COPY,
-                   _get_err_json_body(ERR_REQ_NOT_FOUND_3));
+                   _get_err_json_body(ERR_REQ_NOT_FOUND_4));
                 msg.set_status(Soup.Status.NOT_FOUND, null);
 
                 return;

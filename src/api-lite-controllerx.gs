@@ -149,7 +149,7 @@ namespace ControllerX
                 msg.set_status(Soup.Status.OK, null)
             else
                 msg.set_response(MIME_TYPE, COPY,
-                   _get_err_json_body(ERR_REQ_NOT_FOUND_2))
+                   _get_err_json_body(ERR_REQ_NOT_FOUND_3))
                 msg.set_status(Soup.Status.NOT_FOUND, null)
 
 // vim:set nu et ts=4 sw=4:
