@@ -1,7 +1,7 @@
 /*
  * src/api-lite-helper.vala
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.8
+ * Customers API Lite microservice prototype (Vala port). Version 0.2.0
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -55,8 +55,10 @@ namespace Helper {
         = "HTTP 404 Not Found: No such REST URI path exists. "
         + "Please check your inputs.";
     const string ERR_REQ_NOT_FOUND_2
-        = "HTTP 404 Not Found: No such customer exists.";
+        = "HTTP 404 Not Found: No customers exist yet.";
     const string ERR_REQ_NOT_FOUND_3
+        = "HTTP 404 Not Found: No such customer exists.";
+    const string ERR_REQ_NOT_FOUND_4
         = "HTTP 404 Not Found: No contacts belonging to a given customer "
         + "exist, or no such customer exists.";
     const string ERR_REQ_NOT_ALLOWED
@@ -140,6 +142,10 @@ namespace Helper {
     const string JSON_ID       = "id";
     const string JSON_NAME     = "name";
     const string JSON_CONTACT  = "contact";
+
+    // Regex patterns for contact phones and emails.
+    const string PHONE_REGEX = "^\\+\\d{9,14}";
+    const string EMAIL_REGEX = ".{1,63}@.{3,190}";
 
     /** The logfile used to store log messages. */
     FileOutputStream logfile;

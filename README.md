@@ -141,19 +141,22 @@ $ curl -vXPUT http://localhost:8765/v1/customers \
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
        -H 'content-type: application/json' \
-       -d '{"customer_id":"3","contact":"+12197654320"}'
+       -d '{"customer_id":"3","contact":"+12197654320"      }'
 ...
 > PUT /v1/customers/contacts HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 44
+> Content-Length: 50
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Location: /v1/customers/3/contacts/phone
+< Content-Type: application/json
+< Content-Length: 26
 < X-Request-Method: PUT
 ...
+{"contact":"+12197654320"}
 ```
 
 Or create **email** contact:
@@ -161,19 +164,22 @@ Or create **email** contact:
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
        -H 'content-type: application/json' \
-       -d '{"customer_id":"3","contact":"jamison.palmer@example.com"}'
+       -d '{"customer_id":"3","contact":"jamison.palmer@example.com"    }'
 ...
 > PUT /v1/customers/contacts HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 58
+> Content-Length: 62
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
 ...
-< Content-Length: 0
+< Location: /v1/customers/3/contacts/email
+< Content-Type: application/json
+< Content-Length: 40
 < X-Request-Method: PUT
 ...
+{"contact":"jamison.palmer@example.com"}
 ```
 
 3. **List customers**
@@ -213,52 +219,52 @@ $ curl -v http://localhost:8765/v1/customers/3
 5. **List contacts for a given customer**
 
 ```
-$ curl -v http://localhost:8765/v1/customers/2/contacts
+$ curl -v http://localhost:8765/v1/customers/3/contacts
 ...
-> GET /v1/customers/2/contacts HTTP/1.1
+> GET /v1/customers/3/contacts HTTP/1.1
 ...
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 219
+< Content-Length: 69
 < X-Request-Method: GET
 ...
-[{"contact":"+35760X123456"},{"contact":"+35760Y1234578"},{"contact":"+35790Z12345890"},{"contact":"jp@example.com"},{"contact":"nn@example.org"},{"contact":"nnumbat@example.com"},{"contact":"noble.numbat@example.com"}]
+[{"contact":"+12197654320"},{"contact":"jamison.palmer@example.com"}]
 ```
 
 6. **List contacts of a given type for a given customer**
 
 ```
-$ curl -v http://localhost:8765/v1/customers/2/contacts/phone
+$ curl -v http://localhost:8765/v1/customers/3/contacts/phone
 ...
-> GET /v1/customers/2/contacts/phone HTTP/1.1
+> GET /v1/customers/3/contacts/phone HTTP/1.1
 ...
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 88
+< Content-Length: 28
 < X-Request-Method: GET
 ...
-[{"contact":"+35760X123456"},{"contact":"+35760Y1234578"},{"contact":"+35790Z12345890"}]
+[{"contact":"+12197654320"}]
 ```
 
 Or list **email** contacts:
 
 ```
-$ curl -v http://localhost:8765/v1/customers/2/contacts/email
+$ curl -v http://localhost:8765/v1/customers/3/contacts/email
 ...
-> GET /v1/customers/2/contacts/email HTTP/1.1
+> GET /v1/customers/3/contacts/email HTTP/1.1
 ...
 < HTTP/1.1 200 OK
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 161
+< Content-Length: 42
 < X-Request-Method: GET
 ...
-[{"contact":"noble.numbat@example.com"},{"contact":"nnumbat@example.com"},{"contact":"nn@example.org"},{"contact":"jp@example.com"},{"contact":"jp@example.com"}]
+[{"contact":"jamison.palmer@example.com"}]
 ```
 
 > ^ The given names in customer accounts and in email contacts (in samples above) are for demonstrational purposes only. They have nothing common WRT any actual, ever really encountered names elsewhere.
@@ -269,43 +275,43 @@ The microservice has the ability to log messages to a logfile and to the Unix sy
 
 ```
 $ tail -f log/customers-api-lite.log
-[2026-09-18][17:30:00] [DEBUG] [Customers API Lite]
-[2026-09-18][17:30:00] [DEBUG] [66164e08]
-[2026-09-18][17:30:00] [INFO ] Server started on port 8765
-[2026-09-18][17:30:20] [DEBUG] [PUT]
-[2026-09-18][17:30:20] [DEBUG] [/v1/customers]
-[2026-09-18][17:30:20] [DEBUG] [JP]
-[2026-09-18][17:30:20] [DEBUG] [3|JP]
-[2026-09-18][17:30:30] [DEBUG] [PUT]
-[2026-09-18][17:30:30] [DEBUG] [/v1/customers/contacts]
-[2026-09-18][17:30:30] [DEBUG] customer_id=2
-[2026-09-18][17:30:30] [DEBUG] [jp@example.com]
-[2026-09-18][17:30:30] [DEBUG] [email|jp@example.com]
-[2026-09-18][17:30:40] [DEBUG] [PUT]
-[2026-09-18][17:30:40] [DEBUG] [/v1/customers/contacts]
-[2026-09-18][17:30:40] [DEBUG] customer_id=2
-[2026-09-18][17:30:40] [DEBUG] [jp@example.com]
-[2026-09-18][17:30:40] [DEBUG] [email|jp@example.com]
-[2026-09-18][17:30:50] [DEBUG] [GET]
-[2026-09-18][17:30:50] [DEBUG] [/v1/customers]
-[2026-09-18][17:30:50] [DEBUG] [1|Jammy Jellyfish]
-[2026-09-18][17:35:00] [DEBUG] [GET]
-[2026-09-18][17:35:00] [DEBUG] [/v1/customers/3]
-[2026-09-18][17:35:00] [DEBUG] customer_id=3
-[2026-09-18][17:35:00] [DEBUG] [3|JP]
-[2026-09-18][17:35:10] [DEBUG] [GET]
-[2026-09-18][17:35:10] [DEBUG] [/v1/customers/2/contacts]
-[2026-09-18][17:35:10] [DEBUG] customer_id=2
-[2026-09-18][17:35:10] [DEBUG] [+35760X123456]
-[2026-09-18][17:35:20] [DEBUG] [GET]
-[2026-09-18][17:35:20] [DEBUG] [/v1/customers/2/contacts/phone]
-[2026-09-18][17:35:20] [DEBUG] customer_id=2 | contact_type=phone
-[2026-09-18][17:35:20] [DEBUG] [+35760X123456]
-[2026-09-18][17:35:30] [DEBUG] [GET]
-[2026-09-18][17:35:30] [DEBUG] [/v1/customers/2/contacts/email]
-[2026-09-18][17:35:30] [DEBUG] customer_id=2 | contact_type=email
-[2026-09-18][17:35:30] [DEBUG] [noble.numbat@example.com]
-[2026-09-18][17:36:00] [INFO ] Server stopped
+[2026-09-21][18:25:00] [DEBUG] [Customers API Lite]
+[2026-09-21][18:25:00] [DEBUG] [3d39ae08]
+[2026-09-21][18:25:00] [INFO ] Server started on port 8765
+[2026-09-21][18:25:20] [DEBUG] [PUT]
+[2026-09-21][18:25:20] [DEBUG] [/v1/customers]
+[2026-09-21][18:25:20] [DEBUG] [Jamison Palmer]
+[2026-09-21][18:25:20] [DEBUG] [3|Jamison Palmer]
+[2026-09-21][18:25:40] [DEBUG] [PUT]
+[2026-09-21][18:25:40] [DEBUG] [/v1/customers/contacts]
+[2026-09-21][18:25:40] [DEBUG] customer_id=3
+[2026-09-21][18:25:40] [DEBUG] [+12197654320]
+[2026-09-21][18:25:40] [DEBUG] [phone|+12197654320]
+[2026-09-21][18:26:00] [DEBUG] [PUT]
+[2026-09-21][18:26:00] [DEBUG] [/v1/customers/contacts]
+[2026-09-21][18:26:00] [DEBUG] customer_id=3
+[2026-09-21][18:26:00] [DEBUG] [jamison.palmer@example.com]
+[2026-09-21][18:26:00] [DEBUG] [email|jamison.palmer@example.com]
+[2026-09-21][18:26:20] [DEBUG] [GET]
+[2026-09-21][18:26:20] [DEBUG] [/v1/customers]
+[2026-09-21][18:26:20] [DEBUG] [1|Jammy Jellyfish]
+[2026-09-21][18:26:40] [DEBUG] [GET]
+[2026-09-21][18:26:40] [DEBUG] [/v1/customers/3]
+[2026-09-21][18:26:40] [DEBUG] customer_id=3
+[2026-09-21][18:26:40] [DEBUG] [3|Jamison Palmer]
+[2026-09-21][18:27:00] [DEBUG] [GET]
+[2026-09-21][18:27:00] [DEBUG] [/v1/customers/3/contacts]
+[2026-09-21][18:27:00] [DEBUG] customer_id=3
+[2026-09-21][18:27:00] [DEBUG] [+12197654320]
+[2026-09-21][18:27:10] [DEBUG] [GET]
+[2026-09-21][18:27:10] [DEBUG] [/v1/customers/3/contacts/phone]
+[2026-09-21][18:27:10] [DEBUG] customer_id=3 | contact_type=phone
+[2026-09-21][18:27:10] [DEBUG] [+12197654320]
+[2026-09-21][18:27:20] [DEBUG] [GET]
+[2026-09-21][18:27:20] [DEBUG] [/v1/customers/3/contacts/email]
+[2026-09-21][18:27:20] [DEBUG] customer_id=3 | contact_type=email
+[2026-09-21][18:27:20] [DEBUG] [jamison.palmer@example.com]
+[2026-09-21][18:27:30] [INFO ] Server stopped
 ```
 
 Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
@@ -313,43 +319,43 @@ Messages registered by the Unix system logger can be seen and analyzed using the
 ```
 $ journalctl -f
 ...
-Sep 18 17:30:00 <hostname> api-lited[<pid>]: [Customers API Lite]
-Sep 18 17:30:00 <hostname> api-lited[<pid>]: [66164e08]
-Sep 18 17:30:00 <hostname> api-lited[<pid>]: Server started on port 8765
-Sep 18 17:30:20 <hostname> api-lited[<pid>]: [PUT]
-Sep 18 17:30:20 <hostname> api-lited[<pid>]: [/v1/customers]
-Sep 18 17:30:20 <hostname> api-lited[<pid>]: [JP]
-Sep 18 17:30:20 <hostname> api-lited[<pid>]: [3|JP]
-Sep 18 17:30:30 <hostname> api-lited[<pid>]: [PUT]
-Sep 18 17:30:30 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
-Sep 18 17:30:30 <hostname> api-lited[<pid>]: customer_id=2
-Sep 18 17:30:30 <hostname> api-lited[<pid>]: [jp@example.com]
-Sep 18 17:30:30 <hostname> api-lited[<pid>]: [email|jp@example.com]
-Sep 18 17:30:40 <hostname> api-lited[<pid>]: [PUT]
-Sep 18 17:30:40 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
-Sep 18 17:30:40 <hostname> api-lited[<pid>]: customer_id=2
-Sep 18 17:30:40 <hostname> api-lited[<pid>]: [jp@example.com]
-Sep 18 17:30:40 <hostname> api-lited[<pid>]: [email|jp@example.com]
-Sep 18 17:30:50 <hostname> api-lited[<pid>]: [GET]
-Sep 18 17:30:50 <hostname> api-lited[<pid>]: [/v1/customers]
-Sep 18 17:30:50 <hostname> api-lited[<pid>]: [1|Jammy Jellyfish]
-Sep 18 17:35:00 <hostname> api-lited[<pid>]: [GET]
-Sep 18 17:35:00 <hostname> api-lited[<pid>]: [/v1/customers/3]
-Sep 18 17:35:00 <hostname> api-lited[<pid>]: customer_id=3
-Sep 18 17:35:00 <hostname> api-lited[<pid>]: [3|JP]
-Sep 18 17:35:10 <hostname> api-lited[<pid>]: [GET]
-Sep 18 17:35:10 <hostname> api-lited[<pid>]: [/v1/customers/2/contacts]
-Sep 18 17:35:10 <hostname> api-lited[<pid>]: customer_id=2
-Sep 18 17:35:10 <hostname> api-lited[<pid>]: [+35760X123456]
-Sep 18 17:35:20 <hostname> api-lited[<pid>]: [GET]
-Sep 18 17:35:20 <hostname> api-lited[<pid>]: [/v1/customers/2/contacts/phone]
-Sep 18 17:35:20 <hostname> api-lited[<pid>]: customer_id=2 | contact_type=phone
-Sep 18 17:35:20 <hostname> api-lited[<pid>]: [+35760X123456]
-Sep 18 17:35:30 <hostname> api-lited[<pid>]: [GET]
-Sep 18 17:35:30 <hostname> api-lited[<pid>]: [/v1/customers/2/contacts/email]
-Sep 18 17:35:30 <hostname> api-lited[<pid>]: customer_id=2 | contact_type=email
-Sep 18 17:35:30 <hostname> api-lited[<pid>]: [noble.numbat@example.com]
-Sep 18 17:36:00 <hostname> api-lited[<pid>]: Server stopped
+Sep 21 18:25:00 <hostname> api-lited[<pid>]: [Customers API Lite]
+Sep 21 18:25:00 <hostname> api-lited[<pid>]: [3d39ae08]
+Sep 21 18:25:00 <hostname> api-lited[<pid>]: Server started on port 8765
+Sep 21 18:25:20 <hostname> api-lited[<pid>]: [PUT]
+Sep 21 18:25:20 <hostname> api-lited[<pid>]: [/v1/customers]
+Sep 21 18:25:20 <hostname> api-lited[<pid>]: [Jamison Palmer]
+Sep 21 18:25:20 <hostname> api-lited[<pid>]: [3|Jamison Palmer]
+Sep 21 18:25:40 <hostname> api-lited[<pid>]: [PUT]
+Sep 21 18:25:40 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
+Sep 21 18:25:40 <hostname> api-lited[<pid>]: customer_id=3
+Sep 21 18:25:40 <hostname> api-lited[<pid>]: [+12197654320]
+Sep 21 18:25:40 <hostname> api-lited[<pid>]: [phone|+12197654320]
+Sep 21 18:26:00 <hostname> api-lited[<pid>]: [PUT]
+Sep 21 18:26:00 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
+Sep 21 18:26:00 <hostname> api-lited[<pid>]: customer_id=3
+Sep 21 18:26:00 <hostname> api-lited[<pid>]: [jamison.palmer@example.com]
+Sep 21 18:26:00 <hostname> api-lited[<pid>]: [email|jamison.palmer@example.com]
+Sep 21 18:26:20 <hostname> api-lited[<pid>]: [GET]
+Sep 21 18:26:20 <hostname> api-lited[<pid>]: [/v1/customers]
+Sep 21 18:26:20 <hostname> api-lited[<pid>]: [1|Jammy Jellyfish]
+Sep 21 18:26:40 <hostname> api-lited[<pid>]: [GET]
+Sep 21 18:26:40 <hostname> api-lited[<pid>]: [/v1/customers/3]
+Sep 21 18:26:40 <hostname> api-lited[<pid>]: customer_id=3
+Sep 21 18:26:40 <hostname> api-lited[<pid>]: [3|Jamison Palmer]
+Sep 21 18:27:00 <hostname> api-lited[<pid>]: [GET]
+Sep 21 18:27:00 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts]
+Sep 21 18:27:00 <hostname> api-lited[<pid>]: customer_id=3
+Sep 21 18:27:00 <hostname> api-lited[<pid>]: [+12197654320]
+Sep 21 18:27:10 <hostname> api-lited[<pid>]: [GET]
+Sep 21 18:27:10 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts/phone]
+Sep 21 18:27:10 <hostname> api-lited[<pid>]: customer_id=3 | contact_type=phone
+Sep 21 18:27:10 <hostname> api-lited[<pid>]: [+12197654320]
+Sep 21 18:27:20 <hostname> api-lited[<pid>]: [GET]
+Sep 21 18:27:20 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts/email]
+Sep 21 18:27:20 <hostname> api-lited[<pid>]: customer_id=3 | contact_type=email
+Sep 21 18:27:20 <hostname> api-lited[<pid>]: [jamison.palmer@example.com]
+Sep 21 18:27:30 <hostname> api-lited[<pid>]: Server stopped
 ```
 
 **TBD** :cd:
@@ -366,6 +372,11 @@ $ curl http://localhost:8765/v1/customers/3..,,7/contacts
 {"error":"HTTP 404 Not Found: No such REST URI path exists. Please check your inputs."}
 $
 $ curl http://localhost:8765/v1/customers/--089asdf../contacts/email
+{"error":"HTTP 400 Bad Request: Request is malformed. Please check your inputs."}
+$
+$ curl -XPUT http://localhost:8765/v1/customers/contacts \
+       -H 'content-type: application/json' \
+       -d '{"customer_id":"3","contact":"12197654320--089asdf../nj524987"}'
 {"error":"HTTP 400 Bad Request: Request is malformed. Please check your inputs."}
 ```
 

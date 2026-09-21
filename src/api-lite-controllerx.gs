@@ -1,7 +1,7 @@
 [indent=4]/*
  * src/api-lite-controllerx.gs
  * ============================================================================
- * Customers API Lite microservice prototype (Vala port). Version 0.1.8
+ * Customers API Lite microservice prototype (Vala port). Version 0.2.0
  * ============================================================================
  * A daemon written in Vala, designed and intended to be run as a microservice,
  * implementing a special Customers API prototype with a smart yet simplified
@@ -102,13 +102,22 @@ namespace ControllerX
      * @param cnx         The database connection.
      * @param msg         The request message being processed.
      * @param customer_id The customer ID.
+     * @param rest_call   The flag indicating either this method gets called
+     *                    from another REST API method ({{{true}}})
+     *                    or directly from the request handler ({{{false}}}).
+     *
+     * @return {{{false}}} if a given customer does not exist in the database
+     *                     or an unrecoverable error has occurred on a DB side,
+     *                     {{{true}}} otherwise.
      */
     def get_customer(dbg        :bool,
                      cnx        :Database,
                      msg        :ServerMessage,
-                     customer_id:int)
+                     customer_id:int,
+                     rest_call  :bool):bool
 
-        _dbg(dbg, REST_CUST_ID + EQUALS + customer_id.to_string())
+        if (not rest_call)
+            _dbg(dbg, REST_CUST_ID + EQUALS + customer_id.to_string())
 
         stmt:Statement
 
@@ -122,10 +131,14 @@ namespace ControllerX
             msg.set_response(MIME_TYPE, COPY,
                _get_err_json_body(ERR_SRV_INTERNAL_ERROR))
             msg.set_status(Soup.Status.INTERNAL_SERVER_ERROR, null)
+
+            return false
         else
             stmt.bind_int(1, customer_id)
 
             if (stmt.step() is ROW)
+                if (rest_call) do return true
+
                 var customer = Customer(stmt.column_int (0),
                                         stmt.column_text(1))
 
@@ -147,9 +160,13 @@ namespace ControllerX
 
                 msg.set_response(MIME_TYPE, COPY, json_body.data)
                 msg.set_status(Soup.Status.OK, null)
+
+                return true
             else
                 msg.set_response(MIME_TYPE, COPY,
-                   _get_err_json_body(ERR_REQ_NOT_FOUND_2))
+                   _get_err_json_body(ERR_REQ_NOT_FOUND_3))
                 msg.set_status(Soup.Status.NOT_FOUND, null)
+
+                return false
 
 // vim:set nu et ts=4 sw=4:
