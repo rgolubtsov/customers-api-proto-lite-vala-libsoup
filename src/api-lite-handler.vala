@@ -99,7 +99,7 @@ namespace Handler {
                        if (path ==  REST_CONTEXT) {
                     list_customers(dbg_, cnx_, msg);
                 } else if (get_customer_path_regex.match(path)) {
-                    get_customer(dbg_, cnx_, msg, customer_id);
+                    get_customer(dbg_, cnx_, msg, customer_id, false);
                 } else if (list_contacts_path_regex.match(path)) {
                     list_contacts(dbg_, cnx_, msg, customer_id);
                 } else if (list_contacts_by_type_path_regex.match(path)) {

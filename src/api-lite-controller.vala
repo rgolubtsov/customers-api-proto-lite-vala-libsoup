@@ -17,6 +17,7 @@ using Json;
 using Helper;
 using Model;
 using ModelX;
+using ControllerX;
 
 /**
  * The controller namespace of the daemon.
@@ -223,6 +224,9 @@ namespace Controller {
                _get_err_json_body(ERR_REQ_MALFORMED));
             msg.set_status(Soup.Status.BAD_REQUEST, null); return;
         }
+
+        // Analyzing whether a given customer exists in the database.
+        if (!get_customer(dbg, cnx, msg, customer_id, true)) return;
 
         // Parsing and validating a customer contact: phone or email.
         var contact_type = _parse_contact(contact_contact);
