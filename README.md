@@ -282,43 +282,23 @@ The microservice has the ability to log messages to a logfile and to the Unix sy
 
 ```
 $ tail -f log/customers-api-lite.log
-[2026-09-21][18:25:00] [DEBUG] [Customers API Lite]
-[2026-09-21][18:25:00] [DEBUG] [3d39ae08]
-[2026-09-21][18:25:00] [INFO ] Server started on port 8765
-[2026-09-21][18:25:20] [DEBUG] [PUT]
-[2026-09-21][18:25:20] [DEBUG] [/v1/customers]
-[2026-09-21][18:25:20] [DEBUG] [Jamison Palmer]
-[2026-09-21][18:25:20] [DEBUG] [3|Jamison Palmer]
-[2026-09-21][18:25:40] [DEBUG] [PUT]
-[2026-09-21][18:25:40] [DEBUG] [/v1/customers/contacts]
-[2026-09-21][18:25:40] [DEBUG] customer_id=3
-[2026-09-21][18:25:40] [DEBUG] [+12197654320]
-[2026-09-21][18:25:40] [DEBUG] [phone|+12197654320]
-[2026-09-21][18:26:00] [DEBUG] [PUT]
-[2026-09-21][18:26:00] [DEBUG] [/v1/customers/contacts]
-[2026-09-21][18:26:00] [DEBUG] customer_id=3
-[2026-09-21][18:26:00] [DEBUG] [jamison.palmer@example.com]
-[2026-09-21][18:26:00] [DEBUG] [email|jamison.palmer@example.com]
-[2026-09-21][18:26:20] [DEBUG] [GET]
-[2026-09-21][18:26:20] [DEBUG] [/v1/customers]
-[2026-09-21][18:26:20] [DEBUG] [1|Jammy Jellyfish]
-[2026-09-21][18:26:40] [DEBUG] [GET]
-[2026-09-21][18:26:40] [DEBUG] [/v1/customers/3]
-[2026-09-21][18:26:40] [DEBUG] customer_id=3
-[2026-09-21][18:26:40] [DEBUG] [3|Jamison Palmer]
-[2026-09-21][18:27:00] [DEBUG] [GET]
-[2026-09-21][18:27:00] [DEBUG] [/v1/customers/3/contacts]
-[2026-09-21][18:27:00] [DEBUG] customer_id=3
-[2026-09-21][18:27:00] [DEBUG] [+12197654320]
-[2026-09-21][18:27:10] [DEBUG] [GET]
-[2026-09-21][18:27:10] [DEBUG] [/v1/customers/3/contacts/phone]
-[2026-09-21][18:27:10] [DEBUG] customer_id=3 | contact_type=phone
-[2026-09-21][18:27:10] [DEBUG] [+12197654320]
-[2026-09-21][18:27:20] [DEBUG] [GET]
-[2026-09-21][18:27:20] [DEBUG] [/v1/customers/3/contacts/email]
-[2026-09-21][18:27:20] [DEBUG] customer_id=3 | contact_type=email
-[2026-09-21][18:27:20] [DEBUG] [jamison.palmer@example.com]
-[2026-09-21][18:27:30] [INFO ] Server stopped
+[2026-09-22][16:30:00] [DEBUG] [Customers API Lite]
+[2026-09-22][16:30:00] [DEBUG] [f7a58a68]
+[2026-09-22][16:30:00] [INFO ] Server started on port 8765
+[2026-09-22][16:30:30] [DEBUG] [PUT]
+[2026-09-22][16:30:30] [DEBUG] [Saturday Sunday]
+[2026-09-22][16:30:30] [DEBUG] [5|Saturday Sunday]
+[2026-09-22][16:30:50] [DEBUG] [PUT]
+[2026-09-22][16:30:50] [DEBUG] customer_id=5
+[2026-09-22][16:30:50] [DEBUG] [Saturday.Sunday@example.com]
+[2026-09-22][16:30:50] [DEBUG] [email|Saturday.Sunday@example.com]
+[2026-09-22][16:35:20] [DEBUG] [GET]
+[2026-09-22][16:35:20] [DEBUG] customer_id=5
+[2026-09-22][16:35:20] [DEBUG] [5|Saturday Sunday]
+[2026-09-22][16:35:40] [DEBUG] [GET]
+[2026-09-22][16:35:40] [DEBUG] customer_id=5 | contact_type=email
+[2026-09-22][16:35:40] [DEBUG] [Saturday.Sunday@example.com]
+[2026-09-22][16:40:00] [INFO ] Server stopped
 ```
 
 Messages registered by the Unix system logger can be seen and analyzed using the `journalctl` utility:
@@ -326,43 +306,23 @@ Messages registered by the Unix system logger can be seen and analyzed using the
 ```
 $ journalctl -f
 ...
-Sep 21 18:25:00 <hostname> api-lited[<pid>]: [Customers API Lite]
-Sep 21 18:25:00 <hostname> api-lited[<pid>]: [3d39ae08]
-Sep 21 18:25:00 <hostname> api-lited[<pid>]: Server started on port 8765
-Sep 21 18:25:20 <hostname> api-lited[<pid>]: [PUT]
-Sep 21 18:25:20 <hostname> api-lited[<pid>]: [/v1/customers]
-Sep 21 18:25:20 <hostname> api-lited[<pid>]: [Jamison Palmer]
-Sep 21 18:25:20 <hostname> api-lited[<pid>]: [3|Jamison Palmer]
-Sep 21 18:25:40 <hostname> api-lited[<pid>]: [PUT]
-Sep 21 18:25:40 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
-Sep 21 18:25:40 <hostname> api-lited[<pid>]: customer_id=3
-Sep 21 18:25:40 <hostname> api-lited[<pid>]: [+12197654320]
-Sep 21 18:25:40 <hostname> api-lited[<pid>]: [phone|+12197654320]
-Sep 21 18:26:00 <hostname> api-lited[<pid>]: [PUT]
-Sep 21 18:26:00 <hostname> api-lited[<pid>]: [/v1/customers/contacts]
-Sep 21 18:26:00 <hostname> api-lited[<pid>]: customer_id=3
-Sep 21 18:26:00 <hostname> api-lited[<pid>]: [jamison.palmer@example.com]
-Sep 21 18:26:00 <hostname> api-lited[<pid>]: [email|jamison.palmer@example.com]
-Sep 21 18:26:20 <hostname> api-lited[<pid>]: [GET]
-Sep 21 18:26:20 <hostname> api-lited[<pid>]: [/v1/customers]
-Sep 21 18:26:20 <hostname> api-lited[<pid>]: [1|Jammy Jellyfish]
-Sep 21 18:26:40 <hostname> api-lited[<pid>]: [GET]
-Sep 21 18:26:40 <hostname> api-lited[<pid>]: [/v1/customers/3]
-Sep 21 18:26:40 <hostname> api-lited[<pid>]: customer_id=3
-Sep 21 18:26:40 <hostname> api-lited[<pid>]: [3|Jamison Palmer]
-Sep 21 18:27:00 <hostname> api-lited[<pid>]: [GET]
-Sep 21 18:27:00 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts]
-Sep 21 18:27:00 <hostname> api-lited[<pid>]: customer_id=3
-Sep 21 18:27:00 <hostname> api-lited[<pid>]: [+12197654320]
-Sep 21 18:27:10 <hostname> api-lited[<pid>]: [GET]
-Sep 21 18:27:10 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts/phone]
-Sep 21 18:27:10 <hostname> api-lited[<pid>]: customer_id=3 | contact_type=phone
-Sep 21 18:27:10 <hostname> api-lited[<pid>]: [+12197654320]
-Sep 21 18:27:20 <hostname> api-lited[<pid>]: [GET]
-Sep 21 18:27:20 <hostname> api-lited[<pid>]: [/v1/customers/3/contacts/email]
-Sep 21 18:27:20 <hostname> api-lited[<pid>]: customer_id=3 | contact_type=email
-Sep 21 18:27:20 <hostname> api-lited[<pid>]: [jamison.palmer@example.com]
-Sep 21 18:27:30 <hostname> api-lited[<pid>]: Server stopped
+Sep 22 16:30:00 <hostname> api-lited[<pid>]: [Customers API Lite]
+Sep 22 16:30:00 <hostname> api-lited[<pid>]: [f7a58a68]
+Sep 22 16:30:00 <hostname> api-lited[<pid>]: Server started on port 8765
+Sep 22 16:30:30 <hostname> api-lited[<pid>]: [PUT]
+Sep 22 16:30:30 <hostname> api-lited[<pid>]: [Saturday Sunday]
+Sep 22 16:30:30 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
+Sep 22 16:30:50 <hostname> api-lited[<pid>]: [PUT]
+Sep 22 16:30:50 <hostname> api-lited[<pid>]: customer_id=5
+Sep 22 16:30:50 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
+Sep 22 16:30:50 <hostname> api-lited[<pid>]: [email|Saturday.Sunday@example.com]
+Sep 22 16:35:20 <hostname> api-lited[<pid>]: [GET]
+Sep 22 16:35:20 <hostname> api-lited[<pid>]: customer_id=5
+Sep 22 16:35:20 <hostname> api-lited[<pid>]: [5|Saturday Sunday]
+Sep 22 16:35:40 <hostname> api-lited[<pid>]: [GET]
+Sep 22 16:35:40 <hostname> api-lited[<pid>]: customer_id=5 | contact_type=email
+Sep 22 16:35:40 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
+Sep 22 16:40:00 <hostname> api-lited[<pid>]: Server stopped
 ```
 
 **TBD** :cd:
