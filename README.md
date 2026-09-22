@@ -125,12 +125,12 @@ The following command-line snippets display the exact usage for these endpoints 
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers \
        -H 'content-type: application/json' \
-       -d '{"name":"Jamison Palmer"}'
+       -d '{"name":"Jamison Palmer"     }'
 ...
 > PUT /v1/customers HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 25
+> Content-Length: 30
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
@@ -200,10 +200,10 @@ $ curl -v http://localhost:8765/v1/customers
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 99
+< Content-Length: 136
 < X-Request-Method: GET
 ...
-[{"id":1,"name":"Jammy Jellyfish"},{"id":2,"name":"Noble Numbat"},{"id":3,"name":"Jamison Palmer"}]
+[{"id":1,"name":"Jammy Jellyfish"},{"id":2,"name":"Noble Numbat"},{"id":3,"name":"Jamison Palmer"},{"id":4,"name":"Sarah Kitteringham"}]
 ```
 
 4. **Retrieve customer**
@@ -234,10 +234,10 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 69
+< Content-Length: 186
 < X-Request-Method: GET
 ...
-[{"contact":"+12197654320"},{"contact":"jamison.palmer@example.com"}]
+[{"contact":"+12197654320"},{"contact":"+12197654321"},{"contact":"+12197654322"},{"contact":"jamison.palmer@example.com"},{"contact":"jp@example.com"},{"contact":"jpalmer@example.com"}]
 ```
 
 6. **List contacts of a given type for a given customer**
@@ -251,10 +251,10 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/phone
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 28
+< Content-Length: 82
 < X-Request-Method: GET
 ...
-[{"contact":"+12197654320"}]
+[{"contact":"+12197654320"},{"contact":"+12197654321"},{"contact":"+12197654322"}]
 ```
 
 Or list **email** contacts:
@@ -268,10 +268,10 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/email
 < Server: libsoup/3.6.6
 ...
 < Content-Type: application/json
-< Content-Length: 42
+< Content-Length: 105
 < X-Request-Method: GET
 ...
-[{"contact":"jamison.palmer@example.com"}]
+[{"contact":"jamison.palmer@example.com"},{"contact":"jpalmer@example.com"},{"contact":"jp@example.com"}]
 ```
 
 > ^ The given names in customer accounts and in email contacts (in samples above) are for demonstrational purposes only. They have nothing common WRT any actual, ever really encountered names elsewhere.
