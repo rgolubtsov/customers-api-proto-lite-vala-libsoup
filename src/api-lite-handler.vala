@@ -66,7 +66,6 @@ namespace Handler {
 
         var method = msg.get_method();
         _dbg(dbg_, O_BRACKET + method + C_BRACKET);
-        _dbg(dbg_, O_BRACKET + path   + C_BRACKET);
 
                if (method == HTTP_PUT) {
                    if (path ==  REST_CONTEXT) {
