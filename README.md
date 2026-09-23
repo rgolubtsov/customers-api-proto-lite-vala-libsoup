@@ -36,7 +36,17 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 
 ## Building
 
-The microservice might be built and run successfully under **Arch Linux** (proven). &mdash; First install the necessary dependencies (`base-devel`, `vala`, `docker`):
+The microservice might be built and run successfully under **Ubuntu Server (Ubuntu 26.04.1 LTS x86-64)** and **Arch Linux** (both proven). &mdash; First install the necessary dependencies (`build-essential`, `valac`, `libsoup-3.0-dev`, `libjson-glib-dev`, `docker-buildx`):
+
+* In Ubuntu Server:
+
+```
+$ sudo apt-get update && \
+  sudo apt-get install build-essential valac libsoup-3.0-dev libjson-glib-dev docker-buildx -y
+...
+```
+
+* In Arch Linux:
 
 ```
 $ sudo pacman -Syu base-devel vala docker
@@ -278,7 +288,7 @@ $ curl -v http://localhost:8765/v1/customers/3/contacts/email
 
 ### Logging
 
-The microservice has the ability to log messages to a logfile and to the Unix syslog facility. To enable debug logging, the `debug.enabled` setting in the microservice main config file `etc/settings.conf` should be set to `true` *before starting up the microservice*. When running under Arch Linux (not in a Docker container), logs can be seen and analyzed in an ordinary fashion, by `tail`ing the `log/customers-api-lite.log` logfile:
+The microservice has the ability to log messages to a logfile and to the Unix syslog facility. To enable debug logging, the `debug.enabled` setting in the microservice main config file `etc/settings.conf` should be set to `true` *before starting up the microservice*. When running under Ubuntu Server or Arch Linux (not in a Docker container), logs can be seen and analyzed in an ordinary fashion, by `tail`ing the `log/customers-api-lite.log` logfile:
 
 ```
 $ tail -f log/customers-api-lite.log
