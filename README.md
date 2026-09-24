@@ -29,6 +29,7 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 ## Table of Contents
 
 * **[Building](#building)**
+  * **[Creating a Docker image](#creating-a-docker-image)**
 * **[Running](#running)**
 * **[Consuming](#consuming)**
   * **[Logging](#logging)**
@@ -81,6 +82,19 @@ Or **build** the microservice using **GNU Make** (optional, but for convenience 
 $ make clean
 ...
 $ make all  # <== Building the daemon.
+...
+```
+
+### Creating a Docker image
+
+**Build** a Docker image for the microservice:
+
+```
+$ # Pull the Alpine Linux image first, if not already there:
+$ sudo docker pull alpine:latest
+...
+$ # Then build the microservice image:
+$ sudo docker build -tcustomersapi/api-lite-val .
 ...
 ```
 
