@@ -29,7 +29,10 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 ## Table of Contents
 
 * **[Building](#building)**
+  * **[Creating a Docker image](#creating-a-docker-image)**
 * **[Running](#running)**
+  * **[Running a Docker image](#running-a-docker-image)**
+  * **[Exploring a Docker image payload](#exploring-a-docker-image-payload)**
 * **[Consuming](#consuming)**
   * **[Logging](#logging)**
   * **[Error handling](#error-handling)**
@@ -84,6 +87,19 @@ $ make all  # <== Building the daemon.
 ...
 ```
 
+### Creating a Docker image
+
+**Build** a Docker image for the microservice:
+
+```
+$ # Pull the Alpine Linux image first, if not already there:
+$ sudo docker pull alpine:latest
+...
+$ # Then build the microservice image:
+$ sudo docker build -tcustomersapi/api-lite-val .
+...
+```
+
 ## Running
 
 **Run** the microservice using its executable directly, built previously by the Vala compiler or GNU Make's `all` target:
@@ -108,6 +124,138 @@ The daemonized microservice then can be stopped gracefully at any time by issuin
 $ kill -SIGTERM <pid>
 $
 [1]+  Done                       ./bin/api-lited > /dev/null 2>&1
+```
+
+### Running a Docker image
+
+**Run** a Docker image of the microservice, deleting all stopped containers prior to that (if any):
+
+```
+$ sudo docker rm `sudo docker ps -aq`; \
+  export PORT=8765 && sudo docker run -dp${PORT}:${PORT} --name api-lite-val customersapi/api-lite-val; echo $?
+...
+```
+
+### Exploring a Docker image payload
+
+The following is not necessary but might be considered somewhat interesting &mdash; to look into the running container and check out that the microservice's daemon executable, config, logfile, and accompanied SQLite database are at their expected places and in effect:
+
+```
+$ sudo docker ps -a
+CONTAINER ID   IMAGE                       COMMAND           CREATED              STATUS              PORTS                                         NAMES
+<container_id> customersapi/api-lite-val   "bin/api-lited"   About a minute ago   Up About a minute   0.0.0.0:8765->8765/tcp, [::]:8765->8765/tcp   api-lite-val
+$
+$ sudo docker exec -it api-lite-val sh; echo $?
+/var/tmp/api-lite $
+/var/tmp/api-lite $ uname -a
+Linux <container_id> 7.0.0-31-generic #31-Ubuntu SMP PREEMPT_DYNAMIC Sat Aug  1 04:26:38 UTC 2026 x86_64 Linux
+/var/tmp/api-lite $
+/var/tmp/api-lite $ cat /etc/os-release /etc/alpine-release
+NAME="Alpine Linux"
+ID=alpine
+VERSION_ID=3.24.2
+PRETTY_NAME="Alpine Linux v3.24"
+HOME_URL="https://alpinelinux.org/"
+BUG_REPORT_URL="https://gitlab.alpinelinux.org/alpine/aports/-/issues"
+3.24.2
+/var/tmp/api-lite $
+/var/tmp/api-lite $ valac --version
+Vala 0.56.19
+/var/tmp/api-lite $
+/var/tmp/api-lite $ ls -al
+total 52
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:40 .
+drwxrwxrwt    1 root     root          4096 Sep 24 16:30 ..
+-rw-rw-r--    1 daemon   daemon        1415 Sep 24 16:00 Makefile
+drwxr-xr-x    2 daemon   daemon        4096 Sep 24 16:30 bin
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:30 data
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:30 etc
+drwxr-xr-x    2 daemon   daemon        4096 Sep 24 16:40 log
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:30 src
+/var/tmp/api-lite $
+/var/tmp/api-lite $ ls -al bin/ data/db/ etc/ log/ src/
+bin/:
+total 64
+drwxr-xr-x    2 daemon   daemon        4096 Sep 24 16:30 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:40 ..
+-rwxr-xr-x    1 daemon   daemon       51296 Sep 24 16:30 api-lited
+
+data/db/:
+total 40
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:30 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:30 ..
+-rw-rw-r--    1 daemon   daemon       24576 Sep 24 16:00 customers-api-lite.db
+
+etc/:
+total 20
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:30 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:40 ..
+-rw-rw-r--    1 daemon   daemon         779 Sep 24 16:10 settings.conf
+
+log/:
+total 16
+drwxr-xr-x    2 daemon   daemon        4096 Sep 24 16:40 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:40 ..
+-rw-r--r--    1 daemon   daemon         153 Sep 24 16:40 customers-api-lite.log
+
+src/:
+total 80
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:30 .
+drwxr-xr-x    1 daemon   daemon        4096 Sep 24 16:40 ..
+-rw-rw-r--    1 daemon   daemon       18515 Sep 24 16:00 api-lite-controller.vala
+-rw-rw-r--    1 daemon   daemon        6382 Sep 24 16:00 api-lite-controllerx.gs
+-rw-rw-r--    1 daemon   daemon        4543 Sep 24 16:00 api-lite-core.vala
+-rw-rw-r--    1 daemon   daemon        6475 Sep 24 16:00 api-lite-handler.vala
+-rw-rw-r--    1 daemon   daemon       11671 Sep 24 16:00 api-lite-helper.vala
+-rw-rw-r--    1 daemon   daemon        3448 Sep 24 16:00 api-lite-model.vala
+-rw-rw-r--    1 daemon   daemon        2029 Sep 24 16:00 api-lite-modelx.gs
+/var/tmp/api-lite $
+/var/tmp/api-lite $ ldd bin/api-lited
+        /lib/ld-musl-x86_64.so.1 (0x757989720000)
+        libsoup-3.0.so.0 => /usr/lib/libsoup-3.0.so.0 (0x75798968b000)
+        libsqlite3.so.0 => /usr/lib/libsqlite3.so.0 (0x7579894fa000)
+        libjson-glib-1.0.so.0 => /usr/lib/libjson-glib-1.0.so.0 (0x7579894d6000)
+        libgio-2.0.so.0 => /usr/lib/libgio-2.0.so.0 (0x7579892e6000)
+        libgobject-2.0.so.0 => /usr/lib/libgobject-2.0.so.0 (0x757989285000)
+        libglib-2.0.so.0 => /usr/lib/libglib-2.0.so.0 (0x757989128000)
+        libc.musl-x86_64.so.1 => /lib/ld-musl-x86_64.so.1 (0x757989720000)
+        libintl.so.8 => /usr/lib/libintl.so.8 (0x757989104000)
+        libpsl.so.5 => /usr/lib/libpsl.so.5 (0x7579890f0000)
+        libbrotlidec.so.1 => /usr/lib/libbrotlidec.so.1 (0x7579890e1000)
+        libz.so.1 => /usr/lib/libz.so.1 (0x7579890c6000)
+        libnghttp2.so.14 => /usr/lib/libnghttp2.so.14 (0x7579890a4000)
+        libgmodule-2.0.so.0 => /usr/lib/libgmodule-2.0.so.0 (0x75798909d000)
+        libmount.so.1 => /usr/lib/libmount.so.1 (0x757989055000)
+        libffi.so.8 => /usr/lib/libffi.so.8 (0x75798904b000)
+        libpcre2-8.so.0 => /usr/lib/libpcre2-8.so.0 (0x757988f8a000)
+        libidn2.so.0 => /usr/lib/libidn2.so.0 (0x757988f58000)
+        libunistring.so.5 => /usr/lib/libunistring.so.5 (0x757988d81000)
+        libbrotlicommon.so.1 => /usr/lib/libbrotlicommon.so.1 (0x757988d5e000)
+        libblkid.so.1 => /usr/lib/libblkid.so.1 (0x757988d2b000)
+        libeconf.so.0 => /usr/lib/libeconf.so.0 (0x757988d20000)
+/var/tmp/api-lite $
+/var/tmp/api-lite $ netstat -plunt
+Active Internet connections (only servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name
+tcp        0      0 0.0.0.0:8765            0.0.0.0:*               LISTEN      1/api-lited
+tcp        0      0 :::8765                 :::*                    LISTEN      1/api-lited
+/var/tmp/api-lite $
+/var/tmp/api-lite $ ps aux
+PID   USER     TIME  COMMAND
+    1 daemon    0:00 bin/api-lited
+    7 daemon    0:00 sh
+   20 daemon    0:00 ps aux
+/var/tmp/api-lite $
+/var/tmp/api-lite $ exit # Or simply <Ctrl-D>.
+0
+```
+
+To stop a running container of the microservice gracefully at any time, simply issue the following command:
+
+```
+$ sudo docker stop api-lite-val; echo $?
+api-lite-val
+0
 ```
 
 ## Consuming
@@ -135,12 +283,12 @@ The following command-line snippets display the exact usage for these endpoints 
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers \
        -H 'content-type: application/json' \
-       -d '{"name":"Jamison Palmer"     }'
+       -d '{"name":"Jamison Palmer"}'
 ...
 > PUT /v1/customers HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 30
+> Content-Length: 25
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
@@ -158,12 +306,12 @@ $ curl -vXPUT http://localhost:8765/v1/customers \
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
        -H 'content-type: application/json' \
-       -d '{"customer_id":"3","contact":"+12197654320"      }'
+       -d '{"customer_id":"3","contact":"+12197654320"}'
 ...
 > PUT /v1/customers/contacts HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 50
+> Content-Length: 44
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
@@ -181,12 +329,12 @@ Or create **email** contact:
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
        -H 'content-type: application/json' \
-       -d '{"customer_id":"3","contact":"jamison.palmer@example.com"    }'
+       -d '{"customer_id":"3","contact":"jamison.palmer@example.com"}'
 ...
 > PUT /v1/customers/contacts HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 62
+> Content-Length: 58
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
@@ -335,7 +483,50 @@ Sep 22 16:35:40 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
 Sep 22 16:40:00 <hostname> api-lited[<pid>]: Server stopped
 ```
 
-**TBD** :cd:
+Inside the running container logs might be queried also by `tail`ing the `log/customers-api-lite.log` logfile:
+
+```
+/var/tmp/api-lite $ tail -f log/customers-api-lite.log
+[2026-09-24][16:40:10] [DEBUG] [Customers API Lite]
+[2026-09-24][16:40:10] [DEBUG] [9c4e0058]
+[2026-09-24][16:40:10] [INFO ] Server started on port 8765
+[2026-09-24][16:40:40] [DEBUG] [PUT]
+[2026-09-24][16:40:40] [DEBUG] [Saturday Sunday]
+[2026-09-24][16:40:40] [DEBUG] [5|Saturday Sunday]
+[2026-09-24][16:45:00] [DEBUG] [PUT]
+[2026-09-24][16:45:00] [DEBUG] customer_id=5
+[2026-09-24][16:45:00] [DEBUG] [Saturday.Sunday@example.com]
+[2026-09-24][16:45:00] [DEBUG] [email|Saturday.Sunday@example.com]
+[2026-09-24][16:50:30] [DEBUG] [GET]
+[2026-09-24][16:50:30] [DEBUG] customer_id=5
+[2026-09-24][16:50:30] [DEBUG] [5|Saturday Sunday]
+[2026-09-24][16:50:50] [DEBUG] [GET]
+[2026-09-24][16:50:50] [DEBUG] customer_id=5 | contact_type=email
+[2026-09-24][16:50:50] [DEBUG] [Saturday.Sunday@example.com]
+```
+
+And of course, Docker itself gives the possibility to read log messages by using the corresponding command for that:
+
+```
+$ sudo docker logs -f api-lite-val
+[2026-09-24][16:40:10] [DEBUG] [Customers API Lite]
+[2026-09-24][16:40:10] [DEBUG] [9c4e0058]
+[2026-09-24][16:40:10] [INFO ] Server started on port 8765
+[2026-09-24][16:40:40] [DEBUG] [PUT]
+[2026-09-24][16:40:40] [DEBUG] [Saturday Sunday]
+[2026-09-24][16:40:40] [DEBUG] [5|Saturday Sunday]
+[2026-09-24][16:45:00] [DEBUG] [PUT]
+[2026-09-24][16:45:00] [DEBUG] customer_id=5
+[2026-09-24][16:45:00] [DEBUG] [Saturday.Sunday@example.com]
+[2026-09-24][16:45:00] [DEBUG] [email|Saturday.Sunday@example.com]
+[2026-09-24][16:50:30] [DEBUG] [GET]
+[2026-09-24][16:50:30] [DEBUG] customer_id=5
+[2026-09-24][16:50:30] [DEBUG] [5|Saturday Sunday]
+[2026-09-24][16:50:50] [DEBUG] [GET]
+[2026-09-24][16:50:50] [DEBUG] customer_id=5 | contact_type=email
+[2026-09-24][16:50:50] [DEBUG] [Saturday.Sunday@example.com]
+[2026-09-24][16:55:10] [INFO ] Server stopped
+```
 
 ### Error handling
 
