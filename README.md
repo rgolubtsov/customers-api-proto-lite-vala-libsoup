@@ -31,6 +31,8 @@ Surely, one may consider this project to be suitable for a wide variety of appli
 * **[Building](#building)**
   * **[Creating a Docker image](#creating-a-docker-image)**
 * **[Running](#running)**
+  * **[Running a Docker image](#running-a-docker-image)**
+  * **[Exploring a Docker image payload](#exploring-a-docker-image-payload)**
 * **[Consuming](#consuming)**
   * **[Logging](#logging)**
   * **[Error handling](#error-handling)**
@@ -123,6 +125,28 @@ $ kill -SIGTERM <pid>
 $
 [1]+  Done                       ./bin/api-lited > /dev/null 2>&1
 ```
+
+### Running a Docker image
+
+**Run** a Docker image of the microservice, deleting all stopped containers prior to that (if any):
+
+```
+$ sudo docker rm `sudo docker ps -aq`; \
+  export PORT=8765 && sudo docker run -dp${PORT}:${PORT} --name api-lite-val customersapi/api-lite-val; echo $?
+...
+```
+
+### Exploring a Docker image payload
+
+The following is not necessary but might be considered somewhat interesting &mdash; to look into the running container and check out that the microservice's daemon executable, config, logfile, and accompanied SQLite database are at their expected places and in effect:
+
+```
+$ sudo docker ps -a
+CONTAINER ID   IMAGE                       COMMAND           CREATED              STATUS              PORTS                                         NAMES
+<container_id> customersapi/api-lite-val   "bin/api-lited"   About a minute ago   Up About a minute   0.0.0.0:8765->8765/tcp, [::]:8765->8765/tcp   api-lite-val
+```
+
+**TBD** :cd:
 
 ## Consuming
 
