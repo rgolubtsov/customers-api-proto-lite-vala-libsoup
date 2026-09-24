@@ -483,7 +483,50 @@ Sep 22 16:35:40 <hostname> api-lited[<pid>]: [Saturday.Sunday@example.com]
 Sep 22 16:40:00 <hostname> api-lited[<pid>]: Server stopped
 ```
 
-**TBD** :cd:
+Inside the running container logs might be queried also by `tail`ing the `log/customers-api-lite.log` logfile:
+
+```
+/var/tmp/api-lite $ tail -f log/customers-api-lite.log
+[2026-09-24][16:40:10] [DEBUG] [Customers API Lite]
+[2026-09-24][16:40:10] [DEBUG] [9c4e0058]
+[2026-09-24][16:40:10] [INFO ] Server started on port 8765
+[2026-09-24][16:40:40] [DEBUG] [PUT]
+[2026-09-24][16:40:40] [DEBUG] [Saturday Sunday]
+[2026-09-24][16:40:40] [DEBUG] [5|Saturday Sunday]
+[2026-09-24][16:45:00] [DEBUG] [PUT]
+[2026-09-24][16:45:00] [DEBUG] customer_id=5
+[2026-09-24][16:45:00] [DEBUG] [Saturday.Sunday@example.com]
+[2026-09-24][16:45:00] [DEBUG] [email|Saturday.Sunday@example.com]
+[2026-09-24][16:50:30] [DEBUG] [GET]
+[2026-09-24][16:50:30] [DEBUG] customer_id=5
+[2026-09-24][16:50:30] [DEBUG] [5|Saturday Sunday]
+[2026-09-24][16:50:50] [DEBUG] [GET]
+[2026-09-24][16:50:50] [DEBUG] customer_id=5 | contact_type=email
+[2026-09-24][16:50:50] [DEBUG] [Saturday.Sunday@example.com]
+```
+
+And of course, Docker itself gives the possibility to read log messages by using the corresponding command for that:
+
+```
+$ sudo docker logs -f api-lite-val
+[2026-09-24][16:40:10] [DEBUG] [Customers API Lite]
+[2026-09-24][16:40:10] [DEBUG] [9c4e0058]
+[2026-09-24][16:40:10] [INFO ] Server started on port 8765
+[2026-09-24][16:40:40] [DEBUG] [PUT]
+[2026-09-24][16:40:40] [DEBUG] [Saturday Sunday]
+[2026-09-24][16:40:40] [DEBUG] [5|Saturday Sunday]
+[2026-09-24][16:45:00] [DEBUG] [PUT]
+[2026-09-24][16:45:00] [DEBUG] customer_id=5
+[2026-09-24][16:45:00] [DEBUG] [Saturday.Sunday@example.com]
+[2026-09-24][16:45:00] [DEBUG] [email|Saturday.Sunday@example.com]
+[2026-09-24][16:50:30] [DEBUG] [GET]
+[2026-09-24][16:50:30] [DEBUG] customer_id=5
+[2026-09-24][16:50:30] [DEBUG] [5|Saturday Sunday]
+[2026-09-24][16:50:50] [DEBUG] [GET]
+[2026-09-24][16:50:50] [DEBUG] customer_id=5 | contact_type=email
+[2026-09-24][16:50:50] [DEBUG] [Saturday.Sunday@example.com]
+[2026-09-24][16:55:10] [INFO ] Server stopped
+```
 
 ### Error handling
 
