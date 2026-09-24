@@ -250,7 +250,13 @@ PID   USER     TIME  COMMAND
 0
 ```
 
-**TBD** :cd:
+To stop a running container of the microservice gracefully at any time, simply issue the following command:
+
+```
+$ sudo docker stop api-lite-val; echo $?
+api-lite-val
+0
+```
 
 ## Consuming
 
