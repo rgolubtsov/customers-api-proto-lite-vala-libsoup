@@ -277,12 +277,12 @@ The following command-line snippets display the exact usage for these endpoints 
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers \
        -H 'content-type: application/json' \
-       -d '{"name":"Jamison Palmer"     }'
+       -d '{"name":"Jamison Palmer"}'
 ...
 > PUT /v1/customers HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 30
+> Content-Length: 25
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
@@ -300,12 +300,12 @@ $ curl -vXPUT http://localhost:8765/v1/customers \
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
        -H 'content-type: application/json' \
-       -d '{"customer_id":"3","contact":"+12197654320"      }'
+       -d '{"customer_id":"3","contact":"+12197654320"}'
 ...
 > PUT /v1/customers/contacts HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 50
+> Content-Length: 44
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
@@ -323,12 +323,12 @@ Or create **email** contact:
 ```
 $ curl -vXPUT http://localhost:8765/v1/customers/contacts \
        -H 'content-type: application/json' \
-       -d '{"customer_id":"3","contact":"jamison.palmer@example.com"    }'
+       -d '{"customer_id":"3","contact":"jamison.palmer@example.com"}'
 ...
 > PUT /v1/customers/contacts HTTP/1.1
 ...
 > content-type: application/json
-> Content-Length: 62
+> Content-Length: 58
 ...
 < HTTP/1.1 201 Created
 < Server: libsoup/3.6.6
