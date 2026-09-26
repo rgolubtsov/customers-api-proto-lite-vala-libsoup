@@ -52,7 +52,7 @@ $ sudo apt-get update && \
 * In Arch Linux:
 
 ```
-$ sudo pacman -Syu base-devel vala docker
+$ sudo pacman -Syu base-devel vala libsoup3 json-glib docker docker-buildx
 ...
 ```
 
